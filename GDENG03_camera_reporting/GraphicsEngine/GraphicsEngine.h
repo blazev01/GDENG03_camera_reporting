@@ -14,51 +14,53 @@ class DepthStencilState;
 class GraphicsEngine
 {
 public:
+	static bool Initialize();
+	static void Release();
+
+	static SwapChain* CreateSwapChain();
+	static DeviceContext* GetImmediateDeviceContext();
+	static VertexBuffer* CreateVertexBuffer();
+	static IndexBuffer* CreateIndexBuffer();
+	static ConstantBuffer* CreateConstantBuffer();
+	static VertexShader* CreateVertexShader(const void* shaderBytes, size_t shaderByteSize);
+	static PixelShader* CreatePixelShader(const void* shaderBytes, size_t shaderByteSize);
+	static DepthStencilState* CreateDepthStencilState();
+
+	static bool CompileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shaderBytes, size_t* shaderSize);
+	static bool CompilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shaderBytes, size_t* shaderSize);
+	static void ReleaseCompiledShader();
+
+	static ID3D11Device* GetDevice();
+	static IDXGIFactory* GetFactory();
+
+private:
 	GraphicsEngine();
-
-	bool Init();
-	bool Release();
-
 	~GraphicsEngine();
+	GraphicsEngine(GraphicsEngine const&) {};
+	GraphicsEngine& operator=(GraphicsEngine const&) {};
 
-public:
-	SwapChain* CreateSwapChain();
-	DeviceContext* GetImmediateDeviceContext();
-	VertexBuffer* CreateVertexBuffer();
-	IndexBuffer* CreateIndexBuffer();
-	ConstantBuffer* CreateConstantBuffer();
-	VertexShader* CreateVertexShader(const void* shaderBytes, size_t shaderByteSize);
-	PixelShader* CreatePixelShader(const void* shaderBytes, size_t shaderByteSize);
-	DepthStencilState* CreateDepthStencilState();
-
-public:
-	bool CompileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shaderBytes, size_t* shaderSize);
-	bool CompilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shaderBytes, size_t* shaderSize);
-	void ReleaseCompiledShader();
-
-public:
-	static GraphicsEngine* GetInstance();
+	static GraphicsEngine* instance;
 
 private:
-	DeviceContext* immDeviceContext;
+	DeviceContext* immDeviceContext = NULL;
 
 private:
-	ID3D11Device* d3dDevice;
-	D3D_FEATURE_LEVEL featureLevel;
-	ID3D11DeviceContext* immContext;
+	ID3D11Device* d3dDevice = NULL;
+	D3D_FEATURE_LEVEL featureLevel = {};
+	ID3D11DeviceContext* immContext = NULL;
 
 private:
-	IDXGIDevice* dxgiDevice;
-	IDXGIAdapter* dxgiAdapter;
-	IDXGIFactory* dxgiFactory;
+	IDXGIDevice* dxgiDevice = NULL;
+	IDXGIAdapter* dxgiAdapter = NULL;
+	IDXGIFactory* dxgiFactory = NULL;
 
 private:
-	ID3DBlob* blob;
+	ID3DBlob* blob = NULL;
 
-	ID3DBlob* vsBlob;
-	ID3DBlob* psBlob;
-	ID3D11VertexShader* vertexShader;
-	ID3D11PixelShader* pixelShader;
+	ID3DBlob* vsBlob = NULL;
+	ID3DBlob* psBlob = NULL;
+	ID3D11VertexShader* vertexShader = NULL;
+	ID3D11PixelShader* pixelShader = NULL;
 
 private:
 	friend class SwapChain;

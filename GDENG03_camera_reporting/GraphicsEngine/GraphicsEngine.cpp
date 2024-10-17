@@ -8,26 +8,12 @@
 #include "PixelShader.h"
 #include "DepthStencilState.h"
 
-GraphicsEngine::GraphicsEngine()
+GraphicsEngine* GraphicsEngine::instance = NULL;
+
+bool GraphicsEngine::Initialize()
 {
-	this->dxgiDevice = NULL;
-	this->dxgiAdapter = NULL;
-	this->dxgiFactory = NULL;
+	instance = new GraphicsEngine();
 
-	this->d3dDevice = NULL;
-	this->featureLevel = {};
-	this->immContext = NULL;
-	this->immDeviceContext = NULL;
-
-	this->blob = NULL;
-	this->vsBlob = NULL;
-	this->psBlob = NULL;
-	this->vertexShader = NULL;
-	this->pixelShader = NULL;
-}
-
-bool GraphicsEngine::Init()
-{
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -53,38 +39,32 @@ bool GraphicsEngine::Init()
 			featureLevels,
 			numfeatureLevels,
 			D3D11_SDK_VERSION,
-			&this->d3dDevice,
-			&this->featureLevel,
-			&this->immContext);
+			&instance->d3dDevice,
+			&instance->featureLevel,
+			&instance->immContext);
 
 		if (SUCCEEDED(result)) break;
 	}
 
 	if (FAILED(result)) return false;
 
-	this->d3dDevice->QueryInterface(_uuidof(IDXGIDevice), (void**)&this->dxgiDevice);
-	this->dxgiDevice->GetParent(_uuidof(IDXGIAdapter), (void**)&this->dxgiAdapter);
-	this->dxgiAdapter->GetParent(_uuidof(IDXGIFactory), (void**)&this->dxgiFactory);
+	instance->d3dDevice->QueryInterface(_uuidof(IDXGIDevice), (void**)&instance->dxgiDevice);
+	instance->dxgiDevice->GetParent(_uuidof(IDXGIAdapter), (void**)&instance->dxgiAdapter);
+	instance->dxgiAdapter->GetParent(_uuidof(IDXGIFactory), (void**)&instance->dxgiFactory);
 
-	this->immDeviceContext = new DeviceContext(this->immContext);
-	
+	instance->immDeviceContext = new DeviceContext(instance->immContext);
+
 	return true;
 }
 
-bool GraphicsEngine::Release()
+void GraphicsEngine::Release()
 {
-	this->dxgiDevice->Release();
-	this->dxgiAdapter->Release();
-	this->dxgiFactory->Release();
+	instance->dxgiDevice->Release();
+	instance->dxgiAdapter->Release();
+	instance->dxgiFactory->Release();
 
-	this->immDeviceContext->Release();
-	this->d3dDevice->Release();
-	return true;
-}
-
-GraphicsEngine::~GraphicsEngine()
-{
-
+	instance->immDeviceContext->Release();
+	instance->d3dDevice->Release();
 }
 
 SwapChain* GraphicsEngine::CreateSwapChain()
@@ -94,7 +74,7 @@ SwapChain* GraphicsEngine::CreateSwapChain()
 
 DeviceContext* GraphicsEngine::GetImmediateDeviceContext()
 {
-	return this->immDeviceContext;
+	return instance->immDeviceContext;
 }
 
 VertexBuffer* GraphicsEngine::CreateVertexBuffer()
@@ -146,14 +126,14 @@ DepthStencilState* GraphicsEngine::CreateDepthStencilState()
 bool GraphicsEngine::CompileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shaderBytes, size_t* shaderSize)
 {
 	ID3DBlob* errblob = nullptr;
-	if (FAILED(::D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "vs_5_0", 0, 0, &this->blob, &errblob)))
+	if (FAILED(::D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "vs_5_0", 0, 0, &instance->blob, &errblob)))
 	{
 		if (errblob) errblob->Release();
 		return false;
 	}
 
-	*shaderBytes = this->blob->GetBufferPointer();
-	*shaderSize = this->blob->GetBufferSize();
+	*shaderBytes = instance->blob->GetBufferPointer();
+	*shaderSize = instance->blob->GetBufferSize();
 
 	return true;
 }
@@ -161,26 +141,40 @@ bool GraphicsEngine::CompileVertexShader(const wchar_t* fileName, const char* en
 bool GraphicsEngine::CompilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shaderBytes, size_t* shaderSize)
 {
 	ID3DBlob* errblob = nullptr;
-	if (FAILED(::D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "ps_5_0", 0, 0, &this->blob, &errblob)))
+	if (FAILED(::D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "ps_5_0", 0, 0, &instance->blob, &errblob)))
 	{
 		if (errblob) errblob->Release();
 		return false;
 	}
 
-	*shaderBytes = this->blob->GetBufferPointer();
-	*shaderSize = this->blob->GetBufferSize();
+	*shaderBytes = instance->blob->GetBufferPointer();
+	*shaderSize = instance->blob->GetBufferSize();
 
 	return true;
 }
 
 void GraphicsEngine::ReleaseCompiledShader()
 {
-	if (this->blob) this->blob->Release();
+	if (instance->blob) instance->blob->Release();
 }
 
-GraphicsEngine* GraphicsEngine::GetInstance()
+ID3D11Device* GraphicsEngine::GetDevice()
 {
-	static GraphicsEngine engine;
-
-	return &engine;
+	return instance->d3dDevice;
 }
+
+IDXGIFactory* GraphicsEngine::GetFactory()
+{
+	return instance->dxgiFactory;
+}
+
+GraphicsEngine::GraphicsEngine()
+{
+
+}
+
+GraphicsEngine::~GraphicsEngine()
+{
+
+}
+

@@ -10,7 +10,7 @@ public:
 	~Quad();
 
 	void Update(float deltaTime) override;
-	void Draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
+	void Draw(VertexShader* vertexShader, PixelShader* pixelShader) override;
 	void Release() override;
 
 private:

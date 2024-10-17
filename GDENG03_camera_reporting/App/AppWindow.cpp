@@ -3,13 +3,14 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../EngineTime/EngineTime.h"
 #include "../InputSystem/InputSystem.h"
+#include "../SceneCamera/SceneCameraHandler.h"
+#include "../GameObjects/GameObjectManager.h"
 
 AppWindow::AppWindow()
 {
 	this->swapChain = NULL;
 	this->vertexShader = NULL;
 	this->pixelShader = NULL;
-	this->quad = NULL;
 	this->cube = NULL;
 }
 
@@ -21,93 +22,79 @@ AppWindow::~AppWindow()
 void AppWindow::OnCreate()
 {
 	InputSystem::Initialize();
-	InputSystem::AddListener(this);
+	EngineTime::Initialize();
+	GraphicsEngine::Initialize();
+	SceneCameraHandler::Initialize();
+	GameObjectManager::Initialize();
 
-	GraphicsEngine::GetInstance()->Init();
-	this->swapChain = GraphicsEngine::GetInstance()->CreateSwapChain();
+	this->swapChain = GraphicsEngine::CreateSwapChain();
 
 	RECT rect = this->GetWindowRect();
 	this->swapChain->Init(this->hwnd, rect.right - rect.left, rect.bottom - rect.top);
 
+	float width = this->GetWindowRect().right - this->GetWindowRect().left;
+	float height = this->GetWindowRect().bottom - this->GetWindowRect().top;
+
+	SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
+	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
+	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
+
 	void* shaderBytes = nullptr;
 	size_t shaderSize = 0;
 
-	GraphicsEngine::GetInstance()->CompileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderBytes, &shaderSize);
-	this->vertexShader = GraphicsEngine::GetInstance()->CreateVertexShader(shaderBytes, shaderSize);
+	GraphicsEngine::CompileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderBytes, &shaderSize);
+	this->vertexShader = GraphicsEngine::CreateVertexShader(shaderBytes, shaderSize);
 
 	this->vsBytes = shaderBytes;
 	this->vsSize = shaderSize;
 
-	GraphicsEngine::GetInstance()->CompilePixelShader(L"PixelShader.hlsl", "psmain", &shaderBytes, &shaderSize);
-	this->pixelShader = GraphicsEngine::GetInstance()->CreatePixelShader(shaderBytes, shaderSize);
+	GraphicsEngine::CompilePixelShader(L"PixelShader.hlsl", "psmain", &shaderBytes, &shaderSize);
+	this->pixelShader = GraphicsEngine::CreatePixelShader(shaderBytes, shaderSize);
 
-	GraphicsEngine::GetInstance()->ReleaseCompiledShader();
+	GraphicsEngine::ReleaseCompiledShader();
 
-	this->quad = new Quad("kwad", this->vsBytes, this->vsSize);
+	Cube* cube = new Cube("coob", this->vsBytes, this->vsSize);
+	cube->SetAnimationSpeed(0.0f);
+	cube->SetScale(Vector3(0.5f));
+	GameObjectManager::AddGameObject(cube);
 
-	this->cube = new Cube("coob", this->vsBytes, this->vsSize);
-	this->cube->SetAnimationSpeed(5.0f);
-	this->cube->SetPosition(0.5f, 0.2f, 0.0f);
-	this->cube->SetScale(Vector3(0.8f));
+	Quad* quad = new Quad("kwad", this->vsBytes, this->vsSize);
+	quad->SetRotation(1.5708f, 0.0f, 0.0f);
+	quad->SetScale(Vector3(4.0f));
+	GameObjectManager::AddGameObject(quad);
 
-	this->SpawnCircles();
+	this->camPos = Vector3(0.0f, 0.0f, -2.0f);
 }
 
 void AppWindow::OnUpdate()
 {
 	InputSystem::Update();
-
-	//this->deltaRot += EngineTime::GetDeltaTime();
-	//this->cube->SetRotation(Vector3(-0.1f * (1.0f - this->deltaRot)) + (0.1f * this->deltaRot));
-	this->cube->SetRotation(Vector3(this->rotX, this->rotY, 0.0f));
-	this->cube->Update(EngineTime::GetDeltaTime());
-	this->quad->Update(EngineTime::GetDeltaTime());
-
-	if (this->spawn)
-	{
-		this->spawn = false;
-		this->SpawnCircles();
-	}
-
-	else if (this->despawn)
-	{
-		this->despawn = false;
-		this->DespawnCircles();
-	}
-
-	else if (this->despawnAll)
-	{
-		this->despawnAll = false;
-		this->DespawnAllCircles();
-	}
-
-	if (!this->circles.empty())
-	{
-		for (int i = 0; i < this->circles.size(); i++)
-			this->circles[i]->Update(EngineTime::GetDeltaTime());
-	}
+	SceneCameraHandler::Update();
+	GameObjectManager::Update();
 }
 
 void AppWindow::OnRender()
 {
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.0f, 0.0f, 0.0f);
+	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
 
 	RECT rect = this->GetWindowRect();
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetViewportSize(rect.right - rect.left, rect.bottom - rect.top);
+	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(rect.right - rect.left, rect.bottom - rect.top);
 
-	float width = (this->GetWindowRect().right - this->GetWindowRect().left) / 300.0f;
-	float height = (this->GetWindowRect().bottom - this->GetWindowRect().top) / 300.0f;
-
-	//this->cube->Draw(width, height, this->vertexShader, this->pixelShader);
-	//this->quad->Draw(width, height, this->vertexShader, this->pixelShader);
-
-	if (!this->circles.empty())
-	{
-		for (int i = 0; i < this->circles.size(); i++)
-			this->circles[i]->Draw(width, height, this->vertexShader, this->pixelShader);
-	}
+	GameObjectManager::Draw(this->vertexShader, this->pixelShader);
 
 	this->swapChain->Present(true);
+}
+
+void AppWindow::OnFocus()
+{
+	InputSystem::AddListener(this);
+	InputSystem::SetEnabled(true);
+}
+
+void AppWindow::OnKillFocus()
+{
+	InputSystem::RemoveListener(this);
+	InputSystem::SetEnabled(false);
 }
 
 void AppWindow::OnDestroy()
@@ -117,63 +104,35 @@ void AppWindow::OnDestroy()
 	this->vertexShader->Release();
 	this->pixelShader->Release();
 
-	this->quad->Release();
-	this->cube->Release();
-
-	if (!this->circles.empty())
-	{
-		for (int i = 0; i < this->circles.size(); i++)
-			this->circles[i]->Release();
-	}
-
-	GraphicsEngine::GetInstance()->Release();
+	GameObjectManager::Release();
+	GraphicsEngine::Release();
 }
 
 void AppWindow::OnKey(int key)
 {
-
+	
 }
 
 void AppWindow::OnKeyDown(int key)
 {
 	switch (key)
 	{
-	case 'W':
-	{
-		this->rotX += 3.14f * EngineTime::GetDeltaTime();
-		break;
-	}
-	case 'S':
-	{
-		this->rotX -= 3.14f * EngineTime::GetDeltaTime();
-		break;
-	}
-	case 'A':
-	{
-		this->rotY += 3.14f * EngineTime::GetDeltaTime();
-		break;
-	}
-	case 'D':
-	{
-		this->rotY -= 3.14f * EngineTime::GetDeltaTime();
-		break;
-	}
 	case VK_SPACE:
 	{
 		std::cout << "SPACE" << "\n";
-		this->spawn = true;
+		this->SpawnCircles();
 		break;
 	}
 	case VK_BACK:
 	{
 		std::cout << "BACKSPACE" << "\n";
-		this->despawn = true;
+		this->DespawnCircles();
 		break;
 	}
 	case VK_DELETE:
 	{
 		std::cout << "DELETE" << "\n";
-		this->despawnAll = true;
+		this->DespawnAllCircles();
 		break;
 	}
 	case VK_ESCAPE:
@@ -192,14 +151,37 @@ void AppWindow::OnKeyUp(int key)
 
 }
 
+void AppWindow::OnMouseMove(const Vector2& deltaMousePos)
+{
+	
+}
+
+void AppWindow::OnMouseButton(int button)
+{
+	
+}
+
+void AppWindow::OnMouseButtonDown(int button)
+{
+	
+}
+
+void AppWindow::OnMouseButtonUp(int button)
+{
+	
+}
+
 void AppWindow::SpawnCircles()
 {
 	int size = this->circles.size();
 	for (int i = size; i < size + this->spawnSize; i++)
 	{
-		this->circles.push_back(new Circle("circle", this->vsBytes, this->vsSize));
-		this->circles[i]->SetScale(Vector3(0.2f));
-		this->circles[i]->SetVelocity(Vector3(sinf(rand()), sinf(rand()), 0.0f));
+		Circle* circle = new Circle("circle", this->vsBytes, this->vsSize);
+		circle->SetScale(Vector3(0.2f));
+		circle->SetVelocity(Vector3(sinf(rand()), sinf(rand()), 0.0f));
+
+		this->circles.push_back(circle);
+		GameObjectManager::AddGameObject(circle);
 	}
 }
 
@@ -210,7 +192,7 @@ void AppWindow::DespawnCircles()
 		int size = this->circles.size();
 		for (int i = size - 1; i >= size - this->spawnSize; i--)
 		{
-			this->circles[i]->Release();
+			GameObjectManager::DeleteGameObject(this->circles[i]);
 			this->circles.pop_back();
 		}
 	}
@@ -223,8 +205,9 @@ void AppWindow::DespawnAllCircles()
 		int size = this->circles.size();
 		for (int i = size - 1; i >= 0; i--)
 		{
-			this->circles[i]->Release();
+			GameObjectManager::DeleteGameObject(this->circles[i]);
 			this->circles.pop_back();
+			
 		}
 	}
 }

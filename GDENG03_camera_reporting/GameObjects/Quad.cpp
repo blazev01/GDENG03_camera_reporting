@@ -1,19 +1,20 @@
 #include "Quad.h"
-#include "../GraphicsEngine/Structs.h"
 #include "../Math/Colors.h"
+#include "../GraphicsEngine/Structs.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
+#include "../SceneCamera/SceneCameraHandler.h"
 
 Quad::Quad(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
 {
 	Vertex vertices[] =
 	{
-		{Vector3(-0.5f, -0.5f, 0.0f), RGB_RED, RGB_MAGENTA},
-		{Vector3(-0.5f,  0.5f, 0.0f), RGB_RED, RGB_MAGENTA},
-		{Vector3( 0.5f, -0.5f, 0.0f), RGB_RED, RGB_MAGENTA},
-		{Vector3( 0.5f,  0.5f, 0.0f), RGB_RED, RGB_MAGENTA},
+		{Vector3(-0.5f, -0.5f, 0.0f), RGB_WHITE, RGB_WHITE},
+		{Vector3(-0.5f,  0.5f, 0.0f), RGB_WHITE, RGB_WHITE},
+		{Vector3(0.5f, -0.5f, 0.0f), RGB_WHITE, RGB_WHITE},
+		{Vector3(0.5f,  0.5f, 0.0f), RGB_WHITE, RGB_WHITE},
 	};
 
-	this->vertexBuffer = GraphicsEngine::GetInstance()->CreateVertexBuffer();
+	this->vertexBuffer = GraphicsEngine::CreateVertexBuffer();
 	UINT vertexListSize = ARRAYSIZE(vertices);
 
 	this->vertexBuffer->Load(vertices, sizeof(Vertex), ARRAYSIZE(vertices), shaderBytes, shaderSize);
@@ -21,7 +22,7 @@ Quad::Quad(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(
 	Constant cc = Constant();
 	cc.time = 0;
 
-	this->constantBuffer = GraphicsEngine::GetInstance()->CreateConstantBuffer();
+	this->constantBuffer = GraphicsEngine::CreateConstantBuffer();
 	this->constantBuffer->Load(&cc, sizeof(Constant));
 }
 
@@ -33,45 +34,50 @@ Quad::~Quad()
 void Quad::Update(float deltaTime)
 {
 	this->deltaTime = deltaTime;
-	this->ticks += deltaTime;
+	//this->ticks += deltaTime;
 
 	this->transform.SetIdentity();
 	Matrix4x4 temp;
 
-	temp.SetRotationX(this->localRotation.x);
-	this->transform *= temp;
-
-	temp.SetRotationY(this->localRotation.y);
-	this->transform *= temp;
-
+	temp.SetIdentity();
 	temp.SetRotationZ(this->localRotation.z);
 	this->transform *= temp;
 
+	temp.SetIdentity();
+	temp.SetRotationY(this->localRotation.y);
+	this->transform *= temp;
+
+	temp.SetIdentity();
+	temp.SetRotationX(this->localRotation.x);
+	this->transform *= temp;
+
+	temp.SetIdentity();
 	temp.SetScale(this->localScale);
 	this->transform *= temp;
 
-	temp.SetTranslation(this->localPosition);
+	temp.SetIdentity();
+	temp.SetPosition(this->localPosition);
 	this->transform *= temp;
 }
 
-void Quad::Draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader)
+void Quad::Draw(VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;
 	cc.world = this->transform;
-	cc.view.SetIdentity();
-	cc.proj.SetOrthoLH(width, height, -4.0f, 4.0f);
+	cc.view = SceneCameraHandler::GetViewMatrix();
+	cc.proj = SceneCameraHandler::GetProjectionMatrix();
 
-	this->constantBuffer->Update(GraphicsEngine::GetInstance()->GetImmediateDeviceContext(), &cc);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetConstantBuffer(vertexShader, this->constantBuffer);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetConstantBuffer(pixelShader, this->constantBuffer);
+	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(vertexShader, this->constantBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(pixelShader, this->constantBuffer);
 
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetVertexShader(vertexShader);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetPixelShader(pixelShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexShader(vertexShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetPixelShader(pixelShader);
 
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
 
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->DrawTriangleStrip(this->vertexBuffer->GetVertexListSize(), 0);
+	GraphicsEngine::GetImmediateDeviceContext()->DrawTriangleStrip(this->vertexBuffer->GetVertexListSize(), 0);
 }
 
 void Quad::Release()

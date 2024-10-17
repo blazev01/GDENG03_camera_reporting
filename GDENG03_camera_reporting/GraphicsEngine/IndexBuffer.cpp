@@ -23,7 +23,7 @@ bool IndexBuffer::Load(void* indexList, UINT listSize)
 
     this->listSize = listSize;
 
-    if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateBuffer(&bufferDesc, &initData, &this->buffer)))
+    if (FAILED(GraphicsEngine::GetDevice()->CreateBuffer(&bufferDesc, &initData, &this->buffer)))
         return false;
 
 	return true;

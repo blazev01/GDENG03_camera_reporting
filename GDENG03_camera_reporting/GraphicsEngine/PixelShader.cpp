@@ -8,7 +8,7 @@ PixelShader::PixelShader()
 
 bool PixelShader::Init(const void* shaderBytes, size_t shaderByteSize)
 {
-    if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreatePixelShader(shaderBytes, shaderByteSize, nullptr, &this->ps)))
+    if (FAILED(GraphicsEngine::GetDevice()->CreatePixelShader(shaderBytes, shaderByteSize, nullptr, &this->ps)))
         return false;
 
     return true;

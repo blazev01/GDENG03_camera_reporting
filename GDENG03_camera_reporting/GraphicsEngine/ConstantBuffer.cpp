@@ -21,7 +21,7 @@ bool ConstantBuffer::Load(void* buffer, UINT bufferSize)
     D3D11_SUBRESOURCE_DATA initData = {};
     initData.pSysMem = buffer;
 
-    if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateBuffer(&bufferDesc, &initData, &this->buffer)))
+    if (FAILED(GraphicsEngine::GetDevice()->CreateBuffer(&bufferDesc, &initData, &this->buffer)))
         return false;
 
     D3D11_INPUT_ELEMENT_DESC layout[] =

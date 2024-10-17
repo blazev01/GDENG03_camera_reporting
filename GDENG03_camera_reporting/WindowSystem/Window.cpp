@@ -8,6 +8,11 @@ Window::Window()
     this->isRunning = false;
 }
 
+Window::~Window()
+{
+
+}
+
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     switch (msg)
@@ -20,7 +25,18 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpara
         window->OnCreate();
         break;
     }
-
+    case WM_SETFOCUS:
+    {
+        Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+        window->OnFocus();
+        break;
+    }
+    case WM_KILLFOCUS:
+    {
+        Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+        window->OnKillFocus();
+        break;
+    }
     case WM_DESTROY:
     {
         Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
@@ -28,7 +44,6 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpara
         ::PostQuitMessage(0);
         break;
     }
-
     default:
         return ::DefWindowProc(hwnd, msg, wparam, lparam);
         break;
@@ -75,8 +90,6 @@ bool Window::Init()
     ::UpdateWindow(this->hwnd);
 
     this->isRunning = true;
-
-    EngineTime::Initialize();
     
     return true;
 }
@@ -126,12 +139,17 @@ void Window::SetHWND(HWND hwnd)
     this->hwnd = hwnd;
 }
 
+void Window::OnFocus()
+{
+
+}
+
+void Window::OnKillFocus()
+{
+
+}
+
 void Window::OnDestroy()
 {
     this->isRunning = false;
-}
-
-Window::~Window()
-{
-
 }

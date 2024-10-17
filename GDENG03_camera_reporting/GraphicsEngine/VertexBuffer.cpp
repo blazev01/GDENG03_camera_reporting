@@ -28,7 +28,7 @@ bool VertexBuffer::Load(void* vertexList, UINT vertexSize, UINT listSize, void* 
     this->vertexSize = vertexSize;
     this->listSize = listSize;
 
-    if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateBuffer(&bufferDesc, &initData, &this->buffer)))
+    if (FAILED(GraphicsEngine::GetDevice()->CreateBuffer(&bufferDesc, &initData, &this->buffer)))
         return false;
 
     D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -39,7 +39,7 @@ bool VertexBuffer::Load(void* vertexList, UINT vertexSize, UINT listSize, void* 
     };
 
     UINT layoutSize = ARRAYSIZE(layout);
-    if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateInputLayout(
+    if (FAILED(GraphicsEngine::GetDevice()->CreateInputLayout(
         layout,
         layoutSize,
         shaderBytes,

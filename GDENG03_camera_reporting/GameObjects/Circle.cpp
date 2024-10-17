@@ -1,8 +1,9 @@
 #include "Circle.h"
 #include "vector"
+#include "../Math/Colors.h"
 #include "../GraphicsEngine/Structs.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
-#include "../Math/Colors.h"
+#include "../SceneCamera/SceneCameraHandler.h"
 
 
 Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
@@ -28,10 +29,10 @@ Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 		indices[(i * 3) + 2] = segments;
 	}
 
-	this->vertexBuffer = GraphicsEngine::GetInstance()->CreateVertexBuffer();
+	this->vertexBuffer = GraphicsEngine::CreateVertexBuffer();
 	UINT vertexListSize = ARRAYSIZE(vertices);
 
-	this->indexBuffer = GraphicsEngine::GetInstance()->CreateIndexBuffer();
+	this->indexBuffer = GraphicsEngine::CreateIndexBuffer();
 	UINT indexListSize = ARRAYSIZE(indices);
 
 	this->vertexBuffer->Load(vertices, sizeof(Vertex), vertexListSize, shaderBytes, shaderSize);
@@ -40,7 +41,7 @@ Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 	Constant cc = Constant();
 	cc.time = 0;
 
-	this->constantBuffer = GraphicsEngine::GetInstance()->CreateConstantBuffer();
+	this->constantBuffer = GraphicsEngine::CreateConstantBuffer();
 	this->constantBuffer->Load(&cc, sizeof(Constant));
 }
 
@@ -73,34 +74,29 @@ void Circle::Update(float deltaTime)
 	this->localPosition = newPos;
 
 	this->transform.SetIdentity();
-	Matrix4x4 temp;
-
-	temp.SetScale(this->localScale);
-	this->transform *= temp;
-
-	temp.SetTranslation(this->localPosition);
-	this->transform *= temp;
+	this->transform.SetScale(this->localScale);
+	this->transform.SetPosition(this->localPosition);
 }
 
-void Circle::Draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader)
+void Circle::Draw(VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;
 	cc.world = this->transform;
-	cc.view.SetIdentity();
-	cc.proj.SetOrthoLH(width, height, -4.0f, 4.0f);
+	cc.view = SceneCameraHandler::GetViewMatrix();
+	cc.proj = SceneCameraHandler::GetProjectionMatrix();
 
-	this->constantBuffer->Update(GraphicsEngine::GetInstance()->GetImmediateDeviceContext(), &cc);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetConstantBuffer(vertexShader, this->constantBuffer);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetConstantBuffer(pixelShader, this->constantBuffer);
+	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(vertexShader, this->constantBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(pixelShader, this->constantBuffer);
 
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetVertexShader(vertexShader);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetPixelShader(pixelShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexShader(vertexShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetPixelShader(pixelShader);
 
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->SetIndexBuffer(this->indexBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetIndexBuffer(this->indexBuffer);
 
-	GraphicsEngine::GetInstance()->GetImmediateDeviceContext()->DrawIndexedTriangleList(this->indexBuffer->GetIndexListSize(), 0, 0);
+	GraphicsEngine::GetImmediateDeviceContext()->DrawIndexedTriangleList(this->indexBuffer->GetIndexListSize(), 0, 0);
 }
 
 void Circle::Release()

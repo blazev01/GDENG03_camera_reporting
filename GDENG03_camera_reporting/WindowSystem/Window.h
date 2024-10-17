@@ -5,6 +5,7 @@ class Window
 {
 public:
 	Window();
+	~Window();
 
 	bool Init();
 	bool Broadcast();
@@ -17,10 +18,10 @@ public:
 	virtual void OnCreate() = 0;
 	virtual void OnUpdate() = 0;
 	virtual void OnRender() = 0;
+	virtual void OnFocus() = 0;
+	virtual void OnKillFocus() = 0;
 	virtual void OnDestroy();
-
-	~Window();
-
+	
 protected:
 	HWND hwnd;
 	bool isRunning;

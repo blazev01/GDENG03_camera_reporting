@@ -19,6 +19,12 @@ Vector3::Vector3(Vector2 vector2, float z) {
     this->z = z;
 }
 
+Vector3::Vector3(const Vector3& vector3) {
+    this->x = vector3.x;
+    this->y = vector3.y;
+    this->z = vector3.z;
+}
+
 Vector3 Vector3::Zero() {
     return Vector3(0.0f);
 }
@@ -65,6 +71,27 @@ Vector3 Vector3::Lerp(const Vector3& start, const Vector3& end, float delta)
     v.z = (start.z * (1.0f - delta)) + (end.z * delta);
 
     return v;
+}
+
+Vector3& Vector3::operator=(const Vector2& right)
+{
+    this->x = right.x;
+    this->y = right.y;
+    this->z = 0.0f;
+
+    return *this;
+}
+
+Vector3& Vector3::operator=(const Vector3& right)
+{
+    if (this != &right)
+    {
+        this->x = right.x;
+        this->y = right.y;
+        this->z = right.z;
+    }
+
+    return *this;
 }
 
 Vector3 operator-(const Vector3& right) {
@@ -139,4 +166,10 @@ bool operator==(const Vector3& left, const Vector3& right) {
 
 bool operator!=(const Vector3& left, const Vector3& right) {
     return (left.x != right.x || left.y != right.y || left.z != right.z);
+}
+
+std::ostream& operator<<(std::ostream& out, const Vector3& vector3)
+{
+    out << "(" << vector3.x << ", " << vector3.y << ", " << vector3.z << ")";
+    return out;
 }

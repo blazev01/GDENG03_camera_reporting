@@ -21,11 +21,18 @@ public:
 	virtual void OnCreate() override;
 	virtual void OnUpdate() override;
 	virtual void OnRender() override;
+	virtual void OnFocus() override;
+	virtual void OnKillFocus() override;
 	virtual void OnDestroy() override;
 
 	virtual void OnKey(int key) override;
 	virtual void OnKeyDown(int key) override;
 	virtual void OnKeyUp(int key) override;
+
+	virtual void OnMouseMove(const Vector2& deltaMousePos) override;
+	virtual void OnMouseButton(int button) override;
+	virtual void OnMouseButtonDown(int button) override;
+	virtual void OnMouseButtonUp(int button) override;
 
 	void SpawnCircles();
 	void DespawnCircles();
@@ -33,13 +40,16 @@ public:
 
 private:
 	float deltaRot = 0.0f;
-	float rotX = 0.0f;
-	float rotY = 0.0f;
 	int spawnSize = 5;
 
-	bool spawn = false;
-	bool despawn = false;
-	bool despawnAll = false;
+	float speed = 2.0f;
+	float rotX = 0.0f;
+	float rotY = 0.0f;
+
+	Vector3 camPos;
+	bool mouseButtonHeld = false;
+
+	Matrix4x4 cam;
 
 private:
 	SwapChain* swapChain;
@@ -47,9 +57,9 @@ private:
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
 
+	std::vector<GameObject*> gameObjects;
 	std::vector<Circle*> circles;
 	Cube* cube;
-	Quad* quad;
 
 	void* vsBytes = nullptr;
 	size_t vsSize = 0;

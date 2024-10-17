@@ -131,9 +131,11 @@
   <ItemGroup>
     <ClCompile Include="App\AppWindow.cpp" />
     <ClCompile Include="EngineTime\EngineTime.cpp" />
+    <ClCompile Include="GameObjects\Camera.cpp" />
     <ClCompile Include="GameObjects\Circle.cpp" />
     <ClCompile Include="GameObjects\Cube.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
+    <ClCompile Include="GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="GameObjects\Quad.cpp" />
     <ClCompile Include="GraphicsEngine\ConstantBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\DepthStencilState.cpp" />
@@ -149,14 +151,18 @@
     <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="Math\Vector4.cpp" />
+    <ClCompile Include="SceneCamera\SceneCameraHandler.cpp" />
     <ClCompile Include="WindowSystem\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\AppWindow.h" />
     <ClInclude Include="EngineTime\EngineTime.h" />
+    <ClInclude Include="GameObjects\Camera.h" />
     <ClInclude Include="GameObjects\Circle.h" />
     <ClInclude Include="GameObjects\Cube.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
+    <ClInclude Include="GameObjects\GameObjectManager.h" />
     <ClInclude Include="GameObjects\Quad.h" />
     <ClInclude Include="GraphicsEngine\ConstantBuffer.h" />
     <ClInclude Include="GraphicsEngine\DepthStencilState.h" />
@@ -174,6 +180,8 @@
     <ClInclude Include="Math\Matrix4x4.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
+    <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="SceneCamera\SceneCameraHandler.h" />
     <ClInclude Include="WindowSystem\Window.h" />
   </ItemGroup>
   <ItemGroup>

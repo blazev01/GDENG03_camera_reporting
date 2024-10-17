@@ -1,4 +1,5 @@
 #include "Vector2.h"
+#include "Vector3.h"
 
 Vector2::Vector2(float n) {
     this->x = n;
@@ -8,6 +9,11 @@ Vector2::Vector2(float n) {
 Vector2::Vector2(float x, float y) {
     this->x = x;
     this->y = y;
+}
+
+Vector2::Vector2(const Vector2& vector2) {
+    this->x = vector2.x;
+    this->y = vector2.y;
 }
 
 Vector2 Vector2::Zero() {
@@ -44,6 +50,34 @@ float Vector2::SqrMagnitude() const
 float Vector2::Dot(const Vector2& left, const Vector2& right) {
     Vector2 Prod = left * right;
     return Prod.x + Prod.y;
+}
+
+Vector2 Vector2::Lerp(const Vector2& start, const Vector2& end, float delta)
+{
+    Vector2 v;
+    v.x = (start.x * (1.0f - delta)) + (end.x * delta);
+    v.y = (start.y * (1.0f - delta)) + (end.y * delta);
+
+    return v;
+}
+
+Vector2& Vector2::operator=(const Vector2& right)
+{
+    if (this != &right)
+    {
+        this->x = right.x;
+        this->y = right.y;
+    }
+
+    return *this;
+}
+
+Vector2& Vector2::operator=(const Vector3& right)
+{
+    this->x = right.x;
+    this->y = right.y;
+
+    return *this;
 }
 
 Vector2 operator-(const Vector2& right) {
@@ -118,4 +152,10 @@ bool operator==(const Vector2& left, const Vector2& right) {
 
 bool operator!=(const Vector2& left, const Vector2& right) {
     return (left.x != right.x || left.y != right.y);
+}
+
+std::ostream& operator<<(std::ostream& out, const Vector2& vector2)
+{
+    out << "(" << vector2.x << ", " << vector2.y << ")";
+    return out;
 }

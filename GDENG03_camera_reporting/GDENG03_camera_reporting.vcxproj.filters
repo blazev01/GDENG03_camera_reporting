@@ -64,6 +64,18 @@
     <ClCompile Include="main.cpp">
       <Filter>App</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\Camera.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\GameObjectManager.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCamera\SceneCameraHandler.cpp">
+      <Filter>GameEngine\SceneCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector4.cpp">
+      <Filter>GameEngine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\ConstantBuffer.h">
@@ -135,6 +147,18 @@
     <ClInclude Include="App\AppWindow.h">
       <Filter>App</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjects\Camera.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameObjectManager.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCamera\SceneCameraHandler.h">
+      <Filter>GameEngine\SceneCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector4.h">
+      <Filter>GameEngine\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -163,6 +187,9 @@
     </Filter>
     <Filter Include="GameEngine\Components">
       <UniqueIdentifier>{ab4fbc7a-a4a4-4a5d-97fe-865ae6c55857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\SceneCamera">
+      <UniqueIdentifier>{5669ca93-73b0-4305-9c85-b6d8850bd3fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

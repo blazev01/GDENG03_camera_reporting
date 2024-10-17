@@ -7,11 +7,17 @@ GameObject::GameObject(std::string name)
     this->localRotation = Vector3::Zero();
     this->localScale = Vector3::One();
     this->transform.SetIdentity();
+    this->parent = NULL;
 }
 
 GameObject::~GameObject()
 {
 
+}
+
+std::string GameObject::GetName()
+{
+    return this->name;
 }
 
 void GameObject::SetPosition(float x, float y, float z)
@@ -57,4 +63,34 @@ void GameObject::SetRotation(Vector3 rotation)
 Vector3 GameObject::GetLocalRotation() const
 {
     return this->localRotation;
+}
+
+Vector3 GameObject::GetRight()
+{
+    return this->transform.GetRight();
+}
+
+Vector3 GameObject::GetUp()
+{
+    return this->transform.GetUp();
+}
+
+Vector3 GameObject::GetForward()
+{
+    return this->transform.GetForward();
+}
+
+GameObject* GameObject::GetParent()
+{
+    return this->parent;
+}
+
+GameObject* GameObject::GetChild(int index)
+{
+    return this->children[index];
+}
+
+std::vector<GameObject*> GameObject::GetChildren()
+{
+    return this->children;
 }

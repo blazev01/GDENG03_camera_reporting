@@ -11,7 +11,7 @@ public:
 	~Cube();
 
 	void Update(float deltaTime) override;
-	void Draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
+	void Draw(VertexShader* vertexShader, PixelShader* pixelShader) override;
 	void Release() override;
 	void SetAnimationSpeed(float speed);
 
@@ -23,7 +23,6 @@ private:
 	float deltaPos = 0.0f;
 	float deltaRot = 0.0f;
 	float deltaTime = 0.0f;
-	float totalTime = 0.0f;
 	float speed = 1.0f;
 };
 

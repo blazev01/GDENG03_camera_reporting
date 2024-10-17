@@ -17,7 +17,7 @@ bool DepthStencilState::Load()
 	dsDesc.DepthEnable = true;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-	if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateDepthStencilState(&dsDesc, &this->dsState)))
+	if (FAILED(GraphicsEngine::GetDevice()->CreateDepthStencilState(&dsDesc, &this->dsState)))
 		return false;
 
 	return true;
@@ -45,7 +45,7 @@ bool DepthStencilState::LoadDrawMask()
 	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 
-	if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateDepthStencilState(&dsDesc, &this->dsState)))
+	if (FAILED(GraphicsEngine::GetDevice()->CreateDepthStencilState(&dsDesc, &this->dsState)))
 		return false;
 
 	return true;
@@ -73,7 +73,7 @@ bool DepthStencilState::LoadApplyMask()
 	dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 	dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 
-	if (FAILED(GraphicsEngine::GetInstance()->d3dDevice->CreateDepthStencilState(&dsDesc, &this->dsState)))
+	if (FAILED(GraphicsEngine::GetDevice()->CreateDepthStencilState(&dsDesc, &this->dsState)))
 		return false;
 
 	return true;
