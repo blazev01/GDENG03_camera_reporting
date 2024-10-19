@@ -15,6 +15,7 @@ public:
 	virtual void Draw(VertexShader* vertexShader, PixelShader* pixelShader) = 0;
 	virtual void Release() = 0;
 
+public:
 	std::string GetName();
 
 	void SetPosition(float x, float y, float z);
@@ -37,6 +38,13 @@ public:
 	GameObject* GetChild(int index);
 	std::vector<GameObject*> GetChildren();
 
+public:
+	unsigned int GetLayer() const;
+	void SetLayer(unsigned int layer);
+
+	int GetPriority() const;
+	void SetPriority(int priority);
+
 protected:
 	std::string name;
 
@@ -48,5 +56,8 @@ protected:
 
 	GameObject* parent;
 	std::vector<GameObject*> children;
+
+	unsigned int layer;
+	int priority;
 };
 

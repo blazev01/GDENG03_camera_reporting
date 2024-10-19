@@ -76,6 +76,9 @@
     <ClCompile Include="Math\Vector4.cpp">
       <Filter>GameEngine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjects\RenderQueue.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\ConstantBuffer.h">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="Math\Vector4.h">
       <Filter>GameEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\RenderQueue.h">
+      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

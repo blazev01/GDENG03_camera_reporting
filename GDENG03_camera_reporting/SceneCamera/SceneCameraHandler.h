@@ -19,6 +19,7 @@ private:
 
 	static SceneCameraHandler* instance;
 
+	std::vector<Camera*> cameras;
 	Camera* camera = NULL;
 };
 

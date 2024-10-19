@@ -1,4 +1,5 @@
 #pragma once
+#include "bitset"
 #include "GameObject.h"
 #include "../InputSystem/InputListener.h"
 
@@ -18,6 +19,9 @@ public:
 	void SetPerspProjection(float fov, float aspect, float zNear, float zFar);
 	void SetWindowSize(float width, float height);
 
+	std::bitset<4> GetCullingMask() const;
+	void SetCullingMask(std::bitset<4> cullingMask);
+
 private:
 	Matrix4x4 projection;
 
@@ -31,5 +35,7 @@ private:
 
 	Vector3 camPos;
 	Vector2 oldMousePos;
+
+	std::bitset<4> cullingMask;
 };
 

@@ -8,6 +8,9 @@ Camera::Camera(std::string name) : GameObject(name)
 	
 	this->transform.SetPosition(this->localPosition);
 	this->transform.Inverse();
+
+	for (int i = 0; i < this->cullingMask.size(); i++)
+		this->cullingMask[i] = true;
 }
 
 Camera::~Camera()
@@ -123,5 +126,15 @@ void Camera::SetWindowSize(float width, float height)
 {
 	this->width = width;
 	this->height = height;
+}
+
+std::bitset<4> Camera::GetCullingMask() const
+{
+	return this->cullingMask;
+}
+
+void Camera::SetCullingMask(std::bitset<4> cullingMask)
+{
+	this->cullingMask = cullingMask;
 }
 

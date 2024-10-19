@@ -8,6 +8,8 @@ GameObject::GameObject(std::string name)
     this->localScale = Vector3::One();
     this->transform.SetIdentity();
     this->parent = NULL;
+    this->layer = 0;
+    this->priority = 0;
 }
 
 GameObject::~GameObject()
@@ -93,4 +95,24 @@ GameObject* GameObject::GetChild(int index)
 std::vector<GameObject*> GameObject::GetChildren()
 {
     return this->children;
+}
+
+unsigned int GameObject::GetLayer() const
+{
+    return this->layer;
+}
+
+void GameObject::SetLayer(unsigned int layer)
+{
+    this->layer = layer;
+}
+
+int GameObject::GetPriority() const
+{
+    return this->priority;
+}
+
+void GameObject::SetPriority(int priority)
+{
+    this->priority = priority;
 }
