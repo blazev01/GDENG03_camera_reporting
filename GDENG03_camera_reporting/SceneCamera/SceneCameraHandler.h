@@ -11,6 +11,10 @@ public:
 	static Camera* GetSceneCamera();
 	static Matrix4x4 GetViewMatrix();
 	static Matrix4x4 GetProjectionMatrix();
+public:
+	static void CreateNewCamera(float width, float height);
+	static void SwitchNextCamera();
+	static void SwitchPrevCamera();
 private:
 	SceneCameraHandler();
 	~SceneCameraHandler();
@@ -21,5 +25,9 @@ private:
 
 	std::vector<Camera*> cameras;
 	Camera* camera = NULL;
+	int cameraLimit = 3;
+	int cameraCount = 0;
+	int cameraIterator = 0;
+
 };
 

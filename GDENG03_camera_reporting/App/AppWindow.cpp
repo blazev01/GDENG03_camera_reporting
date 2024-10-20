@@ -35,10 +35,13 @@ void AppWindow::OnCreate()
 	float width = this->GetWindowRect().right - this->GetWindowRect().left;
 	float height = this->GetWindowRect().bottom - this->GetWindowRect().top;
 
-	SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
+	SceneCameraHandler::CreateNewCamera(width, height);
+	SceneCameraHandler::CreateNewCamera(width, height);
+	SceneCameraHandler::CreateNewCamera(width, height);
+	//SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
-	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
-
+	//SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
+	
 	void* shaderBytes = nullptr;
 	size_t shaderSize = 0;
 
@@ -141,6 +144,14 @@ void AppWindow::OnKeyDown(int key)
 		exit(0);
 		break;
 	}
+	case VK_OEM_PERIOD:
+		std::cout << "Greater Than" << std::endl;
+		SceneCameraHandler::SwitchNextCamera();
+		break;
+	case VK_OEM_COMMA:
+		std::cout << "Less Than" << std::endl;
+		SceneCameraHandler::SwitchPrevCamera();
+		break;
 	default:
 		break;
 	}
