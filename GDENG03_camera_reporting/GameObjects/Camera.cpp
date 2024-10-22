@@ -95,7 +95,9 @@ void Camera::Update(float deltaTime)
 
 	this->transform.Inverse();
 	
-	RenderQueue::Render();
+	RenderQueue::Render(this->cullingMask);
+	
+	
 }
 
 void Camera::Draw(VertexShader * vertexShader, PixelShader * pixelShader)

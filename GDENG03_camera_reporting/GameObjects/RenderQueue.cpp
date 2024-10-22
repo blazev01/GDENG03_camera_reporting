@@ -31,12 +31,17 @@ void RenderQueue::RemoveRenderer(GameObject * renderer)
 	}
 }
 
-void RenderQueue::Render()
+void RenderQueue::Render(std::bitset<4> cullingMask)
 {
 	if (!instance->renderers.empty())
 	{
 		for (GameObject* renderer : instance->renderers)
-			renderer->Draw(renderer->GetVertexShader(), renderer->GetPixelShader());
+		{
+			if (cullingMask[renderer->GetLayer()])
+			{
+				renderer->Draw(renderer->GetVertexShader(), renderer->GetPixelShader());
+			}
+		}
 	}
 }
 
