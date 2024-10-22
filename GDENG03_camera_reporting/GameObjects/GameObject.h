@@ -48,6 +48,12 @@ public:
 	int GetPriority() const;
 	void SetPriority(int priority);
 
+	PixelShader* GetPixelShader();
+	VertexShader* GetVertexShader();
+
+	void SetPixelShader(PixelShader* pixShader);
+	void SetVertexShader(VertexShader* verShader);
+
 protected:
 	std::string name;
 
@@ -63,5 +69,8 @@ protected:
 	unsigned int layer;
 	int priority;
 	bool enabled;
+	
+	VertexShader* vertShader;
+	PixelShader* pixShader;
 };
 

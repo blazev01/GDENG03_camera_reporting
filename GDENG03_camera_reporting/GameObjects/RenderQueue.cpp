@@ -31,13 +31,18 @@ void RenderQueue::RemoveRenderer(GameObject * renderer)
 	}
 }
 
-void RenderQueue::Render(VertexShader* vertexShader, PixelShader* pixelShader)
+void RenderQueue::Render()
 {
 	if (!instance->renderers.empty())
 	{
 		for (GameObject* renderer : instance->renderers)
-			renderer->Draw(vertexShader, pixelShader);
+			renderer->Draw(renderer->GetVertexShader(), renderer->GetPixelShader());
 	}
+}
+
+std::vector<GameObject*> RenderQueue::GetRenderers()
+{
+	return instance->renderers;
 }
 
 bool RenderQueue::ComparePriority(GameObject* a, GameObject* b)

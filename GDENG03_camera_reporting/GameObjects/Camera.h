@@ -2,6 +2,7 @@
 #include "bitset"
 #include "GameObject.h"
 #include "../InputSystem/InputListener.h"
+#include "RenderQueue.h"
 
 class Camera : public GameObject
 {

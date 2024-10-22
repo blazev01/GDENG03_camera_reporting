@@ -127,3 +127,26 @@ void GameObject::SetPriority(int priority)
 {
     this->priority = priority;
 }
+
+PixelShader* GameObject::GetPixelShader()
+{
+    return this->pixShader;
+}
+
+VertexShader* GameObject::GetVertexShader()
+{
+    return this->vertShader;
+}
+
+void GameObject::SetPixelShader(PixelShader* pixShader)
+{
+    this->pixShader = pixShader;
+}
+
+void GameObject::SetVertexShader(VertexShader* verShader)
+{
+    this->vertShader = verShader;
+}
+
+
+

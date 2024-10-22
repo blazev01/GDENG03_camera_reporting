@@ -94,6 +94,8 @@ void Camera::Update(float deltaTime)
 	this->transform.SetPosition(this->camPos);
 
 	this->transform.Inverse();
+	
+	RenderQueue::Render();
 }
 
 void Camera::Draw(VertexShader * vertexShader, PixelShader * pixelShader)

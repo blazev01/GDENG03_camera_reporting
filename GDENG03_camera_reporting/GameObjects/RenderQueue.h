@@ -8,8 +8,8 @@ public:
 	static void Initialize();
 	static void AddRenderer(GameObject* renderer);
 	static void RemoveRenderer(GameObject* renderer);
-	static void Render(VertexShader* vertexShader, PixelShader* pixelShader);
-
+	static void Render();
+	static std::vector<GameObject*> GetRenderers();
 private:
 	bool ComparePriority(GameObject* a, GameObject* b);
 
