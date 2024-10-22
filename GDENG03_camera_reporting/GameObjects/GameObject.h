@@ -38,6 +38,9 @@ public:
 	GameObject* GetChild(int index);
 	std::vector<GameObject*> GetChildren();
 
+	bool IsEnabled();
+	void setEnabled(bool enabled);
+
 public:
 	unsigned int GetLayer() const;
 	void SetLayer(unsigned int layer);
@@ -59,5 +62,6 @@ protected:
 
 	unsigned int layer;
 	int priority;
+	bool enabled;
 };
 

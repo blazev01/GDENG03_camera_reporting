@@ -10,6 +10,7 @@ GameObject::GameObject(std::string name)
     this->parent = NULL;
     this->layer = 0;
     this->priority = 0;
+    this->enabled = true;
 }
 
 GameObject::~GameObject()
@@ -95,6 +96,16 @@ GameObject* GameObject::GetChild(int index)
 std::vector<GameObject*> GameObject::GetChildren()
 {
     return this->children;
+}
+
+bool GameObject::IsEnabled()
+{
+    return this->enabled;
+}
+
+void GameObject::setEnabled(bool enabled)
+{
+    this->enabled = enabled;
 }
 
 unsigned int GameObject::GetLayer() const
