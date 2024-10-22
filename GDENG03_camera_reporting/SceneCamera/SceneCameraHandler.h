@@ -6,6 +6,7 @@ class SceneCameraHandler
 public:
 	static void Initialize();
 	static void Update();
+	static void Render();
 	static void Release();
 
 	static Camera* GetSceneCamera();
@@ -13,6 +14,7 @@ public:
 	static Matrix4x4 GetProjectionMatrix();
 public:
 	static void CreateNewCamera(float width, float height);
+	static Camera* GetCamera(int index);
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
 private:

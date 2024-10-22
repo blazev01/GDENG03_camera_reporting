@@ -12,7 +12,7 @@ public:
 	~GameObject();
 
 	virtual void Update(float deltaTime) = 0;
-	virtual void Draw(VertexShader* vertexShader, PixelShader* pixelShader) = 0;
+	virtual void Draw() = 0;
 	virtual void Release() = 0;
 
 public:
@@ -30,6 +30,8 @@ public:
 	void SetRotation(Vector3 rotation);
 	Vector3 GetLocalRotation() const;
 
+	void SetTransform(const Matrix4x4& transform);
+
 	Vector3 GetRight();
 	Vector3 GetUp();
 	Vector3 GetForward();
@@ -38,7 +40,7 @@ public:
 	GameObject* GetChild(int index);
 	std::vector<GameObject*> GetChildren();
 
-	bool IsEnabled();
+	bool IsEnabled() const;
 	void setEnabled(bool enabled);
 
 public:
@@ -51,8 +53,8 @@ public:
 	PixelShader* GetPixelShader();
 	VertexShader* GetVertexShader();
 
-	void SetPixelShader(PixelShader* pixShader);
-	void SetVertexShader(VertexShader* verShader);
+	void SetPixelShader(PixelShader* pixelShader);
+	void SetVertexShader(VertexShader* vertexShader);
 
 protected:
 	std::string name;
@@ -70,7 +72,7 @@ protected:
 	int priority;
 	bool enabled;
 	
-	VertexShader* vertShader;
-	PixelShader* pixShader;
+	VertexShader* vertexShader;
+	PixelShader* pixelShader;
 };
 

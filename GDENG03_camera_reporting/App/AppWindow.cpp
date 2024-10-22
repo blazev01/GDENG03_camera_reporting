@@ -5,6 +5,7 @@
 #include "../InputSystem/InputSystem.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "../GameObjects/GameObjectManager.h"
+#include "../GameObjects/RenderQueue.h"
 
 AppWindow::AppWindow()
 {
@@ -39,6 +40,20 @@ void AppWindow::OnCreate()
 	SceneCameraHandler::CreateNewCamera(width, height);
 	SceneCameraHandler::CreateNewCamera(width, height);
 	SceneCameraHandler::CreateNewCamera(width, height);
+
+	std::bitset<4> cullingMask1 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
+	std::bitset<4> cullingMask2 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
+	cullingMask1[0] = false;
+	cullingMask2[1] = false;
+	SceneCameraHandler::GetCamera(1)->SetCullingMask(cullingMask1);
+	SceneCameraHandler::GetCamera(2)->SetCullingMask(cullingMask2);
+
+	for (int i = 0; i < 3; i++)
+	{
+		SceneCameraHandler::GetCamera(i)->SetPosition(Vector3(0.0f, 2.0f, -2.0f));
+		SceneCameraHandler::GetCamera(i)->SetRotation(Vector3(1.0f, 0.0f, 0.0f));
+	}
+
 	//SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
 	//SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
@@ -70,10 +85,9 @@ void AppWindow::OnCreate()
 	quad->SetScale(Vector3(4.0f));
 	quad->SetVertexShader(this->vertexShader);
 	quad->SetPixelShader(this->pixelShader);
+	quad->SetLayer(1);
 	GameObjectManager::AddGameObject(quad);
 	RenderQueue::AddRenderer(quad);
-
-	this->camPos = Vector3(0.0f, 0.0f, -2.0f);
 }
 
 void AppWindow::OnUpdate()
@@ -90,7 +104,8 @@ void AppWindow::OnRender()
 	RECT rect = this->GetWindowRect();
 	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(rect.right - rect.left, rect.bottom - rect.top);
 
-	GameObjectManager::Draw(this->vertexShader, this->pixelShader);
+	SceneCameraHandler::Render();
+	//GameObjectManager::Draw(this->vertexShader, this->pixelShader);
 
 	this->swapChain->Present(true);
 }
@@ -116,6 +131,7 @@ void AppWindow::OnDestroy()
 
 	GameObjectManager::Release();
 	GraphicsEngine::Release();
+	SceneCameraHandler::Release();
 }
 
 void AppWindow::OnKey(int key)

@@ -13,7 +13,13 @@ void RenderQueue::AddRenderer(GameObject* renderer)
 
 	std::vector<GameObject*>::iterator first = instance->renderers.begin();
 	std::vector<GameObject*>::iterator last = instance->renderers.end();
-	//std::sort(first, last, ComparePriority);
+
+	auto compare = [](GameObject* a, GameObject* b)
+		{
+			return a->GetPriority() < b->GetPriority();
+		};
+
+	std::sort(first, last, compare);
 }
 
 void RenderQueue::RemoveRenderer(GameObject * renderer)
@@ -36,23 +42,8 @@ void RenderQueue::Render(std::bitset<4> cullingMask)
 	if (!instance->renderers.empty())
 	{
 		for (GameObject* renderer : instance->renderers)
-		{
-			if (cullingMask[renderer->GetLayer()])
-			{
-				renderer->Draw(renderer->GetVertexShader(), renderer->GetPixelShader());
-			}
-		}
+			if (cullingMask[renderer->GetLayer()]) renderer->Draw();
 	}
-}
-
-std::vector<GameObject*> RenderQueue::GetRenderers()
-{
-	return instance->renderers;
-}
-
-bool RenderQueue::ComparePriority(GameObject* a, GameObject* b)
-{
-	return a->GetPriority() < b->GetPriority();
 }
 
 RenderQueue::RenderQueue()

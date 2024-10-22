@@ -7,7 +7,6 @@ class GameObjectManager
 public:
 	static void Initialize();
 	static void Update();
-	static void Draw(VertexShader* vertexShader, PixelShader* pixelShader);
 	static void Release();
 
 	static void AddGameObject(GameObject* gameObject);

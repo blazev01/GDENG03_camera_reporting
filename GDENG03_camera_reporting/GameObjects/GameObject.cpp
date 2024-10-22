@@ -11,6 +11,8 @@ GameObject::GameObject(std::string name)
     this->layer = 0;
     this->priority = 0;
     this->enabled = true;
+    this->vertexShader = NULL;
+    this->pixelShader = NULL;
 }
 
 GameObject::~GameObject()
@@ -68,6 +70,11 @@ Vector3 GameObject::GetLocalRotation() const
     return this->localRotation;
 }
 
+void GameObject::SetTransform(const Matrix4x4& transform)
+{
+    this->transform.SetMatrix(transform);
+}
+
 Vector3 GameObject::GetRight()
 {
     return this->transform.GetRight();
@@ -98,7 +105,7 @@ std::vector<GameObject*> GameObject::GetChildren()
     return this->children;
 }
 
-bool GameObject::IsEnabled()
+bool GameObject::IsEnabled() const
 {
     return this->enabled;
 }
@@ -130,22 +137,22 @@ void GameObject::SetPriority(int priority)
 
 PixelShader* GameObject::GetPixelShader()
 {
-    return this->pixShader;
+    return this->pixelShader;
 }
 
 VertexShader* GameObject::GetVertexShader()
 {
-    return this->vertShader;
+    return this->vertexShader;
 }
 
-void GameObject::SetPixelShader(PixelShader* pixShader)
+void GameObject::SetPixelShader(PixelShader* pixelShader)
 {
-    this->pixShader = pixShader;
+    this->pixelShader = pixelShader;
 }
 
-void GameObject::SetVertexShader(VertexShader* verShader)
+void GameObject::SetVertexShader(VertexShader* vertexShader)
 {
-    this->vertShader = verShader;
+    this->vertexShader = vertexShader;
 }
 
 

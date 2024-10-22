@@ -11,7 +11,7 @@ public:
 	~Circle();
 
 	void Update(float deltaTime) override;
-	void Draw(VertexShader* vertexShader, PixelShader* pixelShader) override;
+	void Draw() override;
 	void Release() override;
 	void SetVelocity(Vector3 velocity);
 

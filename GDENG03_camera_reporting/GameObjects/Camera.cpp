@@ -1,10 +1,10 @@
 #include "Camera.h"
 #include "../InputSystem/InputSystem.h"
+#include "RenderQueue.h"
 
 Camera::Camera(std::string name) : GameObject(name)
 {
-	this->camPos = Vector3(0.0f, 0.0f, -2.0f);
-	this->localPosition = this->camPos;
+	this->localPosition = Vector3(0.0f, 0.0f, -2.0f);
 	
 	this->transform.SetPosition(this->localPosition);
 	this->transform.Inverse();
@@ -38,8 +38,8 @@ void Camera::Update(float deltaTime)
 
 		if (mousePos != this->oldMousePos)
 		{
-			this->rotX += (mousePos.y - (this->height / 2.0f)) * this->deltaTime * 0.1f;
-			this->rotY += (mousePos.x - (this->width / 2.0f)) * this->deltaTime * 0.1f;
+			this->localRotation.x += (mousePos.y - (this->height / 2.0f)) * this->deltaTime * 0.1f;
+			this->localRotation.y += (mousePos.x - (this->width / 2.0f)) * this->deltaTime * 0.1f;
 			this->oldMousePos = mousePos;
 		}
 	}
@@ -47,61 +47,60 @@ void Camera::Update(float deltaTime)
 	if (InputSystem::IsKey('W'))
 	{
 		std::cout << "W" << "\n";
-		this->camPos -= this->speed * this->deltaTime * this->GetForward();
+		this->localPosition -= this->speed * this->deltaTime * this->GetForward();
 	}
 	
 	if (InputSystem::IsKey('S'))
 	{
 		std::cout << "S" << "\n";
-		this->camPos += this->speed * this->deltaTime * this->GetForward();
+		this->localPosition += this->speed * this->deltaTime * this->GetForward();
 	}
 	
 	if (InputSystem::IsKey('A'))
 	{
 		std::cout << "A" << "\n";
-		this->camPos -= this->speed * this->deltaTime * this->GetRight();
+		this->localPosition -= this->speed * this->deltaTime * this->GetRight();
 	}
 	
 	if (InputSystem::IsKey('D'))
 	{
 		std::cout << "D" << "\n";
-		this->camPos += this->speed * this->deltaTime * this->GetRight();
+		this->localPosition += this->speed * this->deltaTime * this->GetRight();
 	}
 	
 	if (InputSystem::IsKey('Q'))
 	{
 		std::cout << "Q" << "\n";
-		this->camPos.y -= this->speed * this->deltaTime;
+		this->localPosition.y -= this->speed * this->deltaTime;
 	}
 	
 	if (InputSystem::IsKey('E'))
 	{
 		std::cout << "E" << "\n";
-		this->camPos.y += this->speed * this->deltaTime;
+		this->localPosition.y += this->speed * this->deltaTime;
 	}
 
 	Matrix4x4 temp;
 	this->transform.SetIdentity();
 
 	temp.SetIdentity();
-	temp.SetRotationX(this->rotX);
+	temp.SetRotationX(this->localRotation.x);
 	this->transform *= temp;
 
 	temp.SetIdentity();
-	temp.SetRotationY(this->rotY);
+	temp.SetRotationY(this->localRotation.y);
 	this->transform *= temp;
 
-	this->transform.SetPosition(this->camPos);
+	this->transform.SetPosition(this->localPosition);
 
 	this->transform.Inverse();
-	
-	RenderQueue::Render(this->cullingMask);
-	
-	
+
 }
 
-void Camera::Draw(VertexShader * vertexShader, PixelShader * pixelShader)
-{}
+void Camera::Draw()
+{
+	RenderQueue::Render(this->cullingMask);
+}
 
 void Camera::Release()
 {}

@@ -13,9 +13,21 @@ void SceneCameraHandler::Update()
 	instance->camera->Update(EngineTime::GetUnscaledDeltaTime());
 }
 
+void SceneCameraHandler::Render()
+{
+	instance->camera->Draw();
+}
+
 void SceneCameraHandler::Release()
 {
-	instance->camera->Release();
+	if (!instance->cameras.empty())
+	{
+		for (int i = instance->cameras.size() - 1; i >= 0; i--)
+		{
+			instance->cameras[i]->Release();
+			instance->cameras.pop_back();
+		}
+	}
 
 	delete instance;
 }
@@ -43,10 +55,21 @@ void SceneCameraHandler::CreateNewCamera(float width, float height)
 		instance->cameras.push_back(new Camera("Scene Camera " + std::to_string(instance->cameraCount)));
 		instance->cameras[instance->cameraCount - 1]->SetWindowSize(width, height);
 		instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
-		instance->camera = instance->cameras[instance->cameraCount - 1];
+
+		if (instance->camera == NULL)
+			instance->camera = instance->cameras[instance->cameraCount - 1];
+
 		std::cout << instance->cameras[instance->cameraCount-1]->GetName() << std::endl;
 		
 	}
+}
+
+Camera* SceneCameraHandler::GetCamera(int index)
+{
+	if (index < 0 || index >= instance->cameras.size())
+		return NULL;
+
+	return instance->cameras[index];
 }
 
 void SceneCameraHandler::SwitchNextCamera()

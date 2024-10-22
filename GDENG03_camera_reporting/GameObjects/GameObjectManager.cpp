@@ -17,15 +17,6 @@ void GameObjectManager::Update()
 	}
 }
 
-void GameObjectManager::Draw(VertexShader* vertexShader, PixelShader* pixelShader)
-{
-	if (!instance->gameObjects.empty())
-	{
-		for (GameObject* gameObject : instance->gameObjects)
-			gameObject->Draw(vertexShader, pixelShader);
-	}
-}
-
 void GameObjectManager::Release()
 {
 	if (!instance->gameObjects.empty())

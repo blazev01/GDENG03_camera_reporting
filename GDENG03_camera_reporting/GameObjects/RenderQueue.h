@@ -10,9 +10,6 @@ public:
 	static void AddRenderer(GameObject* renderer);
 	static void RemoveRenderer(GameObject* renderer);
 	static void Render(std::bitset<4> cullingMask);
-	static std::vector<GameObject*> GetRenderers();
-private:
-	bool ComparePriority(GameObject* a, GameObject* b);
 
 private:
 	RenderQueue();

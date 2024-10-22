@@ -60,7 +60,7 @@ void Quad::Update(float deltaTime)
 	this->transform *= temp;
 }
 
-void Quad::Draw(VertexShader* vertexShader, PixelShader* pixelShader)
+void Quad::Draw()
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;
@@ -69,11 +69,11 @@ void Quad::Draw(VertexShader* vertexShader, PixelShader* pixelShader)
 	cc.proj = SceneCameraHandler::GetProjectionMatrix();
 
 	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
-	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(vertexShader, this->constantBuffer);
-	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(pixelShader, this->constantBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->vertexShader, this->constantBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->pixelShader, this->constantBuffer);
 
-	GraphicsEngine::GetImmediateDeviceContext()->SetVertexShader(vertexShader);
-	GraphicsEngine::GetImmediateDeviceContext()->SetPixelShader(pixelShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexShader(this->vertexShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetPixelShader(this->pixelShader);
 
 	GraphicsEngine::GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
 
