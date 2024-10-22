@@ -26,6 +26,7 @@ void AppWindow::OnCreate()
 	GraphicsEngine::Initialize();
 	SceneCameraHandler::Initialize();
 	GameObjectManager::Initialize();
+	RenderQueue::Initialize();
 
 	this->swapChain = GraphicsEngine::CreateSwapChain();
 
@@ -59,12 +60,18 @@ void AppWindow::OnCreate()
 	Cube* cube = new Cube("coob", this->vsBytes, this->vsSize);
 	cube->SetAnimationSpeed(0.0f);
 	cube->SetScale(Vector3(0.5f));
+	cube->SetVertexShader(this->vertexShader);
+	cube->SetPixelShader(this->pixelShader);
 	GameObjectManager::AddGameObject(cube);
+	RenderQueue::AddRenderer(cube);
 
 	Quad* quad = new Quad("kwad", this->vsBytes, this->vsSize);
 	quad->SetRotation(1.5708f, 0.0f, 0.0f);
 	quad->SetScale(Vector3(4.0f));
+	quad->SetVertexShader(this->vertexShader);
+	quad->SetPixelShader(this->pixelShader);
 	GameObjectManager::AddGameObject(quad);
+	RenderQueue::AddRenderer(quad);
 
 	this->camPos = Vector3(0.0f, 0.0f, -2.0f);
 }
