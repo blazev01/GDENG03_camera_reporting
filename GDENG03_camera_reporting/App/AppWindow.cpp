@@ -32,10 +32,11 @@ void AppWindow::OnCreate()
 	this->swapChain = GraphicsEngine::CreateSwapChain();
 
 	RECT rect = this->GetWindowRect();
-	this->swapChain->Init(this->hwnd, rect.right - rect.left, rect.bottom - rect.top);
 
-	float width = this->GetWindowRect().right - this->GetWindowRect().left;
-	float height = this->GetWindowRect().bottom - this->GetWindowRect().top;
+	float width = rect.right - rect.left;
+	float height = rect.bottom - rect.top;
+
+	this->swapChain->Init(this->hwnd, width, height);
 
 	SceneCameraHandler::CreateNewCamera(width, height);
 	SceneCameraHandler::CreateNewCamera(width, height);
@@ -77,6 +78,7 @@ void AppWindow::OnCreate()
 	cube->SetScale(Vector3(0.5f));
 	cube->SetVertexShader(this->vertexShader);
 	cube->SetPixelShader(this->pixelShader);
+	cube->SetPriority(1);
 	GameObjectManager::AddGameObject(cube);
 	RenderQueue::AddRenderer(cube);
 
