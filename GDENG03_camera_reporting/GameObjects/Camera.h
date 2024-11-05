@@ -2,11 +2,12 @@
 #include "bitset"
 #include "GameObject.h"
 #include "../InputSystem/InputListener.h"
+#include "../GraphicsEngine/SwapChain.h"
 
 class Camera : public GameObject
 {
 public:
-	Camera(std::string name);
+	Camera(std::string name, SwapChain* swapChain);
 	~Camera();
 
 	virtual void Update(float deltaTime) override;
@@ -23,6 +24,7 @@ public:
 	void SetCullingMask(std::bitset<4> cullingMask);
 
 private:
+	SwapChain* swapChain;
 	Matrix4x4 projection;
 
 	float width = 0.0f;

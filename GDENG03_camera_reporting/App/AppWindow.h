@@ -20,7 +20,6 @@ public:
 
 	virtual void OnCreate() override;
 	virtual void OnUpdate() override;
-	virtual void OnRender() override;
 	virtual void OnFocus() override;
 	virtual void OnKillFocus() override;
 	virtual void OnDestroy() override;
@@ -52,8 +51,6 @@ private:
 	Matrix4x4 cam;
 
 private:
-	SwapChain* swapChain;
-
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
 

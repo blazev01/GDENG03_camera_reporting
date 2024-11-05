@@ -1,16 +1,15 @@
 #include "Camera.h"
-#include "../InputSystem/InputSystem.h"
 #include "RenderQueue.h"
+#include "../InputSystem/InputSystem.h"
+#include "../GraphicsEngine/GraphicsEngine.h"
+#include "../GraphicsEngine/DeviceContext.h"
 
-Camera::Camera(std::string name) : GameObject(name)
+Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name)
 {
-	this->localPosition = Vector3(0.0f, 0.0f, -2.0f);
-	
-	this->transform.SetPosition(this->localPosition);
-	this->transform.Inverse();
-
 	for (int i = 0; i < this->cullingMask.size(); i++)
 		this->cullingMask[i] = true;
+
+	this->swapChain = swapChain;
 }
 
 Camera::~Camera()
@@ -18,68 +17,6 @@ Camera::~Camera()
 
 void Camera::Update(float deltaTime)
 {
-	this->deltaTime = deltaTime;
-
-	if (InputSystem::IsKeyDown(VK_LBUTTON))
-	{
-		std::cout << "LMB HELD" << "\n";
-		InputSystem::ShowCursor(false);
-	}
-	else if (InputSystem::IsKeyUp(VK_LBUTTON))
-	{
-		std::cout << "LMB RELEASED" << "\n";
-		InputSystem::ShowCursor(true);
-	}
-		
-	if (InputSystem::IsKey(VK_LBUTTON))
-	{
-		Vector2 mousePos = InputSystem::GetCursorPosition();
-		InputSystem::SetCursorPosition(this->width / 2.0f, this->height / 2.0f);
-
-		if (mousePos != this->oldMousePos)
-		{
-			this->localRotation.x += (mousePos.y - (this->height / 2.0f)) * this->deltaTime * 0.1f;
-			this->localRotation.y += (mousePos.x - (this->width / 2.0f)) * this->deltaTime * 0.1f;
-			this->oldMousePos = mousePos;
-		}
-	}
-
-	if (InputSystem::IsKey('W'))
-	{
-		std::cout << "W" << "\n";
-		this->localPosition -= this->speed * this->deltaTime * this->GetForward();
-	}
-	
-	if (InputSystem::IsKey('S'))
-	{
-		std::cout << "S" << "\n";
-		this->localPosition += this->speed * this->deltaTime * this->GetForward();
-	}
-	
-	if (InputSystem::IsKey('A'))
-	{
-		std::cout << "A" << "\n";
-		this->localPosition -= this->speed * this->deltaTime * this->GetRight();
-	}
-	
-	if (InputSystem::IsKey('D'))
-	{
-		std::cout << "D" << "\n";
-		this->localPosition += this->speed * this->deltaTime * this->GetRight();
-	}
-	
-	if (InputSystem::IsKey('Q'))
-	{
-		std::cout << "Q" << "\n";
-		this->localPosition.y -= this->speed * this->deltaTime;
-	}
-	
-	if (InputSystem::IsKey('E'))
-	{
-		std::cout << "E" << "\n";
-		this->localPosition.y += this->speed * this->deltaTime;
-	}
-
 	Matrix4x4 temp;
 	this->transform.SetIdentity();
 
@@ -94,16 +31,25 @@ void Camera::Update(float deltaTime)
 	this->transform.SetPosition(this->localPosition);
 
 	this->transform.Inverse();
-
 }
 
 void Camera::Draw()
 {
+	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
+
+	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
+
 	RenderQueue::Render(this->cullingMask);
+
+	this->swapChain->Present(true);
 }
 
 void Camera::Release()
-{}
+{
+	this->swapChain->Release();
+
+	delete this;
+}
 
 Matrix4x4 Camera::GetViewMatrix()
 {

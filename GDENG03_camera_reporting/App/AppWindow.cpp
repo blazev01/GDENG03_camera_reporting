@@ -9,7 +9,6 @@
 
 AppWindow::AppWindow()
 {
-	this->swapChain = NULL;
 	this->vertexShader = NULL;
 	this->pixelShader = NULL;
 	this->cube = NULL;
@@ -25,22 +24,27 @@ void AppWindow::OnCreate()
 	InputSystem::Initialize();
 	EngineTime::Initialize();
 	GraphicsEngine::Initialize();
-	SceneCameraHandler::Initialize();
-	GameObjectManager::Initialize();
-	RenderQueue::Initialize();
-
-	this->swapChain = GraphicsEngine::CreateSwapChain();
 
 	RECT rect = this->GetWindowRect();
 
 	float width = rect.right - rect.left;
 	float height = rect.bottom - rect.top;
 
-	this->swapChain->Init(this->hwnd, width, height);
+	SceneCameraHandler::Initialize(width, height);
+	GameObjectManager::Initialize();
+	RenderQueue::Initialize();
 
-	SceneCameraHandler::CreateNewCamera(width, height);
-	SceneCameraHandler::CreateNewCamera(width, height);
-	SceneCameraHandler::CreateNewCamera(width, height);
+	SwapChain* swapChain1 = GraphicsEngine::CreateSwapChain();
+	swapChain1->Init(this->hwnd, width, height, false);
+	SceneCameraHandler::CreateNewCamera(swapChain1);
+	
+	SwapChain* swapChain2 = GraphicsEngine::CreateSwapChain();
+	swapChain2->Init(this->hwnd, width, height);
+	SceneCameraHandler::CreateNewCamera(swapChain2);
+	
+	SwapChain* swapChain3 = GraphicsEngine::CreateSwapChain();
+	swapChain3->Init(this->hwnd, width, height);
+	SceneCameraHandler::CreateNewCamera(swapChain3);
 
 	std::bitset<4> cullingMask1 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
 	std::bitset<4> cullingMask2 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
@@ -48,12 +52,6 @@ void AppWindow::OnCreate()
 	cullingMask2[1] = false;
 	SceneCameraHandler::GetCamera(1)->SetCullingMask(cullingMask1);
 	SceneCameraHandler::GetCamera(2)->SetCullingMask(cullingMask2);
-
-	for (int i = 0; i < 3; i++)
-	{
-		SceneCameraHandler::GetCamera(i)->SetPosition(Vector3(0.0f, 2.0f, -2.0f));
-		SceneCameraHandler::GetCamera(i)->SetRotation(Vector3(1.0f, 0.0f, 0.0f));
-	}
 
 	//SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
@@ -73,23 +71,34 @@ void AppWindow::OnCreate()
 
 	GraphicsEngine::ReleaseCompiledShader();
 
-	Cube* cube = new Cube("coob", this->vsBytes, this->vsSize);
-	cube->SetAnimationSpeed(0.0f);
-	cube->SetScale(Vector3(0.5f));
-	cube->SetVertexShader(this->vertexShader);
-	cube->SetPixelShader(this->pixelShader);
-	cube->SetPriority(1);
-	GameObjectManager::AddGameObject(cube);
-	RenderQueue::AddRenderer(cube);
+	for (int i = 0; i < 3; i++)
+	{
+		Cube* cube = new Cube("coob", this->vsBytes, this->vsSize);
+		cube->SetAnimationSpeed(0.0f);
+		cube->SetScale(Vector3(0.5f));
+		cube->SetPosition(Vector3(i - 1, 0.0f, i - 1));
+		cube->SetVertexShader(this->vertexShader);
+		cube->SetPixelShader(this->pixelShader);
+		cube->SetPriority(1);
+		if (i != 1) cube->SetLayer(1);
 
-	Quad* quad = new Quad("kwad", this->vsBytes, this->vsSize);
-	quad->SetRotation(1.5708f, 0.0f, 0.0f);
-	quad->SetScale(Vector3(4.0f));
-	quad->SetVertexShader(this->vertexShader);
-	quad->SetPixelShader(this->pixelShader);
-	quad->SetLayer(1);
-	GameObjectManager::AddGameObject(quad);
-	RenderQueue::AddRenderer(quad);
+		GameObjectManager::AddGameObject(cube);
+		RenderQueue::AddRenderer(cube);
+	}
+	
+	for (int i = 0; i < 2; i++)
+	{
+		Quad* quad = new Quad("kwad", this->vsBytes, this->vsSize);
+		if (i == 0) quad->SetRotation(1.5708f, 0.0f, 0.0f);
+		else quad->SetRotation(-1.5708f, 0.0f, 0.0f);
+		quad->SetScale(Vector3(4.0f));
+		quad->SetVertexShader(this->vertexShader);
+		quad->SetPixelShader(this->pixelShader);
+		quad->SetLayer(1);
+
+		GameObjectManager::AddGameObject(quad);
+		RenderQueue::AddRenderer(quad);
+	}
 }
 
 void AppWindow::OnUpdate()
@@ -97,19 +106,8 @@ void AppWindow::OnUpdate()
 	InputSystem::Update();
 	SceneCameraHandler::Update();
 	GameObjectManager::Update();
-}
-
-void AppWindow::OnRender()
-{
-	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
-
-	RECT rect = this->GetWindowRect();
-	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(rect.right - rect.left, rect.bottom - rect.top);
 
 	SceneCameraHandler::Render();
-	//GameObjectManager::Draw(this->vertexShader, this->pixelShader);
-
-	this->swapChain->Present(true);
 }
 
 void AppWindow::OnFocus()
@@ -127,7 +125,6 @@ void AppWindow::OnKillFocus()
 void AppWindow::OnDestroy()
 {
 	Window::OnDestroy();
-	this->swapChain->Release();
 	this->vertexShader->Release();
 	this->pixelShader->Release();
 
