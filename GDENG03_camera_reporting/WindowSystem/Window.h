@@ -17,7 +17,6 @@ public:
 
 	virtual void OnCreate() = 0;
 	virtual void OnUpdate() = 0;
-	virtual void OnRender() = 0;
 	virtual void OnFocus() = 0;
 	virtual void OnKillFocus() = 0;
 	virtual void OnDestroy();

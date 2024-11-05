@@ -22,28 +22,30 @@ void GameObjectManager::Release()
 	if (!instance->gameObjects.empty())
 	{
 		for (int i = instance->gameObjects.size() - 1; i >= 0; i--)
-		{
 			instance->gameObjects[i]->Release();
-			instance->gameObjects.pop_back();
-		}
+
+		instance->gameObjectMap.clear();
+		instance->gameObjects.clear();
 	}
 }
 
 void GameObjectManager::AddGameObject(GameObject* gameObject)
 {
 	instance->gameObjects.push_back(gameObject);
+	instance->gameObjectMap[gameObject->GetName()] = gameObject;
 }
 
 void GameObjectManager::DeleteGameObject(GameObject* gameObject)
 {
 	if (instance->gameObjects.empty()) return;
 
-	std::vector<GameObject*>::iterator it = instance->gameObjects.begin();
+	List::iterator it = instance->gameObjects.begin();
 
 	while (it != instance->gameObjects.end() && *it != gameObject) it++;
 
 	if (*it == gameObject)
 	{
+		instance->gameObjectMap[gameObject->GetName()] = NULL;
 		(*it)->Release();
 		instance->gameObjects.erase(it);
 	}
@@ -53,7 +55,7 @@ void GameObjectManager::DeleteGameObject(std::string name)
 {
 	if (instance->gameObjects.empty()) return;
 
-	std::vector<GameObject*>::iterator it = instance->gameObjects.begin();
+	List::iterator it = instance->gameObjects.begin();
 
 	while (it != instance->gameObjects.end() && (*it)->GetName() != name) it++;
 
@@ -61,20 +63,28 @@ void GameObjectManager::DeleteGameObject(std::string name)
 	{
 		(*it)->Release();
 		instance->gameObjects.erase(it);
+		instance->gameObjectMap[name] = NULL;
 	}
 }
 
-GameObject* GameObjectManager::Find(std::string name)
+void GameObjectManager::SetSelectedObject(std::string name)
 {
-	if (instance->gameObjects.empty()) return NULL;
+	instance->selectedObject = instance->gameObjectMap[name];
+}
 
-	std::vector<GameObject*>::iterator it = instance->gameObjects.begin();
+void GameObjectManager::SetSelectedObject(GameObject* gameObject)
+{
+	instance->selectedObject = gameObject;
+}
 
-	while (it != instance->gameObjects.end() && (*it)->GetName() != name) it++;
+GameObject* GameObjectManager::GetSelectedObject()
+{
+	return instance->selectedObject;
+}
 
-	if ((*it)->GetName() == name) return *it;
-
-	return NULL;
+GameObject* GameObjectManager::FindGameObject(std::string name)
+{
+	return instance->gameObjectMap[name];
 }
 
 GameObjectManager::GameObjectManager()

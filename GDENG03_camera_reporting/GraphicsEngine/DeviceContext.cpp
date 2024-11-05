@@ -98,6 +98,11 @@ void DeviceContext::SetDepthStencilState(DepthStencilState* dsState)
     this->deviceContext->OMSetDepthStencilState(dsState->dsState, 0);
 }
 
+ID3D11DeviceContext* DeviceContext::GetDeviceContext()
+{
+    return this->deviceContext;
+}
+
 bool DeviceContext::Release()
 {
     this->deviceContext->Release();

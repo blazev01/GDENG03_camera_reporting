@@ -4,19 +4,22 @@
 class SceneCameraHandler
 {
 public:
-	static void Initialize();
+	static void Initialize(float width, float height);
 	static void Update();
-	static void Render();
+	static void Draw();
+	static void Present();
 	static void Release();
 
 	static Camera* GetSceneCamera();
 	static Matrix4x4 GetViewMatrix();
 	static Matrix4x4 GetProjectionMatrix();
+
 public:
-	static void CreateNewCamera(float width, float height);
+	static void CreateNewCamera(SwapChain* swapChain);
 	static Camera* GetCamera(int index);
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
+
 private:
 	SceneCameraHandler();
 	~SceneCameraHandler();
@@ -27,9 +30,19 @@ private:
 
 	std::vector<Camera*> cameras;
 	Camera* camera = NULL;
+
 	int cameraLimit = 3;
 	int cameraCount = 0;
 	int cameraIterator = 0;
 
+	int width = 0;
+	int height = 0;
+
+	float speed = 2.0f;
+
+	Vector2 oldMousePos;
+
+	Vector3 position;
+	Vector3 rotation;
 };
 

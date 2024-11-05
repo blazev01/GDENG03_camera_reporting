@@ -32,13 +32,11 @@ public:
 
 	void SetDepthStencilState(DepthStencilState* dsState);
 
+	ID3D11DeviceContext* GetDeviceContext();
 	bool Release();
 	~DeviceContext();
 
 private:
 	ID3D11DeviceContext* deviceContext;
-
-private:
-	friend class ConstantBuffer;
 };
 

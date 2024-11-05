@@ -8,7 +8,7 @@ SwapChain::SwapChain()
 	this->dsv = NULL;
 }
 
-bool SwapChain::Init(HWND hwnd, UINT width, UINT height)
+bool SwapChain::Init(HWND hwnd, UINT width, UINT height, bool depthTest)
 {
 	ID3D11Device* device = GraphicsEngine::GetDevice();
 	DXGI_SWAP_CHAIN_DESC desc;
@@ -36,24 +36,27 @@ bool SwapChain::Init(HWND hwnd, UINT width, UINT height)
 	buffer->Release();
 	if (FAILED(hr)) return false;
 
-	D3D11_TEXTURE2D_DESC texDesc = {};
-	texDesc.Width = width;
-	texDesc.Height = height;
-	texDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	texDesc.Usage = D3D11_USAGE_DEFAULT;
-	texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	texDesc.MipLevels = 1;
-	texDesc.SampleDesc.Count = 1;
-	texDesc.SampleDesc.Quality = 0;
-	texDesc.MiscFlags = 0;
-	texDesc.ArraySize = 1;
-	texDesc.CPUAccessFlags = 0;
+	if (depthTest)
+	{
+		D3D11_TEXTURE2D_DESC texDesc = {};
+		texDesc.Width = width;
+		texDesc.Height = height;
+		texDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		texDesc.Usage = D3D11_USAGE_DEFAULT;
+		texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		texDesc.MipLevels = 1;
+		texDesc.SampleDesc.Count = 1;
+		texDesc.SampleDesc.Quality = 0;
+		texDesc.MiscFlags = 0;
+		texDesc.ArraySize = 1;
+		texDesc.CPUAccessFlags = 0;
 
-	hr = device->CreateTexture2D(&texDesc, NULL, &buffer);
-	if (FAILED(hr)) return false;
+		hr = device->CreateTexture2D(&texDesc, NULL, &buffer);
+		if (FAILED(hr)) return false;
 
-	hr = device->CreateDepthStencilView(buffer, NULL, &this->dsv);
-	if (FAILED(hr)) return false;
+		hr = device->CreateDepthStencilView(buffer, NULL, &this->dsv);
+		if (FAILED(hr)) return false;
+	}
 
 	return true;
 }
