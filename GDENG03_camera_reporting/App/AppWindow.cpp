@@ -75,7 +75,7 @@ void AppWindow::OnCreate()
 
 	for (int i = 0; i < 3; i++)
 	{
-		Cube* cube = new Cube("coob", this->vsBytes, this->vsSize);
+		Cube* cube = new Cube("coob" + std::to_string(i), this->vsBytes, this->vsSize);
 		cube->SetAnimationSpeed(0.0f);
 		cube->SetScale(Vector3(0.5f));
 		cube->SetPosition(Vector3(i - 1, 0.0f, i - 1));
@@ -90,7 +90,7 @@ void AppWindow::OnCreate()
 	
 	for (int i = 0; i < 2; i++)
 	{
-		Quad* quad = new Quad("kwad", this->vsBytes, this->vsSize);
+		Quad* quad = new Quad("kwad" + std::to_string(i), this->vsBytes, this->vsSize);
 		if (i == 0) quad->SetRotation(1.5708f, 0.0f, 0.0f);
 		else quad->SetRotation(-1.5708f, 0.0f, 0.0f);
 		quad->SetScale(Vector3(4.0f));
@@ -146,6 +146,13 @@ void AppWindow::OnKeyDown(int key)
 {
 	switch (key)
 	{
+	case 'V':
+	{
+		GameObject* cube = GameObjectManager::FindGameObject("coob2");
+		if (cube->GetPriority() == -1) cube->SetPriority(1);
+		else cube->SetPriority(-1);
+		break;
+	}
 	case VK_SPACE:
 	{
 		std::cout << "SPACE" << "\n";

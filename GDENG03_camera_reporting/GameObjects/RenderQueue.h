@@ -9,6 +9,8 @@ public:
 	static void Initialize();
 	static void AddRenderer(GameObject* renderer);
 	static void RemoveRenderer(GameObject* renderer);
+
+	static void SortByPriority();
 	static void Render(std::bitset<4> cullingMask);
 
 private:
