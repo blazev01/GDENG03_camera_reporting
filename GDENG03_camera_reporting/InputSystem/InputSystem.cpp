@@ -1,5 +1,6 @@
 #include "InputSystem.h"
 #include "Windows.h"
+#include "../IMGUI/imgui.h"
 
 InputSystem* InputSystem::instance = NULL;
 
@@ -10,7 +11,12 @@ void InputSystem::Initialize()
 
 void InputSystem::Update()
 {
-    if (!instance->enabled) return;
+    if (!instance->enabled ||
+        ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) ||
+        ImGui::IsAnyItemHovered() ||
+        ImGui::IsMouseDragging(0) ||
+        ImGui::IsMouseDragging(1) ||
+        ImGui::IsMouseDragging(2)) return;
 
     instance->oldCursorPos = instance->cursorPos;
     ::memcpy(instance->oldKeysState, instance->keysState, sizeof(unsigned char) * 256);

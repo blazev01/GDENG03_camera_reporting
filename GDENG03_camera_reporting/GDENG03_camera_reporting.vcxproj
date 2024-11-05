@@ -147,6 +147,13 @@
     <ClCompile Include="GraphicsEngine\SwapChain.cpp" />
     <ClCompile Include="GraphicsEngine\VertexBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\VertexShader.cpp" />
+    <ClCompile Include="IMGUI\imgui.cpp" />
+    <ClCompile Include="IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="IMGUI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="IMGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="InputSystem\InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Matrix4x4.cpp" />
@@ -154,6 +161,12 @@
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Math\Vector4.cpp" />
     <ClCompile Include="SceneCamera\SceneCameraHandler.cpp" />
+    <ClCompile Include="UI\HierarchyScreen.cpp" />
+    <ClCompile Include="UI\InspectorScreen.cpp" />
+    <ClCompile Include="UI\MenuScreen.cpp" />
+    <ClCompile Include="UI\ProfilerScreen.cpp" />
+    <ClCompile Include="UI\UIManager.cpp" />
+    <ClCompile Include="UI\UIScreen.cpp" />
     <ClCompile Include="WindowSystem\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +189,14 @@
     <ClInclude Include="GraphicsEngine\SwapChain.h" />
     <ClInclude Include="GraphicsEngine\VertexBuffer.h" />
     <ClInclude Include="GraphicsEngine\VertexShader.h" />
+    <ClInclude Include="IMGUI\imconfig.h" />
+    <ClInclude Include="IMGUI\imgui.h" />
+    <ClInclude Include="IMGUI\imgui_impl_dx11.h" />
+    <ClInclude Include="IMGUI\imgui_impl_win32.h" />
+    <ClInclude Include="IMGUI\imgui_internal.h" />
+    <ClInclude Include="IMGUI\imstb_rectpack.h" />
+    <ClInclude Include="IMGUI\imstb_textedit.h" />
+    <ClInclude Include="IMGUI\imstb_truetype.h" />
     <ClInclude Include="InputSystem\InputListener.h" />
     <ClInclude Include="InputSystem\InputSystem.h" />
     <ClInclude Include="Math\Colors.h" />
@@ -184,6 +205,13 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="SceneCamera\SceneCameraHandler.h" />
+    <ClInclude Include="UI\HierarchyScreen.h" />
+    <ClInclude Include="UI\InspectorScreen.h" />
+    <ClInclude Include="UI\MenuScreen.h" />
+    <ClInclude Include="UI\ProfilerScreen.h" />
+    <ClInclude Include="UI\UIManager.h" />
+    <ClInclude Include="UI\UINames.h" />
+    <ClInclude Include="UI\UIScreen.h" />
     <ClInclude Include="WindowSystem\Window.h" />
   </ItemGroup>
   <ItemGroup>

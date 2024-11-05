@@ -40,8 +40,6 @@ void Camera::Draw()
 	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
 
 	RenderQueue::Render(this->cullingMask);
-
-	this->swapChain->Present(true);
 }
 
 void Camera::Release()
@@ -75,6 +73,11 @@ void Camera::SetWindowSize(float width, float height)
 {
 	this->width = width;
 	this->height = height;
+}
+
+void Camera::Present()
+{
+	this->swapChain->Present(true);
 }
 
 std::bitset<4> Camera::GetCullingMask() const

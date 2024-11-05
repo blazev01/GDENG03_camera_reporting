@@ -88,9 +88,14 @@ void SceneCameraHandler::Update()
 	}
 }
 
-void SceneCameraHandler::Render()
+void SceneCameraHandler::Draw()
 {
 	instance->camera->Draw();
+}
+
+void SceneCameraHandler::Present()
+{
+	instance->camera->Present();
 }
 
 void SceneCameraHandler::Release()

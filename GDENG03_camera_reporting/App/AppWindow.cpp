@@ -6,6 +6,7 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "../GameObjects/GameObjectManager.h"
 #include "../GameObjects/RenderQueue.h"
+#include "../UI/UIManager.h"
 
 AppWindow::AppWindow()
 {
@@ -33,6 +34,7 @@ void AppWindow::OnCreate()
 	SceneCameraHandler::Initialize(width, height);
 	GameObjectManager::Initialize();
 	RenderQueue::Initialize();
+	UIManager::Initialize(this->hwnd);
 
 	SwapChain* swapChain1 = GraphicsEngine::CreateSwapChain();
 	swapChain1->Init(this->hwnd, width, height, false);
@@ -107,7 +109,9 @@ void AppWindow::OnUpdate()
 	SceneCameraHandler::Update();
 	GameObjectManager::Update();
 
-	SceneCameraHandler::Render();
+	SceneCameraHandler::Draw();
+	UIManager::DrawAllUI();
+	SceneCameraHandler::Present();
 }
 
 void AppWindow::OnFocus()

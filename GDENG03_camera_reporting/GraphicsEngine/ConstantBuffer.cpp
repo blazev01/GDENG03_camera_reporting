@@ -35,7 +35,7 @@ bool ConstantBuffer::Load(void* buffer, UINT bufferSize)
 
 void ConstantBuffer::Update(DeviceContext* context, void* buffer)
 {
-    context->deviceContext->UpdateSubresource(this->buffer, NULL, NULL, buffer, NULL, NULL);
+    context->GetDeviceContext()->UpdateSubresource(this->buffer, NULL, NULL, buffer, NULL, NULL);
 }
 
 bool ConstantBuffer::Release()

@@ -6,7 +6,8 @@ class SceneCameraHandler
 public:
 	static void Initialize(float width, float height);
 	static void Update();
-	static void Render();
+	static void Draw();
+	static void Present();
 	static void Release();
 
 	static Camera* GetSceneCamera();
