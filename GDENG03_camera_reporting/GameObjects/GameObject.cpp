@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "RenderQueue.h"
 
 GameObject::GameObject(std::string name)
 {
@@ -133,6 +134,7 @@ int GameObject::GetPriority() const
 void GameObject::SetPriority(int priority)
 {
     this->priority = priority;
+    RenderQueue::SortByPriority();
 }
 
 PixelShader* GameObject::GetPixelShader()
