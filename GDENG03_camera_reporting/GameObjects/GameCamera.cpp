@@ -111,23 +111,28 @@ void GameCamera::Update(float deltaTime)
 	}
 	
 	Matrix4x4 temp;
+	Matrix4x4 temp2;
 	this->transform.SetIdentity();
-
+	this->gameCameraTransforms.SetIdentity();
 
 	temp.SetIdentity();
+	temp2.SetIdentity();
 	temp.SetRotationX(this->localRotation.x);
+	temp2.SetRotationX(this->localRotation.x);
 	this->transform *= temp;
-	this->gameCameraTransforms *= temp;
+	this->gameCameraTransforms *= temp2;
 
 
 	temp.SetIdentity();
+	temp2.SetIdentity();
 	temp.SetRotationY(this->localRotation.y);
+	temp2.SetRotationY(this->localRotation.y);
 	this->transform *= temp;
-	this->gameCameraTransforms *= temp;
+	this->gameCameraTransforms *= temp2;
 
 	
 	this->transform.SetPosition(this->localPosition);
-
+	this->gameCameraTransforms.SetPosition(this->localPosition);
 
 
 	this->transform.Inverse();
@@ -139,7 +144,7 @@ void GameCamera::Draw()
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;
-	cc.world = this->transform;
+	cc.world = this->gameCameraTransforms;
 	cc.view = SceneCameraHandler::GetViewMatrix();
 	cc.proj = SceneCameraHandler::GetProjectionMatrix();
 
