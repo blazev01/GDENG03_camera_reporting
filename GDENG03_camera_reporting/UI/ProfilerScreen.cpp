@@ -1,4 +1,5 @@
 #include "ProfilerScreen.h"
+#include "../SceneCamera/SceneCameraHandler.h"
 
 ProfilerScreen::ProfilerScreen() : UIScreen("PROFILER_SCREEN")
 {
@@ -12,5 +13,15 @@ ProfilerScreen::~ProfilerScreen()
 
 void ProfilerScreen::DrawUI()
 {
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse; 
 
+	ImGui::Begin("Game Camera Viewport", (bool*)0, flags);
+	ID3D11ShaderResourceView* texture = SceneCameraHandler::GetCamera(0)->RenderCameraToTexture(); 
+	if (texture) 
+		ImGui::Image((ImTextureID)texture, ImVec2(800, 600)); 
+
+	else 
+		ImGui::Text("Failed to render camera to texture"); 
+
+	ImGui::End();
 }

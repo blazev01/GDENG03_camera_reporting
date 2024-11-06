@@ -24,6 +24,8 @@ public:
 	std::bitset<4> GetCullingMask() const;
 	void SetCullingMask(std::bitset<4> cullingMask);
 
+	ID3D11ShaderResourceView* RenderCameraToTexture(); 
+
 protected:
 	SwapChain* swapChain;
 	Matrix4x4 projection;
