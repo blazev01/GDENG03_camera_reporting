@@ -24,7 +24,7 @@ public:
 	std::bitset<4> GetCullingMask() const;
 	void SetCullingMask(std::bitset<4> cullingMask);
 
-private:
+protected:
 	SwapChain* swapChain;
 	Matrix4x4 projection;
 

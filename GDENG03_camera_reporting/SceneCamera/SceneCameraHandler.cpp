@@ -82,9 +82,18 @@ void SceneCameraHandler::Update()
 
 	for (Camera* camera : instance->cameras)
 	{
-		camera->SetRotation(instance->rotation);
-		camera->SetPosition(instance->position);
-		camera->Update(deltaTime);
+		if (instance->isSceneCamera)
+		{
+			camera->SetRotation(instance->rotation);
+			camera->SetPosition(instance->position);
+			camera->Update(deltaTime);
+		}
+
+	}
+	for (Camera* camera : instance->gameCameras)
+	{
+		if(!instance->isSceneCamera)
+			camera->Update(deltaTime);
 	}
 }
 
@@ -145,6 +154,17 @@ void SceneCameraHandler::CreateNewCamera(SwapChain* swapChain)
 	}
 }
 
+void SceneCameraHandler::CreateGameCamera(SwapChain* swapChain, Cube* cube)
+{
+	instance->gameCameras.push_back(new GameCamera("Game Camera", swapChain, cube, instance->width, instance->height));
+	instance->cameras[instance->cameraCount - 1]->SetWindowSize(instance->width, instance->height);
+	instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
+		0.01f, 1000.0f);
+
+	
+}
+
+
 Camera* SceneCameraHandler::GetCamera(int index)
 {
 	if (index < 0 || index >= instance->cameras.size())
@@ -155,27 +175,49 @@ Camera* SceneCameraHandler::GetCamera(int index)
 
 void SceneCameraHandler::SwitchNextCamera()
 {
-	instance->cameraIterator++;
-	if (instance->cameraIterator >= instance->cameras.size())
+	if (instance->camera->GetName().find("Game Camera") == std::string::npos)
 	{
-		instance->cameraIterator = 0;
-		std::cout << "Max cameras reached returning to first camera" << std::endl;
+		instance->cameraIterator++;
+		if (instance->cameraIterator >= instance->cameras.size())
+		{
+			instance->cameraIterator = 0;
+			std::cout << "Max cameras reached returning to first camera" << std::endl;
+		}
+		std::cout << "Currently using camera: " << instance->cameraIterator + 1 << std::endl;
+		instance->camera = instance->cameras[instance->cameraIterator];
 	}
-	std::cout << "Currently using camera: " << instance->cameraIterator+1 << std::endl;
-	instance->camera = instance->cameras[instance->cameraIterator];
+	
 }
 
 void SceneCameraHandler::SwitchPrevCamera()
 {
-	instance->cameraIterator--;
-	if (instance->cameraIterator < 0)
+	if (instance->camera->GetName().find("Game Camera") == std::string::npos)
 	{
-		instance->cameraIterator = instance->cameraLimit-1;
-		std::cout << "First Camera Reached Going to last camera" << std::endl;
+		instance->cameraIterator--;
+		if (instance->cameraIterator < 0)
+		{
+			instance->cameraIterator = instance->cameraLimit - 1;
+			std::cout << "First Camera Reached Going to last camera" << std::endl;
+		}
+		std::cout << "Currently using camera: " << instance->cameraIterator + 1 << std::endl;
+		instance->camera = instance->cameras[instance->cameraIterator];
 	}
-	std::cout << "Currently using camera: " << instance->cameraIterator+1 << std::endl;
-	instance->camera = instance->cameras[instance->cameraIterator];
 }
+
+void SceneCameraHandler::SwitchCameraType()
+{
+	if (instance->isSceneCamera)
+	{
+		instance->camera = instance->gameCameras[0];
+		instance->isSceneCamera = false;
+	}
+	else
+	{
+		instance->camera = instance->cameras[instance->cameraIterator];
+		instance->isSceneCamera = true;
+	}
+}
+
 
 SceneCameraHandler::SceneCameraHandler()
 {

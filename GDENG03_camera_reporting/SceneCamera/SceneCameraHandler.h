@@ -1,5 +1,7 @@
 #pragma once
 #include "../GameObjects/Camera.h"
+#include "../GameObjects/GameCamera.h"
+#include "../GameObjects/Cube.h"
 
 class SceneCameraHandler
 {
@@ -16,9 +18,11 @@ public:
 
 public:
 	static void CreateNewCamera(SwapChain* swapChain);
+	static void CreateGameCamera(SwapChain* swapchain, Cube* cube);
 	static Camera* GetCamera(int index);
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
+	static void SwitchCameraType();
 
 private:
 	SceneCameraHandler();
@@ -29,6 +33,7 @@ private:
 	static SceneCameraHandler* instance;
 
 	std::vector<Camera*> cameras;
+	std::vector<GameCamera*> gameCameras;
 	Camera* camera = NULL;
 
 	int cameraLimit = 3;
@@ -39,6 +44,7 @@ private:
 	int height = 0;
 
 	float speed = 2.0f;
+	bool isSceneCamera = true;
 
 	Vector2 oldMousePos;
 
