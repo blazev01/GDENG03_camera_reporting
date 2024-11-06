@@ -25,6 +25,9 @@ public:
 	static void SwitchPrevCamera();
 	static void SwitchCameraType();
 
+	static void SetSceneCameraPos(Vector3 pos);
+	static void SetSceneCameraRot(Vector3 rot);
+
 private:
 	SceneCameraHandler();
 	~SceneCameraHandler();

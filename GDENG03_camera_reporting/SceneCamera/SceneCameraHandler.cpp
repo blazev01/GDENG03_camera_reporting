@@ -242,6 +242,15 @@ void SceneCameraHandler::SwitchCameraType()
 	std::cout << "Currently using camera: " << instance->camera->GetName()<< std::endl;
 }
 
+void SceneCameraHandler::SetSceneCameraPos(Vector3 pos)
+{
+	instance->position = pos;
+}
+
+void SceneCameraHandler::SetSceneCameraRot(Vector3 rot)
+{
+	instance->rotation = rot;
+}
 
 SceneCameraHandler::SceneCameraHandler()
 {

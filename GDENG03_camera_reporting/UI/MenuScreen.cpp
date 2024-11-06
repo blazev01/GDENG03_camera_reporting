@@ -20,7 +20,7 @@ void MenuScreen::DrawUI()
 		ImGui::SameLine();
 		ImGui::SmallButton("Game Object");
 		ImGui::SameLine();
-		ImGui::SmallButton("About");
+		ImGui::SmallButton("Align with View");
 		ImGui::SameLine();
 		ImGui::PopStyleColor();
 

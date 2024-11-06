@@ -29,7 +29,7 @@ void UIManager::DrawAllUI()
 		instance->uiList[i]->DrawUI();
 	}
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

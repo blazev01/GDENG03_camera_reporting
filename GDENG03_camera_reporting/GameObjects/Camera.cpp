@@ -102,18 +102,16 @@ float Camera::getHeight()
 
 ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
 {
-    D3D11_TEXTURE2D_DESC texdesc;
-    D3D11_RENDER_TARGET_VIEW_DESC rtdesc;
-    D3D11_SHADER_RESOURCE_VIEW_DESC srdesc;
+    D3D11_TEXTURE2D_DESC texdesc = {};
+    D3D11_RENDER_TARGET_VIEW_DESC rtdesc = {};
+    D3D11_SHADER_RESOURCE_VIEW_DESC srdesc = {};
 
-    ID3D11Texture2D* targetTex;
-    ID3D11RenderTargetView* rtview;
-    ID3D11ShaderResourceView* srview; 
+    ID3D11Texture2D* targetTex = nullptr;
+    ID3D11RenderTargetView* rtview = nullptr;
+    ID3D11ShaderResourceView* srview = nullptr;
 
     ID3D11Device* device = GraphicsEngine::GetDevice();
     ID3D11DeviceContext* deviceContext = GraphicsEngine::GetImmediateDeviceContext()->GetDeviceContext();
-    
-    ZeroMemory(&texdesc, sizeof(texdesc));
 
     texdesc.Width = 350;
     texdesc.Height = 200;
@@ -128,17 +126,18 @@ ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
 
     HRESULT hr = device->CreateTexture2D(&texdesc, NULL, &targetTex);
     if (FAILED(hr)) {
-        std::cout << "Failed to create texture2D" << std::endl;
+        std::cerr << "Failed to create texture2D" << std::endl;
         return nullptr;
     }
 
     rtdesc.Format = texdesc.Format;
-    rtdesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D; 
+    rtdesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
     rtdesc.Texture2D.MipSlice = 0;
 
     hr = device->CreateRenderTargetView(targetTex, &rtdesc, &rtview);
     if (FAILED(hr)) {
-        std::cout << "Failed to create render target view" << std::endl;
+        std::cerr << "Failed to create render target view" << std::endl;
+        targetTex->Release();
         return nullptr;
     }
 
@@ -146,22 +145,22 @@ ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
     srdesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
     srdesc.Texture2D.MostDetailedMip = 0;
     srdesc.Texture2D.MipLevels = 1;
-    
+
     hr = device->CreateShaderResourceView(targetTex, &srdesc, &srview);
     if (FAILED(hr)) {
-        std::cout << "Failed to create shader resource view" << std::endl;
+        std::cerr << "Failed to create shader resource view" << std::endl;
+        rtview->Release();
+        targetTex->Release();
         return nullptr;
     }
 
     deviceContext->OMSetRenderTargets(1, &rtview, this->swapChain->getDSV());
-    
+
     float clearColor[4] = { 0.0f, 0.45f, 0.5f, 1.0f };
     deviceContext->ClearRenderTargetView(rtview, clearColor);
     deviceContext->ClearDepthStencilView(this->swapChain->getDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     this->Draw();
 
-    if (targetTex) targetTex->Release();
-    if (rtview) rtview->Release();
     return srview;
 }
 
