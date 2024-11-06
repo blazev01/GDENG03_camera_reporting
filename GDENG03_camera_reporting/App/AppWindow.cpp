@@ -40,24 +40,24 @@ void AppWindow::OnCreate()
 	swapChain1->Init(this->hwnd, width, height, false);
 	SceneCameraHandler::CreateNewCamera(swapChain1);
 	
-	SwapChain* swapChain2 = GraphicsEngine::CreateSwapChain();
-	swapChain2->Init(this->hwnd, width, height);
-	SceneCameraHandler::CreateNewCamera(swapChain2);
-	
-	SwapChain* swapChain3 = GraphicsEngine::CreateSwapChain();
-	swapChain3->Init(this->hwnd, width, height);
-	SceneCameraHandler::CreateNewCamera(swapChain3);
+	//SwapChain* swapChain2 = GraphicsEngine::CreateSwapChain();
+	//swapChain2->Init(this->hwnd, width, height);
+	//SceneCameraHandler::CreateNewCamera(swapChain2);
+	//
+	//SwapChain* swapChain3 = GraphicsEngine::CreateSwapChain();
+	//swapChain3->Init(this->hwnd, width, height);
+	//SceneCameraHandler::CreateNewCamera(swapChain3);
 
-	std::bitset<4> cullingMask1 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
-	std::bitset<4> cullingMask2 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
-	cullingMask1[0] = false;
-	cullingMask2[1] = false;
-	SceneCameraHandler::GetCamera(1)->SetCullingMask(cullingMask1);
-	SceneCameraHandler::GetCamera(2)->SetCullingMask(cullingMask2);
+	//std::bitset<4> cullingMask1 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
+	//std::bitset<4> cullingMask2 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
+	//cullingMask1[0] = false;
+	//cullingMask2[1] = false;
+	//SceneCameraHandler::GetCamera(1)->SetCullingMask(cullingMask1);
+	//SceneCameraHandler::GetCamera(2)->SetCullingMask(cullingMask2);
 
-	//SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
+	SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
-	//SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
+	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
 	
 	void* shaderBytes = nullptr;
 	size_t shaderSize = 0;
@@ -79,8 +79,8 @@ void AppWindow::OnCreate()
 	gameCube->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 	gameCube->SetVertexShader(this->vertexShader);
 	gameCube->SetPixelShader(this->pixelShader);
-	gameCube->SetPriority(0);
-	gameCube->SetLayer(0);
+	gameCube->SetPriority(1);
+	gameCube->SetLayer(1);
 
 
 	SceneCameraHandler::CreateGameCamera(swapChain1,gameCube);

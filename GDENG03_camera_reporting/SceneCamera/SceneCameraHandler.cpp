@@ -79,21 +79,23 @@ void SceneCameraHandler::Update()
 		std::cout << "E" << "\n";
 		instance->position.y += instance->speed * deltaTime;
 	}
-
-	for (Camera* camera : instance->cameras)
+	if (instance->isSceneCamera)
 	{
-		if (instance->isSceneCamera)
+		for (Camera* camera : instance->cameras)
 		{
+
 			camera->SetRotation(instance->rotation);
 			camera->SetPosition(instance->position);
 			camera->Update(deltaTime);
 		}
 
 	}
-	for (Camera* camera : instance->gameCameras)
+	if (!instance->isSceneCamera)
 	{
-		if(!instance->isSceneCamera)
+		for (Camera* camera : instance->gameCameras)
+		{
 			camera->Update(deltaTime);
+		}
 	}
 }
 
@@ -191,7 +193,7 @@ void SceneCameraHandler::SwitchNextCamera()
 
 void SceneCameraHandler::SwitchPrevCamera()
 {
-	if (instance->camera->GetName().find("Game Camera") == std::string::npos)
+	if (instance->camera->GetName().find("Game Camera") != std::string::npos)
 	{
 		instance->cameraIterator--;
 		if (instance->cameraIterator < 0)
@@ -206,16 +208,17 @@ void SceneCameraHandler::SwitchPrevCamera()
 
 void SceneCameraHandler::SwitchCameraType()
 {
-	if (instance->isSceneCamera)
+	if (instance->isSceneCamera && !instance->gameCameras.empty())
 	{
 		instance->camera = instance->gameCameras[0];
 		instance->isSceneCamera = false;
 	}
-	else
+	else if(!instance->isSceneCamera && !instance->gameCameras.empty())
 	{
 		instance->camera = instance->cameras[instance->cameraIterator];
 		instance->isSceneCamera = true;
 	}
+	std::cout << "Currently using camera: " << instance->camera->GetName()<< std::endl;
 }
 
 
