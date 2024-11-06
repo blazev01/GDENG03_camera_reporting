@@ -14,6 +14,7 @@ class DeviceContext
 public:
 	DeviceContext(ID3D11DeviceContext* deviceContext);
 	void ClearRenderTargetColor(SwapChain* swapChain, float r, float g, float b, float a);
+	void ClearRenderTargetColor(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, float r, float g, float b, float a);
 	void SetVertexBuffer(VertexBuffer* vertexBuffer);
 	void SetIndexBuffer(IndexBuffer* indexBuffer);
 	void DrawTriangleList(UINT vertexCount, UINT vertexStartIndex);

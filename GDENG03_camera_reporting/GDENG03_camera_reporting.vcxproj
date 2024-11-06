@@ -139,6 +139,7 @@
     <ClCompile Include="GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="GameObjects\Quad.cpp" />
     <ClCompile Include="GameObjects\RenderQueue.cpp" />
+    <ClCompile Include="GameObjects\ViewTexture.cpp" />
     <ClCompile Include="GraphicsEngine\ConstantBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\DepthStencilState.cpp" />
     <ClCompile Include="GraphicsEngine\DeviceContext.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="GameObjects\GameObjectManager.h" />
     <ClInclude Include="GameObjects\Quad.h" />
     <ClInclude Include="GameObjects\RenderQueue.h" />
+    <ClInclude Include="GameObjects\ViewTexture.h" />
     <ClInclude Include="GraphicsEngine\ConstantBuffer.h" />
     <ClInclude Include="GraphicsEngine\DepthStencilState.h" />
     <ClInclude Include="GraphicsEngine\DeviceContext.h" />

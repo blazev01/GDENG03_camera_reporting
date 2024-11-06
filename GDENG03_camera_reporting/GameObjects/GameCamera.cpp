@@ -136,8 +136,6 @@ void GameCamera::Update(float deltaTime)
 
 
 	this->transform.Inverse();
-
-	
 }
 
 void GameCamera::Draw()
@@ -173,4 +171,5 @@ void GameCamera::setActive(bool isActive)
 
 GameCamera::~GameCamera()
 {
+
 }

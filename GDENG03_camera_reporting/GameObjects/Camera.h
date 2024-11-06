@@ -1,6 +1,7 @@
 #pragma once
 #include "bitset"
 #include "GameObject.h"
+#include "ViewTexture.h"
 #include "../InputSystem/InputListener.h"
 #include "../GraphicsEngine/SwapChain.h"
 
@@ -15,6 +16,8 @@ public:
 	virtual void Release() override;
 
 	void Render();
+	void RenderViewTexture();
+	ViewTexture* GetViewTexture();
 
 	Matrix4x4 GetViewMatrix();
 	Matrix4x4 GetProjectionMatrix();
@@ -29,7 +32,6 @@ public:
 
 	float getWidth();
 	float getHeight();
-	ID3D11ShaderResourceView* RenderCameraToTexture(); 
 
 protected:
 	SwapChain* swapChain;
@@ -44,5 +46,6 @@ protected:
 	Vector2 oldMousePos;
 
 	std::bitset<4> cullingMask;
+	ViewTexture* viewTexture;
 };
 

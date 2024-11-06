@@ -10,10 +10,14 @@ Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name)
 		this->cullingMask[i] = true;
 
 	this->swapChain = swapChain;
+    this->viewTexture = new ViewTexture();
+    this->viewTexture->Initialize(350, 200);
 }
 
 Camera::~Camera()
-{}
+{
+
+}
 
 void Camera::Update(float deltaTime)
 {
@@ -41,17 +45,36 @@ void Camera::Draw()
 void Camera::Release()
 {
 	this->swapChain->Release();
+    this->viewTexture->Release();
 
 	delete this;
 }
 
 void Camera::Render()
 {
+    this->RenderViewTexture();
+
     GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
 
     GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
 
     RenderQueue::Render(this->cullingMask);
+}
+
+void Camera::RenderViewTexture()
+{
+    if (!this->viewTexture->GetRTV()) return;
+
+    GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->viewTexture->GetRTV(), this->swapChain->getDSV(), 0.0f, 0.45f, 0.5f, 1.0f);
+
+	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->viewTexture->GetWidth(), this->viewTexture->GetHeight());
+
+    RenderQueue::Render(this->cullingMask);
+}
+
+ViewTexture* Camera::GetViewTexture()
+{
+    return this->viewTexture;
 }
 
 Matrix4x4 Camera::GetViewMatrix()
@@ -104,69 +127,4 @@ float Camera::getHeight()
 {
     return this->height;
 }
-
-ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
-{
-    D3D11_TEXTURE2D_DESC texdesc = {};
-    D3D11_RENDER_TARGET_VIEW_DESC rtdesc = {};
-    D3D11_SHADER_RESOURCE_VIEW_DESC srdesc = {};
-
-    ID3D11Texture2D* targetTex = nullptr;
-    ID3D11RenderTargetView* rtview = nullptr;
-    ID3D11ShaderResourceView* srview = nullptr;
-
-    ID3D11Device* device = GraphicsEngine::GetDevice();
-    ID3D11DeviceContext* deviceContext = GraphicsEngine::GetImmediateDeviceContext()->GetDeviceContext();
-
-    texdesc.Width = 350;
-    texdesc.Height = 200;
-    texdesc.MipLevels = 1;
-    texdesc.ArraySize = 1;
-    texdesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    texdesc.SampleDesc.Count = 1;
-    texdesc.Usage = D3D11_USAGE_DEFAULT;
-    texdesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-    texdesc.CPUAccessFlags = 0;
-    texdesc.MiscFlags = 0;
-
-    HRESULT hr = device->CreateTexture2D(&texdesc, NULL, &targetTex);
-    if (FAILED(hr)) {
-        std::cerr << "Failed to create texture2D" << std::endl;
-        return nullptr;
-    }
-
-    rtdesc.Format = texdesc.Format;
-    rtdesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-    rtdesc.Texture2D.MipSlice = 0;
-
-    hr = device->CreateRenderTargetView(targetTex, &rtdesc, &rtview);
-    if (FAILED(hr)) {
-        std::cerr << "Failed to create render target view" << std::endl;
-        targetTex->Release();
-        return nullptr;
-    }
-
-    srdesc.Format = texdesc.Format;
-    srdesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    srdesc.Texture2D.MostDetailedMip = 0;
-    srdesc.Texture2D.MipLevels = 1;
-
-    hr = device->CreateShaderResourceView(targetTex, &srdesc, &srview);
-    if (FAILED(hr)) {
-        std::cerr << "Failed to create shader resource view" << std::endl;
-        rtview->Release();
-        targetTex->Release();
-        return nullptr;
-    }
-
-    deviceContext->OMSetRenderTargets(1, &rtview, this->swapChain->getDSV());
-
-    float clearColor[4] = { 0.0f, 0.45f, 0.5f, 1.0f };
-    deviceContext->ClearRenderTargetView(rtview, clearColor);
-    deviceContext->ClearDepthStencilView(this->swapChain->getDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    this->Render();
-
-    return srview;
-}
-
 

@@ -16,7 +16,8 @@ void ProfilerScreen::DrawUI()
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse; 
 
 	ImGui::Begin("Game Camera Viewport", (bool*)0, flags);
-	ID3D11ShaderResourceView* texture = SceneCameraHandler::GetCamera(0)->RenderCameraToTexture(); 
+
+	ID3D11ShaderResourceView* texture = SceneCameraHandler::GetCamera(0)->GetViewTexture()->GetSRV();
 	if (texture) 
 		ImGui::Image((ImTextureID)texture, ImVec2(350, 200)); 
 

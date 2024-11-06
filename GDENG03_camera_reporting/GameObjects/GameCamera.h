@@ -16,6 +16,7 @@ public:
 	virtual void Release() override;
 	void setActive(bool isActive);
 	~GameCamera();
+
 private:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
@@ -23,7 +24,5 @@ private:
 	bool isActive = false;
 	float ticks = 0.0f;
 	Matrix4x4 gameCameraTransforms;
-	
-	
 };
 
