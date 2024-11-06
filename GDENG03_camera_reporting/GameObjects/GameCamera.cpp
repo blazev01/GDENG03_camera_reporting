@@ -1,5 +1,5 @@
 #include "GameCamera.h"
-
+#include "../SceneCamera/SceneCameraHandler.h"
 GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize, float width, float height):Camera(name,swapChain)
 {
 	this->width = width;
@@ -117,11 +117,13 @@ void GameCamera::Update(float deltaTime)
 	temp.SetIdentity();
 	temp.SetRotationX(this->localRotation.x);
 	this->transform *= temp;
+	this->gameCameraTransforms *= temp;
 
 
 	temp.SetIdentity();
 	temp.SetRotationY(this->localRotation.y);
 	this->transform *= temp;
+	this->gameCameraTransforms *= temp;
 
 	
 	this->transform.SetPosition(this->localPosition);
@@ -135,11 +137,23 @@ void GameCamera::Update(float deltaTime)
 
 void GameCamera::Draw()
 {
-	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
+	Constant cc = Constant();
+	cc.time = this->ticks;
+	cc.world = this->transform;
+	cc.view = SceneCameraHandler::GetViewMatrix();
+	cc.proj = SceneCameraHandler::GetProjectionMatrix();
 
-	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
+	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->vertexShader, this->constantBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->pixelShader, this->constantBuffer);
 
-	RenderQueue::Render(this->cullingMask);
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexShader(this->vertexShader);
+	GraphicsEngine::GetImmediateDeviceContext()->SetPixelShader(this->pixelShader);
+
+	GraphicsEngine::GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
+	GraphicsEngine::GetImmediateDeviceContext()->SetIndexBuffer(this->indexBuffer);
+
+	GraphicsEngine::GetImmediateDeviceContext()->DrawIndexedTriangleList(this->indexBuffer->GetIndexListSize(), 0, 0);
 }
 
 

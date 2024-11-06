@@ -100,7 +100,7 @@ void SceneCameraHandler::Update()
 
 void SceneCameraHandler::Draw()
 {
-	instance->camera->Draw();
+	instance->camera->Render();
 }
 
 void SceneCameraHandler::Present()
@@ -179,7 +179,7 @@ void SceneCameraHandler::CreateGameCamera(SwapChain* swapChain, void* shaderByte
 		instance->gameCameras[instance->gameCameraCount - 1]->SetPriority(1);
 		instance->gameCameras[instance->gameCameraCount - 1]->SetLayer(1);
 		GameObjectManager::AddGameObject(instance->gameCameras[instance->gameCameraCount - 1]);
-		//RenderQueue::AddRenderer(instance->gameCameras[instance->gameCameraCount - 1]); // do not touch
+		RenderQueue::AddRenderer(instance->gameCameras[instance->gameCameraCount - 1]); 
 		std::cout << instance->gameCameras[instance->gameCameraCount - 1]->GetName() << std::endl;
 	}
 }

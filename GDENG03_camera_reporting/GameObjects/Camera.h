@@ -14,12 +14,15 @@ public:
 	virtual void Draw() override;
 	virtual void Release() override;
 
+	void Render();
+
 	Matrix4x4 GetViewMatrix();
 	Matrix4x4 GetProjectionMatrix();
 	void SetOrthoProjection(float width, float height, float nearPlane, float farPlane);
 	void SetPerspProjection(float fov, float aspect, float zNear, float zFar);
 	void SetWindowSize(float width, float height);
 	void Present();
+	
 
 	std::bitset<4> GetCullingMask() const;
 	void SetCullingMask(std::bitset<4> cullingMask);

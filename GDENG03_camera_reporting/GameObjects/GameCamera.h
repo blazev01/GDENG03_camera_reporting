@@ -6,6 +6,7 @@
 #include "../GraphicsEngine/Structs.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../GameObjects/RenderQueue.h"
+
 class GameCamera:public Camera
 {
 public:
@@ -20,6 +21,9 @@ private:
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
 	bool isActive = false;
+	float ticks = 0.0f;
+	Matrix4x4 gameCameraTransforms;
+	
 	
 };
 

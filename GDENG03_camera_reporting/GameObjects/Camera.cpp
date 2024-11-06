@@ -35,11 +35,7 @@ void Camera::Update(float deltaTime)
 
 void Camera::Draw()
 {
-	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
 
-	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
-
-	RenderQueue::Render(this->cullingMask);
 }
 
 void Camera::Release()
@@ -49,6 +45,15 @@ void Camera::Release()
 	delete this;
 }
 
+void Camera::Render()
+{
+    GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
+
+    GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
+
+    RenderQueue::Render(this->cullingMask);
+}
+
 Matrix4x4 Camera::GetViewMatrix()
 {
     return this->transform;
@@ -56,7 +61,7 @@ Matrix4x4 Camera::GetViewMatrix()
 
 Matrix4x4 Camera::GetProjectionMatrix()
 {
-    return this->projection;
+    return this->projection ;
 }
 
 void Camera::SetOrthoProjection(float width, float height, float nearPlane, float farPlane)

@@ -77,7 +77,7 @@ void AppWindow::OnCreate()
 	GraphicsEngine::ReleaseCompiledShader();
 
 
-	SceneCameraHandler::CreateGameCamera(this->swapChain, this->vsBytes, this->vsSize, this->vertexShader, this->pixelShader);
+	
 	for (int i = 0; i < 3; i++)
 	{
 		Cube* cube = new Cube("coob" + std::to_string(i), this->vsBytes, this->vsSize);
@@ -193,7 +193,7 @@ void AppWindow::OnKeyDown(int key)
 		break;
 	case VK_RETURN:
 		std::cout << "Enter" << std::endl;
-		
+		SceneCameraHandler::CreateGameCamera(this->swapChain, this->vsBytes, this->vsSize, this->vertexShader, this->pixelShader);
 		
 		break;
 	default:
