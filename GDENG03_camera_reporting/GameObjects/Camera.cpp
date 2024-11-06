@@ -164,7 +164,7 @@ ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
     float clearColor[4] = { 0.0f, 0.45f, 0.5f, 1.0f };
     deviceContext->ClearRenderTargetView(rtview, clearColor);
     deviceContext->ClearDepthStencilView(this->swapChain->getDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    this->Draw();
+    this->Render();
 
     return srview;
 }

@@ -14,7 +14,8 @@ InspectorScreen::~InspectorScreen()
 
 void InspectorScreen::DrawUI()
 {
-    Camera* selectedCam = SceneCameraHandler::GetCamera(0);
+    Camera* selectedCam = SceneCameraHandler::GetCurCamera();
+
     Vector3 currentPosition = selectedCam->GetLocalPosition();
     Vector3 currentRotation = selectedCam->GetLocalRotation();
 
@@ -24,14 +25,22 @@ void InspectorScreen::DrawUI()
     ImGui::Begin("Camera Controls");
 
     // Position controls
-    if (ImGui::InputFloat3("Position", position))
-        SceneCameraHandler::SetSceneCameraPos(Vector3(position[0], position[1], position[2]));
-        //selectedCam->SetPosition(position[0], position[1], position[2]);
+    if (ImGui::InputFloat3("Position", position)) {
+        if (selectedCam->GetName().find("Game Camera") == std::string::npos)
+            SceneCameraHandler::SetSceneCameraPos(Vector3(position[0], position[1], position[2]));
+
+        else
+           selectedCam->SetPosition(position[0], position[1], position[2]);
+    }   
 
     // Rotation controls
-    if (ImGui::InputFloat3("Rotation", rotation)) 
-        SceneCameraHandler::SetSceneCameraRot(Vector3(rotation[0], rotation[1], rotation[2]));
-        //selectedCam->SetRotation(rotation[0], rotation[1], rotation[2]);
+    if (ImGui::InputFloat3("Rotation", rotation)) {
+        if (selectedCam->GetName().find("Game Camera") == std::string::npos)
+            SceneCameraHandler::SetSceneCameraRot(Vector3(rotation[0], rotation[1], rotation[2]));
+    
+        else
+            selectedCam->SetRotation(rotation[0], rotation[1], rotation[2]);
+    }
 
     ImGui::End(); 
 }

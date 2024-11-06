@@ -20,6 +20,7 @@ public:
 public:
 	static void CreateNewCamera(SwapChain* swapChain);
 	static void CreateGameCamera(SwapChain* swapchain, void* shaderBytes, size_t shaderSize, VertexShader* vertexShader, PixelShader* pixelShader);
+	static Camera* GetCurCamera();
 	static Camera* GetCamera(int index);
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
@@ -27,6 +28,8 @@ public:
 
 	static void SetSceneCameraPos(Vector3 pos);
 	static void SetSceneCameraRot(Vector3 rot);
+
+	static void AlignGameCamerasToView();
 
 private:
 	SceneCameraHandler();

@@ -1,4 +1,5 @@
 #include "MenuScreen.h"
+#include "../SceneCamera/SceneCameraHandler.h"
 
 MenuScreen::MenuScreen() : UIScreen("MENU_SCREEN")
 {
@@ -20,7 +21,8 @@ void MenuScreen::DrawUI()
 		ImGui::SameLine();
 		ImGui::SmallButton("Game Object");
 		ImGui::SameLine();
-		ImGui::SmallButton("Align with View");
+		if (ImGui::SmallButton("Align with View"))
+			SceneCameraHandler::AlignGameCamerasToView();
 		ImGui::SameLine();
 		ImGui::PopStyleColor();
 

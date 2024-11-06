@@ -184,6 +184,11 @@ void SceneCameraHandler::CreateGameCamera(SwapChain* swapChain, void* shaderByte
 	}
 }
 
+Camera* SceneCameraHandler::GetCurCamera()
+{
+	return instance->camera;
+}
+
 
 Camera* SceneCameraHandler::GetCamera(int index)
 {
@@ -250,6 +255,23 @@ void SceneCameraHandler::SetSceneCameraPos(Vector3 pos)
 void SceneCameraHandler::SetSceneCameraRot(Vector3 rot)
 {
 	instance->rotation = rot;
+}
+
+void SceneCameraHandler::AlignGameCamerasToView()
+{
+	if (!instance->cameras.empty() && !instance->gameCameras.empty())
+	{
+		Camera* sceneCamera = instance->cameras[0]; // Assuming cameras[0] is the main scene camera
+		Vector3 scenePosition = sceneCamera->GetLocalPosition();
+		Vector3 sceneRotation = sceneCamera->GetLocalRotation();
+
+		for (GameCamera* gameCamera : instance->gameCameras)
+		{
+			gameCamera->SetPosition(scenePosition);
+			gameCamera->SetRotation(sceneRotation);
+			std::cout << "Aligned " << gameCamera->GetName() << " to Scene Camera view." << std::endl;
+		}
+	}
 }
 
 SceneCameraHandler::SceneCameraHandler()

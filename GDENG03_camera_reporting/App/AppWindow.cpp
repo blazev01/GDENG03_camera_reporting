@@ -49,6 +49,7 @@ void AppWindow::OnCreate()
 	//swapChain3->Init(this->hwnd, width, height);
 	//SceneCameraHandler::CreateNewCamera(swapChain3);
 
+
 	//std::bitset<4> cullingMask1 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
 	//std::bitset<4> cullingMask2 = SceneCameraHandler::GetCamera(0)->GetCullingMask();
 	//cullingMask1[0] = false;
@@ -106,6 +107,7 @@ void AppWindow::OnCreate()
 		GameObjectManager::AddGameObject(quad);
 		RenderQueue::AddRenderer(quad);
 	}
+
 }
 
 void AppWindow::OnUpdate()
