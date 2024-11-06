@@ -134,7 +134,8 @@ void SceneCameraHandler::CreateNewCamera(SwapChain* swapChain)
 		instance->cameraCount++;
 		instance->cameras.push_back(new Camera("Scene Camera " + std::to_string(instance->cameraCount), swapChain));
 		instance->cameras[instance->cameraCount - 1]->SetWindowSize(instance->width, instance->height);
-		instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height, 0.01f, 1000.0f);
+		instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
+			0.01f, 1000.0f);
 
 		if (instance->camera == NULL)
 			instance->camera = instance->cameras[instance->cameraCount - 1];

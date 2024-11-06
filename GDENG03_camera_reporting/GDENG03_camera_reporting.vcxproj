@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="App\AppWindow.cpp" />
     <ClCompile Include="EngineTime\EngineTime.cpp" />
+    <ClCompile Include="GameObjects\GameCamera.cpp" />
     <ClCompile Include="GameObjects\Camera.cpp" />
     <ClCompile Include="GameObjects\Circle.cpp" />
     <ClCompile Include="GameObjects\Cube.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="App\AppWindow.h" />
     <ClInclude Include="EngineTime\EngineTime.h" />
+    <ClInclude Include="GameObjects\GameCamera.h" />
     <ClInclude Include="GameObjects\Camera.h" />
     <ClInclude Include="GameObjects\Circle.h" />
     <ClInclude Include="GameObjects\Cube.h" />

@@ -36,6 +36,8 @@ public:
 	Vector3 GetUp();
 	Vector3 GetForward();
 
+	Matrix4x4 GetTransform();
+	void MultiplyTransform(Matrix4x4 transform);
 	GameObject* GetParent();
 	GameObject* GetChild(int index);
 	std::vector<GameObject*> GetChildren();

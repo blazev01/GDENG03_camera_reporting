@@ -91,6 +91,18 @@ Vector3 GameObject::GetForward()
     return this->transform.GetForward();
 }
 
+Matrix4x4 GameObject::GetTransform()
+{
+    return this->transform;
+}
+
+void GameObject::MultiplyTransform(Matrix4x4 transform)
+{
+    this->transform *= transform;
+}
+
+
+
 GameObject* GameObject::GetParent()
 {
     return this->parent;
