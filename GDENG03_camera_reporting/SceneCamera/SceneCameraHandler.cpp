@@ -19,84 +19,83 @@ void SceneCameraHandler::Initialize(float width, float height)
 void SceneCameraHandler::Update()
 {
 	float deltaTime = EngineTime::GetUnscaledDeltaTime();
-
-	if (InputSystem::IsKeyDown(VK_LBUTTON))
-	{
-		std::cout << "LMB HELD" << "\n";
-		InputSystem::ShowCursor(false);
-	}
-	else if (InputSystem::IsKeyUp(VK_LBUTTON))
-	{
-		std::cout << "LMB RELEASED" << "\n";
-		InputSystem::ShowCursor(true);
-	}
-
-	if (InputSystem::IsKey(VK_LBUTTON))
-	{
-		Vector2 mousePos = InputSystem::GetCursorPosition();
-		InputSystem::SetCursorPosition(instance->width / 2.0f, instance->height / 2.0f);
-
-		if (mousePos != instance->oldMousePos)
-		{
-			instance->rotation.x += (mousePos.y - (instance->height / 2.0f)) * deltaTime * 0.1f;
-			instance->rotation.y += (mousePos.x - (instance->width / 2.0f)) * deltaTime * 0.1f;
-			instance->oldMousePos = mousePos;
-		}
-	}
-
-	if (InputSystem::IsKey('W'))
-	{
-		std::cout << "W" << "\n";
-		instance->position -= instance->speed * deltaTime * instance->camera->GetForward();
-	}
-
-	if (InputSystem::IsKey('S'))
-	{
-		std::cout << "S" << "\n";
-		instance->position += instance->speed * deltaTime * instance->camera->GetForward();
-	}
-
-	if (InputSystem::IsKey('A'))
-	{
-		std::cout << "A" << "\n";
-		instance->position -= instance->speed * deltaTime * instance->camera->GetRight();
-	}
-
-	if (InputSystem::IsKey('D'))
-	{
-		std::cout << "D" << "\n";
-		instance->position += instance->speed * deltaTime * instance->camera->GetRight();
-	}
-
-	if (InputSystem::IsKey('Q'))
-	{
-		std::cout << "Q" << "\n";
-		instance->position.y -= instance->speed * deltaTime;
-	}
-
-	if (InputSystem::IsKey('E'))
-	{
-		std::cout << "E" << "\n";
-		instance->position.y += instance->speed * deltaTime;
-	}
 	if (instance->isSceneCamera)
 	{
+		if (InputSystem::IsKeyDown(VK_LBUTTON))
+		{
+			std::cout << "LMB HELD" << "\n";
+			InputSystem::ShowCursor(false);
+		}
+		else if (InputSystem::IsKeyUp(VK_LBUTTON))
+		{
+			std::cout << "LMB RELEASED" << "\n";
+			InputSystem::ShowCursor(true);
+		}
+
+		if (InputSystem::IsKey(VK_LBUTTON))
+		{
+			Vector2 mousePos = InputSystem::GetCursorPosition();
+			InputSystem::SetCursorPosition(instance->width / 2.0f, instance->height / 2.0f);
+
+			if (mousePos != instance->oldMousePos)
+			{
+				instance->rotation.x += (mousePos.y - (instance->height / 2.0f)) * deltaTime * 0.1f;
+				instance->rotation.y += (mousePos.x - (instance->width / 2.0f)) * deltaTime * 0.1f;
+				instance->oldMousePos = mousePos;
+			}
+		}
+
+		if (InputSystem::IsKey('W'))
+		{
+			std::cout << "W" << "\n";
+			instance->position -= instance->speed * deltaTime * instance->camera->GetForward();
+		}
+
+		if (InputSystem::IsKey('S'))
+		{
+			std::cout << "S" << "\n";
+			instance->position += instance->speed * deltaTime * instance->camera->GetForward();
+		}
+
+		if (InputSystem::IsKey('A'))
+		{
+			std::cout << "A" << "\n";
+			instance->position -= instance->speed * deltaTime * instance->camera->GetRight();
+		}
+
+		if (InputSystem::IsKey('D'))
+		{
+			std::cout << "D" << "\n";
+			instance->position += instance->speed * deltaTime * instance->camera->GetRight();
+		}
+
+		if (InputSystem::IsKey('Q'))
+		{
+			std::cout << "Q" << "\n";
+			instance->position.y -= instance->speed * deltaTime;
+		}
+
+		if (InputSystem::IsKey('E'))
+		{
+			std::cout << "E" << "\n";
+			instance->position.y += instance->speed * deltaTime;
+		}
+		if (InputSystem::IsKeyDown('G') && !instance->gameCameras.empty())
+		{
+			std::cout << "G" << "\n";
+			instance->gameCameras[0]->SetPosition(instance->position);
+			instance->gameCameras[0]->SetRotation(instance->rotation);
+
+		}
+	}
 		for (Camera* camera : instance->cameras)
 		{
-
 			camera->SetRotation(instance->rotation);
 			camera->SetPosition(instance->position);
 			camera->Update(deltaTime);
 		}
 
-	}
-	if (!instance->isSceneCamera)
-	{
-		for (Camera* camera : instance->gameCameras)
-		{
-			camera->Update(deltaTime);
-		}
-	}
+
 }
 
 void SceneCameraHandler::Draw()
@@ -117,6 +116,14 @@ void SceneCameraHandler::Release()
 		{
 			instance->cameras[i]->Release();
 			instance->cameras.pop_back();
+		}
+	}
+	if (!instance->gameCameras.empty())
+	{
+		for (int i = instance->gameCameras.size() - 1; i >= 0; i--)
+		{
+			instance->gameCameras[i]->Release();
+			instance->gameCameras.pop_back();
 		}
 	}
 
@@ -156,14 +163,25 @@ void SceneCameraHandler::CreateNewCamera(SwapChain* swapChain)
 	}
 }
 
-void SceneCameraHandler::CreateGameCamera(SwapChain* swapChain, Cube* cube)
+void SceneCameraHandler::CreateGameCamera(SwapChain* swapChain, void* shaderBytes, size_t shaderSize, VertexShader* vertexShader, PixelShader* pixelShader)
 {
-	instance->gameCameras.push_back(new GameCamera("Game Camera", swapChain, cube, instance->width, instance->height));
-	instance->cameras[instance->cameraCount - 1]->SetWindowSize(instance->width, instance->height);
-	instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
-		0.01f, 1000.0f);
-
-	
+	if (instance->gameCameras.size() < instance->gameCameraLimit)
+	{
+		instance->gameCameraCount++;
+		instance->gameCameras.push_back(new GameCamera("Game Camera" + std::to_string(instance->gameCameraCount), swapChain, shaderBytes, shaderSize, instance->width, instance->height));
+		instance->gameCameras[instance->gameCameraCount - 1]->SetWindowSize(instance->width, instance->height);
+		instance->gameCameras[instance->gameCameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
+			0.01f, 1000.0f);
+		instance->gameCameras[instance->gameCameraCount - 1]->SetScale(Vector3(0.5f));
+		instance->gameCameras[instance->gameCameraCount - 1]->SetPosition(Vector3(0,0,0));
+		instance->gameCameras[instance->gameCameraCount - 1]->SetVertexShader(vertexShader);
+		instance->gameCameras[instance->gameCameraCount - 1]->SetPixelShader(pixelShader);
+		instance->gameCameras[instance->gameCameraCount - 1]->SetPriority(1);
+		instance->gameCameras[instance->gameCameraCount - 1]->SetLayer(1);
+		GameObjectManager::AddGameObject(instance->gameCameras[instance->gameCameraCount - 1]);
+		//RenderQueue::AddRenderer(instance->gameCameras[instance->gameCameraCount - 1]); // do not touch
+		std::cout << instance->gameCameras[instance->gameCameraCount - 1]->GetName() << std::endl;
+	}
 }
 
 
@@ -210,12 +228,15 @@ void SceneCameraHandler::SwitchCameraType()
 {
 	if (instance->isSceneCamera && !instance->gameCameras.empty())
 	{
+		instance->gameCameras[0]->setActive(true);
 		instance->camera = instance->gameCameras[0];
 		instance->isSceneCamera = false;
+		
 	}
 	else if(!instance->isSceneCamera && !instance->gameCameras.empty())
 	{
 		instance->camera = instance->cameras[instance->cameraIterator];
+		instance->gameCameras[0]->setActive(false);
 		instance->isSceneCamera = true;
 	}
 	std::cout << "Currently using camera: " << instance->camera->GetName()<< std::endl;

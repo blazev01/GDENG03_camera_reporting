@@ -60,5 +60,7 @@ private:
 
 	void* vsBytes = nullptr;
 	size_t vsSize = 0;
+
+	SwapChain* swapChain;
 };
 

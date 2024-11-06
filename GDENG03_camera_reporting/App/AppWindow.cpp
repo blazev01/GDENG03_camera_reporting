@@ -36,9 +36,10 @@ void AppWindow::OnCreate()
 	RenderQueue::Initialize();
 	UIManager::Initialize(this->hwnd);
 
-	SwapChain* swapChain1 = GraphicsEngine::CreateSwapChain();
-	swapChain1->Init(this->hwnd, width, height, false);
-	SceneCameraHandler::CreateNewCamera(swapChain1);
+	this->swapChain = GraphicsEngine::CreateSwapChain();
+	this->swapChain->Init(this->hwnd, width, height);
+
+	SceneCameraHandler::CreateNewCamera(this->swapChain);
 	
 	//SwapChain* swapChain2 = GraphicsEngine::CreateSwapChain();
 	//swapChain2->Init(this->hwnd, width, height);
@@ -74,21 +75,9 @@ void AppWindow::OnCreate()
 
 
 	GraphicsEngine::ReleaseCompiledShader();
-	Cube* gameCube = new Cube("Camera Indicator", this->vsBytes, this->vsSize);
-	gameCube->SetScale(Vector3(1.f));
-	gameCube->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-	gameCube->SetVertexShader(this->vertexShader);
-	gameCube->SetPixelShader(this->pixelShader);
-	gameCube->SetPriority(1);
-	gameCube->SetLayer(1);
 
 
-	SceneCameraHandler::CreateGameCamera(swapChain1,gameCube);
-	SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
-	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
-
-	GameObjectManager::AddGameObject(gameCube);
-	RenderQueue::AddRenderer(gameCube);
+	SceneCameraHandler::CreateGameCamera(this->swapChain, this->vsBytes, this->vsSize, this->vertexShader, this->pixelShader);
 	for (int i = 0; i < 3; i++)
 	{
 		Cube* cube = new Cube("coob" + std::to_string(i), this->vsBytes, this->vsSize);
@@ -202,7 +191,11 @@ void AppWindow::OnKeyDown(int key)
 		std::cout << "Less Than" << std::endl;
 		SceneCameraHandler::SwitchPrevCamera();
 		break;
-
+	case VK_RETURN:
+		std::cout << "Enter" << std::endl;
+		
+		
+		break;
 	default:
 		break;
 	}

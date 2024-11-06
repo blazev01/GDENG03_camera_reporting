@@ -1,93 +1,130 @@
 #include "GameCamera.h"
 
-GameCamera::GameCamera(std::string name, SwapChain* swapChain, Cube* cube, float width, float height):Camera(name,swapChain)
+GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize, float width, float height):Camera(name,swapChain)
 {
-	this->camIndicator = cube;
 	this->width = width;
 	this->height = height;
+	Vertex vertices[] =
+	{
+		{Vector3(-0.5f, -0.5f, -0.5f), RGB_RED, RGB_RED},
+		{Vector3(-0.5f,  0.5f, -0.5f), RGB_YELLOW, RGB_YELLOW},
+		{Vector3(0.5f,  0.5f, -0.5f), RGB_YELLOW, RGB_YELLOW},
+		{Vector3(0.5f, -0.5f, -0.5f), RGB_RED, RGB_RED},
+		{Vector3(0.5f, -0.5f,  0.5f), RGB_GREEN, RGB_GREEN},
+		{Vector3(0.5f,  0.5f,  0.5f), RGB_CYAN, RGB_CYAN},
+		{Vector3(-0.5f,  0.5f,  0.5f), RGB_CYAN, RGB_CYAN},
+		{Vector3(-0.5f, -0.5f,  0.5f), RGB_GREEN, RGB_GREEN},
+	};
+
+	this->vertexBuffer = GraphicsEngine::CreateVertexBuffer();
+	UINT vertexListSize = ARRAYSIZE(vertices);
+
+	unsigned int indices[] =
+	{
+		0, 1, 2,	2, 3, 0,
+		4, 5, 6,	6, 7, 4,
+		1, 6, 5,	5, 2, 1,
+		7, 0, 3,	3, 4, 7,
+		3, 2, 5,	5, 4, 3,
+		7, 6, 1,	1, 0, 7,
+	};
+
+	this->indexBuffer = GraphicsEngine::CreateIndexBuffer();
+	UINT indexListSize = ARRAYSIZE(indices);
+
+	this->vertexBuffer->Load(vertices, sizeof(Vertex), ARRAYSIZE(vertices), shaderBytes, shaderSize);
+	this->indexBuffer->Load(indices, ARRAYSIZE(indices));
+
+	Constant cc = Constant();
+	cc.time = 0;
+
+	this->constantBuffer = GraphicsEngine::CreateConstantBuffer();
+	this->constantBuffer->Load(&cc, sizeof(Constant));
 }
 
 void GameCamera::Update(float deltaTime)
 {
-	if (InputSystem::IsKeyDown(VK_RBUTTON))
+	if (isActive)
 	{
-		std::cout << "RMB HELD" << "\n";
-		InputSystem::ShowCursor(false);
-	}
-	else if (InputSystem::IsKeyUp(VK_RBUTTON))
-	{
-		std::cout << "RMB RELEASED" << "\n";
-		InputSystem::ShowCursor(true);
-	}
-
-	if (InputSystem::IsKey(VK_RBUTTON))
-	{
-		Vector2 mousePos = InputSystem::GetCursorPosition();
-		InputSystem::SetCursorPosition(this->width / 2.0f, this->height / 2.0f);
-
-		if (mousePos != this->oldMousePos)
+		if (InputSystem::IsKeyDown(VK_RBUTTON))
 		{
-			this->localRotation.x += (mousePos.y - (this->height / 2.0f)) * deltaTime * 0.1f;
-			this->localRotation.y += (mousePos.x - (this->width / 2.0f)) * deltaTime * 0.1f;
-			this->oldMousePos = mousePos;
-			std::cout << this->camIndicator->GetLocalRotation().x << std::endl;
-			std::cout << this->camIndicator->GetLocalRotation().y << std::endl;
+			std::cout << "RMB HELD" << "\n";
+			InputSystem::ShowCursor(false);
+		}
+		else if (InputSystem::IsKeyUp(VK_RBUTTON))
+		{
+			std::cout << "RMB RELEASED" << "\n";
+			InputSystem::ShowCursor(true);
+		}
+
+		if (InputSystem::IsKey(VK_RBUTTON))
+		{
+			Vector2 mousePos = InputSystem::GetCursorPosition();
+			InputSystem::SetCursorPosition(this->width / 2.0f, this->height / 2.0f);
+
+			if (mousePos != this->oldMousePos)
+			{
+				this->localRotation.x += (mousePos.y - (this->height / 2.0f)) * deltaTime * 0.1f;
+				this->localRotation.y += (mousePos.x - (this->width / 2.0f)) * deltaTime * 0.1f;
+				this->oldMousePos = mousePos;
+
+			}
+		}
+
+		if (InputSystem::IsKey('W'))
+		{
+			std::cout << "W" << "\n";
+			this->localPosition -= this->speed * deltaTime * this->GetForward();
+		}
+
+		if (InputSystem::IsKey('S'))
+		{
+			std::cout << "S" << "\n";
+			this->localPosition += this->speed * deltaTime * this->GetForward();
+
+
+		}
+
+		if (InputSystem::IsKey('A'))
+		{
+			std::cout << "A" << "\n";
+			this->localPosition -= this->speed * deltaTime * this->GetRight();
+		}
+
+		if (InputSystem::IsKey('D'))
+		{
+			std::cout << "D" << "\n";
+			this->localPosition += this->speed * deltaTime * this->GetRight();
+		}
+
+		if (InputSystem::IsKey('Q'))
+		{
+			std::cout << "Q" << "\n";
+			this->localPosition.y -= this->speed * deltaTime;
+		}
+
+		if (InputSystem::IsKey('E'))
+		{
+			std::cout << "E" << "\n";
+			this->localPosition.y += this->speed * deltaTime;
 		}
 	}
-
-	if (InputSystem::IsKey('W'))
-	{
-		std::cout << "W" << "\n";
-		this->localPosition -= this->speed * deltaTime * this->GetForward();
-	}
-
-	if (InputSystem::IsKey('S'))
-	{
-		std::cout << "S" << "\n";
-		this->localPosition += this->speed * deltaTime * this->GetForward();
-		std::cout << this->camIndicator->GetLocalPosition() << std::endl;
-
-	}
-
-	if (InputSystem::IsKey('A'))
-	{
-		std::cout << "A" << "\n";
-		this->localPosition -= this->speed * deltaTime * this->GetRight();
-	}
-
-	if (InputSystem::IsKey('D'))
-	{
-		std::cout << "D" << "\n";
-		this->localPosition += this->speed * deltaTime * this->GetRight();
-	}
-
-	if (InputSystem::IsKey('Q'))
-	{
-		std::cout << "Q" << "\n";
-		this->localPosition.y -= this->speed * deltaTime;
-	}
-
-	if (InputSystem::IsKey('E'))
-	{
-		std::cout << "E" << "\n";
-		this->localPosition.y += this->speed * deltaTime;
-	}
+	
 	Matrix4x4 temp;
 	this->transform.SetIdentity();
-	this->camIndicator->GetTransform().SetIdentity();
+
 
 	temp.SetIdentity();
 	temp.SetRotationX(this->localRotation.x);
 	this->transform *= temp;
-	this->camIndicator->SetRotation(this->localRotation);
+
 
 	temp.SetIdentity();
 	temp.SetRotationY(this->localRotation.y);
 	this->transform *= temp;
-	this->camIndicator->SetRotation(this->localRotation);
+
 	
 	this->transform.SetPosition(this->localPosition);
-	this->camIndicator->SetPosition(this->localPosition);
 
 
 
@@ -96,9 +133,23 @@ void GameCamera::Update(float deltaTime)
 	
 }
 
+void GameCamera::Draw()
+{
+	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
+
+	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
+
+	RenderQueue::Render(this->cullingMask);
+}
+
 
 void GameCamera::Release()
 {
+}
+
+void GameCamera::setActive(bool isActive)
+{
+	this->isActive = isActive;
 }
 
 GameCamera::~GameCamera()

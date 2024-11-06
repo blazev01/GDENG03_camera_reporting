@@ -2,7 +2,8 @@
 #include "../GameObjects/Camera.h"
 #include "../GameObjects/GameCamera.h"
 #include "../GameObjects/Cube.h"
-
+#include "../GameObjects/GameObjectManager.h"
+#include "../GameObjects/RenderQueue.h"
 class SceneCameraHandler
 {
 public:
@@ -18,7 +19,7 @@ public:
 
 public:
 	static void CreateNewCamera(SwapChain* swapChain);
-	static void CreateGameCamera(SwapChain* swapchain, Cube* cube);
+	static void CreateGameCamera(SwapChain* swapchain, void* shaderBytes, size_t shaderSize, VertexShader* vertexShader, PixelShader* pixelShader);
 	static Camera* GetCamera(int index);
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
@@ -36,8 +37,10 @@ private:
 	std::vector<GameCamera*> gameCameras;
 	Camera* camera = NULL;
 
-	int cameraLimit = 3;
+	int cameraLimit = 1;
+	int gameCameraLimit = 1;
 	int cameraCount = 0;
+	int gameCameraCount = 0;
 	int cameraIterator = 0;
 
 	int width = 0;
