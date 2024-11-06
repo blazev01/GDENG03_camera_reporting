@@ -29,7 +29,7 @@ void UIManager::DrawAllUI()
 		instance->uiList[i]->DrawUI();
 	}
 
-	//ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -63,7 +63,6 @@ UIManager::UIManager(HWND hwnd)
 	HierarchyScreen* hierarchyScreen = new HierarchyScreen();
 	this->uiTable[uiNames.HIERARCHY_SCREEN] = hierarchyScreen;
 	this->uiList.push_back(hierarchyScreen);
-
 }
 
 UIManager::~UIManager()
