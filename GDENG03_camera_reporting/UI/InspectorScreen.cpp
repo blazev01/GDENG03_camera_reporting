@@ -1,6 +1,8 @@
 #include "InspectorScreen.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 
+#define RAD2DEG 57.2958
+#define DEG2RAD 0.0174533
 
 InspectorScreen::InspectorScreen() : UIScreen("INSPECTOR_SCREEN")
 {
@@ -20,7 +22,7 @@ void InspectorScreen::DrawUI()
     Vector3 currentRotation = selectedCam->GetLocalRotation();
 
     float position[3] = { currentPosition.x, currentPosition.y, currentPosition.z };
-    float rotation[3] = { currentRotation.x, currentRotation.y, currentRotation.z };
+    float rotation[3] = { currentRotation.x * RAD2DEG, currentRotation.y * RAD2DEG, currentRotation.z * RAD2DEG };
 
     ImGui::Begin("Camera Controls");
 
@@ -35,6 +37,10 @@ void InspectorScreen::DrawUI()
 
     // Rotation controls
     if (ImGui::InputFloat3("Rotation", rotation)) {
+        rotation[0] *= DEG2RAD;
+        rotation[1] *= DEG2RAD;
+        rotation[2] *= DEG2RAD;
+
         if (selectedCam->GetName().find("Game Camera") == std::string::npos)
             SceneCameraHandler::SetSceneCameraRot(Vector3(rotation[0], rotation[1], rotation[2]));
     
