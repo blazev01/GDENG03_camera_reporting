@@ -12,6 +12,8 @@ public:
 	bool Present(bool vsync);
 	bool Release();
 
+	ID3D11DepthStencilView* getDSV();
+
 	~SwapChain();
 
 private:

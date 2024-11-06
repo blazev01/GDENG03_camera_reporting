@@ -74,6 +74,11 @@ bool SwapChain::Release()
 	return true;
 }
 
+ID3D11DepthStencilView* SwapChain::getDSV()
+{
+	return this->dsv;
+}
+
 SwapChain::~SwapChain()
 {
 

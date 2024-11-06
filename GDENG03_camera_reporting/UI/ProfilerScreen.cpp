@@ -18,7 +18,7 @@ void ProfilerScreen::DrawUI()
 	ImGui::Begin("Game Camera Viewport", (bool*)0, flags);
 	ID3D11ShaderResourceView* texture = SceneCameraHandler::GetCamera(0)->RenderCameraToTexture(); 
 	if (texture) 
-		ImGui::Image((ImTextureID)texture, ImVec2(800, 600)); 
+		ImGui::Image((ImTextureID)texture, ImVec2(350, 200)); 
 
 	else 
 		ImGui::Text("Failed to render camera to texture"); 

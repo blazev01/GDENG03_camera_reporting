@@ -90,6 +90,16 @@ void Camera::SetCullingMask(std::bitset<4> cullingMask)
 	this->cullingMask = cullingMask;
 }
 
+float Camera::getWidth()
+{
+    return this->width;
+}
+
+float Camera::getHeight()
+{
+    return this->height;
+}
+
 ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
 {
     D3D11_TEXTURE2D_DESC texdesc;
@@ -105,11 +115,11 @@ ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
     
     ZeroMemory(&texdesc, sizeof(texdesc));
 
-    texdesc.Width = this->width;
-    texdesc.Height = this->height;
+    texdesc.Width = 350;
+    texdesc.Height = 200;
     texdesc.MipLevels = 1;
     texdesc.ArraySize = 1;
-    texdesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    texdesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     texdesc.SampleDesc.Count = 1;
     texdesc.Usage = D3D11_USAGE_DEFAULT;
     texdesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
@@ -143,57 +153,15 @@ ID3D11ShaderResourceView* Camera::RenderCameraToTexture()
         return nullptr;
     }
 
-    deviceContext->OMSetRenderTargets(1, &rtview, NULL);
+    deviceContext->OMSetRenderTargets(1, &rtview, this->swapChain->getDSV());
     
     float clearColor[4] = { 0.0f, 0.45f, 0.5f, 1.0f };
     deviceContext->ClearRenderTargetView(rtview, clearColor);
-
+    deviceContext->ClearDepthStencilView(this->swapChain->getDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     this->Draw();
 
-    //ID3D11Texture2D* renderTargetTexture = nullptr;
-    //CD3D11_TEXTURE2D_DESC renderTargetDesc = {};
-    //D3D11_TEXTURE2D_DESC textureDesc = {};
-
-
-    //renderTargetDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    //renderTargetDesc.Width = static_cast<UINT>(this->width);
-    //renderTargetDesc.Height = static_cast<UINT>(this->height);
-    //renderTargetDesc.ArraySize = 1; 
-    //renderTargetDesc.MipLevels = 1; 
-    //renderTargetDesc.SampleDesc.Count = 1;
-
-    //HRESULT hr = device->CreateTexture2D(&renderTargetDesc, NULL, &renderTargetTexture);
-    //if (FAILED(hr)) {
-    //    std::cout << "Texture2D creation failed" << std::endl;
-    //    return nullptr;
-    //}
-
-    //ID3D11RenderTargetView* renderTargetView = nullptr;
-    //hr = device->CreateRenderTargetView(renderTargetTexture, NULL, &renderTargetView);
-    //if (FAILED(hr)) {
-    //    std::cout << "Render Target View creation failed" << std::endl;
-    //    renderTargetTexture->Release();
-    //    return nullptr;
-    //}
-
-    //ID3D11ShaderResourceView* shaderResourceView = nullptr;
-    //hr = device->CreateShaderResourceView(renderTargetTexture, NULL, &shaderResourceView);
-    //if (FAILED(hr)) {
-    //    std::cout << "Shader Resource View creation failed" << std::endl;
-    //    renderTargetView->Release();
-    //    renderTargetTexture->Release();
-    //    return nullptr;
-    //}
-
-    //deviceContext->OMSetRenderTargets(1, &renderTargetView, NULL);
-
-    //float clearColor[4] = { 0.0f, 0.45f, 0.5f, 1.0f };
-    //deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
-
-    //this->Draw();
-
-    //renderTargetView->Release();
-
+    if (targetTex) targetTex->Release();
+    if (rtview) rtview->Release();
     return srview;
 }
 

@@ -24,6 +24,8 @@ public:
 	std::bitset<4> GetCullingMask() const;
 	void SetCullingMask(std::bitset<4> cullingMask);
 
+	float getWidth();
+	float getHeight();
 	ID3D11ShaderResourceView* RenderCameraToTexture(); 
 
 protected:
