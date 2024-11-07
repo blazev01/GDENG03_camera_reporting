@@ -183,6 +183,8 @@ GameCamera* SceneCameraHandler::CreateGameCamera(void* shaderBytes, size_t shade
 		std::cout << instance->gameCameras[instance->gameCameraCount - 1]->GetName() << std::endl;
 		return instance->gameCameras[instance->gameCameraCount - 1];
 	}
+
+	return nullptr;
 }
 
 Camera* SceneCameraHandler::GetCurCamera()

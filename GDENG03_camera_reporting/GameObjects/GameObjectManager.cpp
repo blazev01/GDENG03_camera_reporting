@@ -77,10 +77,13 @@ void GameObjectManager::CreateGameObject(PrimitiveType primitiveType)
 		break;
 	}
 
-	gameObject->SetVertexShader(instance->vertexShader);
-	gameObject->SetPixelShader(instance->pixelShader);
-	instance->AddGameObject(gameObject);
-	RenderQueue::AddRenderer(gameObject);
+	if (gameObject)
+	{
+		gameObject->SetVertexShader(instance->vertexShader);
+		gameObject->SetPixelShader(instance->pixelShader);
+		instance->AddGameObject(gameObject);
+		RenderQueue::AddRenderer(gameObject);
+	}
 }
 
 void GameObjectManager::AddGameObject(GameObject* gameObject)
