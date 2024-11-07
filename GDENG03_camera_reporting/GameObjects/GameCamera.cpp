@@ -4,14 +4,14 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 {
 	Vertex vertices[] =
 	{
-		{Vector3(-0.5f, -0.5f, -0.5f), RGB_RED, RGB_RED},
-		{Vector3(-0.5f,  0.5f, -0.5f), RGB_YELLOW, RGB_YELLOW},
-		{Vector3(0.5f,  0.5f, -0.5f), RGB_YELLOW, RGB_YELLOW},
-		{Vector3(0.5f, -0.5f, -0.5f), RGB_RED, RGB_RED},
-		{Vector3(0.5f, -0.5f,  0.5f), RGB_GREEN, RGB_GREEN},
-		{Vector3(0.5f,  0.5f,  0.5f), RGB_CYAN, RGB_CYAN},
-		{Vector3(-0.5f,  0.5f,  0.5f), RGB_CYAN, RGB_CYAN},
-		{Vector3(-0.5f, -0.5f,  0.5f), RGB_GREEN, RGB_GREEN},
+		{Vector3(-0.2f, -0.2f, -0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(-0.2f,  0.2f, -0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(0.2f,  0.2f, -0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(0.2f, -0.2f, -0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(0.2f, -0.2f,  0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(0.2f,  0.2f,  0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(-0.2f,  0.2f,  0.2f), RGB_GREY, RGB_GREY},
+		{Vector3(-0.2f, -0.2f,  0.2f), RGB_GREY, RGB_GREY},
 	};
 
 	this->vertexBuffer = GraphicsEngine::CreateVertexBuffer();
@@ -62,8 +62,8 @@ void GameCamera::Update(float deltaTime)
 
 			if (mousePos != this->oldMousePos)
 			{
-				this->localRotation.x += (mousePos.y - (this->swapChain->GetHeight() / 2.0f)) * deltaTime * 0.1f;
-				this->localRotation.y += (mousePos.x - (this->swapChain->GetWidth() / 2.0f)) * deltaTime * 0.1f;
+				this->localRotation.x += (mousePos.y - (this->swapChain->GetHeight() / 2.0f)) * deltaTime * 0.2f;
+				this->localRotation.y += (mousePos.x - (this->swapChain->GetWidth() / 2.0f)) * deltaTime * 0.2f;
 				this->oldMousePos = mousePos;
 
 			}
