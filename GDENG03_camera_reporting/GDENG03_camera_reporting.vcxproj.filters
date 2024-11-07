@@ -122,6 +122,7 @@
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\ViewTexture.cpp" />
+    <ClCompile Include="GameObjects\Line.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\ConstantBuffer.h">
@@ -257,6 +258,7 @@
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\ViewTexture.h" />
+    <ClInclude Include="GameObjects\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">

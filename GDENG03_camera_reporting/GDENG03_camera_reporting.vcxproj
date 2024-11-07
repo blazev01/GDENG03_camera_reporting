@@ -137,6 +137,7 @@
     <ClCompile Include="GameObjects\Cube.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\GameObjectManager.cpp" />
+    <ClCompile Include="GameObjects\Line.cpp" />
     <ClCompile Include="GameObjects\Quad.cpp" />
     <ClCompile Include="GameObjects\RenderQueue.cpp" />
     <ClCompile Include="GameObjects\ViewTexture.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="GameObjects\Cube.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\GameObjectManager.h" />
+    <ClInclude Include="GameObjects\Line.h" />
     <ClInclude Include="GameObjects\Quad.h" />
     <ClInclude Include="GameObjects\RenderQueue.h" />
     <ClInclude Include="GameObjects\ViewTexture.h" />

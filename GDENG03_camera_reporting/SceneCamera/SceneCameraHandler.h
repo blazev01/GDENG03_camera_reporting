@@ -34,6 +34,8 @@ public:
 
 	static void AlignGameCamerasToView();
 
+	static std::vector<Camera*>* GetCameraList();
+
 private:
 	SceneCameraHandler();
 	~SceneCameraHandler();
@@ -42,6 +44,7 @@ private:
 
 	static SceneCameraHandler* instance;
 
+private:
 	std::vector<Camera*> cameras;
 	std::vector<GameCamera*> gameCameras;
 	Camera* camera = NULL;
@@ -65,4 +68,3 @@ private:
 	Vector3 position;
 	Vector3 rotation;
 };
-

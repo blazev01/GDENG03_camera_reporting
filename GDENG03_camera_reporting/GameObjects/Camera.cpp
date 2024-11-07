@@ -4,6 +4,10 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../GraphicsEngine/DeviceContext.h"
 
+#include "Line.h"
+#include "../App/AppWindow.h"
+#include "GameObjectManager.h"
+
 Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name)
 {
 	for (int i = 0; i < this->cullingMask.size(); i++)
@@ -32,6 +36,10 @@ void Camera::Update(float deltaTime)
 	this->transform *= temp;
 
 	this->transform.SetPosition(this->localPosition);
+
+	// EXCUSE Meeeee
+	this->worldTransform = this->transform;
+
 	this->view.SetMatrix(this->transform);
 
 	this->view.Inverse();
@@ -40,7 +48,6 @@ void Camera::Update(float deltaTime)
 
 void Camera::Draw(Matrix4x4 view, Matrix4x4 proj)
 {
-
 }
 
 void Camera::Release()
@@ -99,6 +106,28 @@ void Camera::SetPerspProjection(float fov, float aspect, float zNear, float zFar
 void Camera::Present()
 {
 	this->swapChain->Present(true);
+}
+
+std::vector<Vector3> Camera::CreateRenderRegionOutliner(float fov, float aspect, float z)
+{
+	float angle = fov; //already in radians
+	//float angle = fov * 3.14 / 180 * 1.047;
+
+	float heightZ = 2 * z * std::tan(angle / 2);
+	float widthZ = heightZ * aspect;
+	
+	Vector3 zTL = Vector3(-widthZ / 2, heightZ / 2, z);
+	Vector3 zTR = Vector3(widthZ / 2, heightZ / 2, z);
+	Vector3 zBL = Vector3(-widthZ / 2, -heightZ / 2, z);
+	Vector3 zBR = Vector3(widthZ / 2, -heightZ / 2, z);
+
+	/*Line* line = new Line("lyn", AppWindow::instance->vsBytes, AppWindow::instance->vsSize, Vector3(0), Vector3(1));
+	line->SetVertexShader(AppWindow::instance->vertexShader);
+	line->SetPixelShader(AppWindow::instance->pixelShader);
+	GameObjectManager::AddGameObject(line);
+	RenderQueue::AddRenderer(line);*/
+
+	return { zTL, zTR, zBL, zBR };
 }
 
 std::bitset<4> Camera::GetCullingMask() const

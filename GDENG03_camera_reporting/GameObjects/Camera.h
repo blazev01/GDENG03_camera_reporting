@@ -26,11 +26,16 @@ public:
 	void Present();
 	
 
+	std::vector<Vector3> CreateRenderRegionOutliner(float fov, float aspect, float z);
+
 	std::bitset<4> GetCullingMask() const;
 	void SetCullingMask(std::bitset<4> cullingMask);
 
 	float getWidth();
 	float getHeight();
+
+
+	Matrix4x4 worldTransform;
 
 protected:
 	SwapChain* swapChain;

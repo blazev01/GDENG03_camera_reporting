@@ -11,6 +11,9 @@
 #include "../GameObjects/Quad.h"
 #include "../GameObjects/Cube.h"
 #include "../GameObjects/Circle.h"
+#include "../GameObjects/Line.h"
+
+
 
 class AppWindow : public Window, public InputListener
 {
@@ -62,5 +65,11 @@ private:
 	size_t vsSize = 0;
 
 	SwapChain* swapChain;
+
+private:
+	static AppWindow* instance;
+	friend class Camera;
+
+	Line* CreateLine(const Vector3& startPos, const Vector3& endPos);
 };
 

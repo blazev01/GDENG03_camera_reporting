@@ -297,6 +297,11 @@ void SceneCameraHandler::AlignGameCamerasToView()
 	}
 }
 
+std::vector<Camera*>* SceneCameraHandler::GetCameraList()
+{
+	return &instance->cameras;
+}
+
 SceneCameraHandler::SceneCameraHandler()
 {
 

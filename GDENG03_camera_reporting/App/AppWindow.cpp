@@ -8,8 +8,12 @@
 #include "../GameObjects/RenderQueue.h"
 #include "../UI/UIManager.h"
 
+
+AppWindow* AppWindow::instance = NULL;
 AppWindow::AppWindow()
 {
+	instance = this;
+
 	this->vertexShader = NULL;
 	this->pixelShader = NULL;
 	this->cube = NULL;
@@ -56,7 +60,7 @@ void AppWindow::OnCreate()
 
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
 	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
-	
+
 	void* shaderBytes = nullptr;
 	size_t shaderSize = 0;
 
@@ -73,7 +77,7 @@ void AppWindow::OnCreate()
 
 	GraphicsEngine::ReleaseCompiledShader();
 
-
+	
 	
 	for (int i = 0; i < 3; i++)
 	{
@@ -104,7 +108,33 @@ void AppWindow::OnCreate()
 		RenderQueue::AddRenderer(quad);
 	}
 
+
+
+	//std::vector<Vector3> renderLines = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 0.01f, 1000.0f);
+	std::vector<Vector3> nearPlanePoints = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 0.01f);
+	std::vector<Vector3> farPlanePoints = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 1000.0f);
+
+	for (int i = 0; i < farPlanePoints.size(); i++) {
+		CreateLine(nearPlanePoints[i], farPlanePoints[i])->SetParent(SceneCameraHandler::GetSceneCamera());
+	}
+	int cornerPairs[4][2]  = { {0,1}, {0,2}, {3,1}, {3,2} };
+	for (int i = 0; i < 4; i++) {
+		CreateLine(nearPlanePoints[cornerPairs[i][0]], nearPlanePoints[cornerPairs[i][1]])->SetParent(SceneCameraHandler::GetSceneCamera());
+		CreateLine(farPlanePoints[cornerPairs[i][0]], farPlanePoints[cornerPairs[i][1]])->SetParent(SceneCameraHandler::GetSceneCamera());
+	}
 }
+
+Line* AppWindow::CreateLine(const Vector3& startPos, const Vector3& endPos) {
+	Line* line = new Line("lyn", AppWindow::instance->vsBytes, AppWindow::instance->vsSize, startPos, endPos);
+	line->SetVertexShader(AppWindow::instance->vertexShader);
+	line->SetPixelShader(AppWindow::instance->pixelShader);
+	GameObjectManager::AddGameObject(line);
+	RenderQueue::AddRenderer(line);
+
+	return line;
+}
+
+
 
 void AppWindow::OnUpdate()
 {
