@@ -44,7 +44,7 @@ void GameCamera::Update(float deltaTime)
 {
 	if (isActive)
 	{
-		if (InputSystem::IsKeyDown(VK_RBUTTON))
+		/*if (InputSystem::IsKeyDown(VK_RBUTTON))
 		{
 			std::cout << "RMB HELD" << "\n";
 			InputSystem::ShowCursor(false);
@@ -67,7 +67,7 @@ void GameCamera::Update(float deltaTime)
 				this->oldMousePos = mousePos;
 
 			}
-		}
+		}*/
 
 		/*if (InputSystem::IsKey('W'))
 		{

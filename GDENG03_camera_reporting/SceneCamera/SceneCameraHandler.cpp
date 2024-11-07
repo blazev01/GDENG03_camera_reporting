@@ -25,18 +25,18 @@ void SceneCameraHandler::Update()
 	float deltaTime = EngineTime::GetUnscaledDeltaTime();
 	if (instance->isSceneCamera)
 	{
-		if (InputSystem::IsKeyDown(VK_LBUTTON))
+		if (InputSystem::IsKeyDown(VK_RBUTTON))
 		{
-			std::cout << "LMB HELD" << "\n";
+			std::cout << "RMB HELD" << "\n";
 			InputSystem::ShowCursor(false);
 		}
-		else if (InputSystem::IsKeyUp(VK_LBUTTON))
+		else if (InputSystem::IsKeyUp(VK_RBUTTON))
 		{
-			std::cout << "LMB RELEASED" << "\n";
+			std::cout << "RMB RELEASED" << "\n";
 			InputSystem::ShowCursor(true);
 		}
 
-		if (InputSystem::IsKey(VK_LBUTTON))
+		if (InputSystem::IsKey(VK_RBUTTON))
 		{
 			Vector2 mousePos = InputSystem::GetCursorPosition();
 			InputSystem::SetCursorPosition(instance->width / 2.0f, instance->height / 2.0f);
@@ -92,14 +92,13 @@ void SceneCameraHandler::Update()
 
 		}
 	}
-		for (Camera* camera : instance->cameras)
-		{
-			camera->SetRotation(instance->rotation);
-			camera->SetPosition(instance->position);
-			camera->Update(deltaTime);
-		}
 
-
+	for (Camera* camera : instance->cameras)
+	{
+		camera->SetRotation(instance->rotation);
+		camera->SetPosition(instance->position);
+		camera->Update(deltaTime);
+	}
 }
 
 void SceneCameraHandler::Render()
