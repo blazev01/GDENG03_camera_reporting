@@ -48,7 +48,7 @@ private:
 	SwapChain* swapChain = NULL;
 
 	int cameraLimit = 1;
-	int gameCameraLimit = 1;
+	int gameCameraLimit = 4;
 	int cameraCount = 0;
 	int gameCameraCount = 0;
 	int cameraIterator = 0;
