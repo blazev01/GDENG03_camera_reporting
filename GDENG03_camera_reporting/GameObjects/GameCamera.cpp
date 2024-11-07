@@ -69,7 +69,7 @@ void GameCamera::Update(float deltaTime)
 			}
 		}
 
-		if (InputSystem::IsKey('W'))
+		/*if (InputSystem::IsKey('W'))
 		{
 			std::cout << "W" << "\n";
 			this->localPosition -= this->speed * deltaTime * this->GetForward();
@@ -105,7 +105,7 @@ void GameCamera::Update(float deltaTime)
 		{
 			std::cout << "E" << "\n";
 			this->localPosition.y += this->speed * deltaTime;
-		}
+		}*/
 	}
 	
 	Matrix4x4 temp;
