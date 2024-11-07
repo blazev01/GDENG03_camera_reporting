@@ -11,7 +11,7 @@ public:
 	~Cube();
 
 	void Update(float deltaTime) override;
-	void Draw() override;
+	void Draw(Matrix4x4 view, Matrix4x4 proj) override;
 	void Release() override;
 	void SetAnimationSpeed(float speed);
 

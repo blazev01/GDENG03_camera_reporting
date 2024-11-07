@@ -78,7 +78,7 @@ void Circle::Update(float deltaTime)
 	this->transform.SetPosition(this->localPosition);
 }
 
-void Circle::Draw()
+void Circle::Draw(Matrix4x4 view, Matrix4x4 proj)
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;

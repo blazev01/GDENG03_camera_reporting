@@ -32,11 +32,13 @@ void Camera::Update(float deltaTime)
 	this->transform *= temp;
 
 	this->transform.SetPosition(this->localPosition);
+	this->view.SetMatrix(this->transform);
 
+	this->view.Inverse();
 	this->transform.Inverse();
 }
 
-void Camera::Draw()
+void Camera::Draw(Matrix4x4 view, Matrix4x4 proj)
 {
 
 }
@@ -55,7 +57,7 @@ void Camera::Render()
 
     GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->swapChain->GetWidth(), this->swapChain->GetHeight());
 
-    RenderQueue::Render(this->cullingMask);
+    RenderQueue::Render(this->cullingMask, this->transform, this->projection);
 }
 
 void Camera::RenderViewTexture()
@@ -66,7 +68,7 @@ void Camera::RenderViewTexture()
 
 	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->viewTexture->GetWidth(), this->viewTexture->GetHeight());
 
-    RenderQueue::Render(this->cullingMask);
+    RenderQueue::Render(this->cullingMask, this->transform, this->projection);
 }
 
 ViewTexture* Camera::GetViewTexture()

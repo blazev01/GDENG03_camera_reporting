@@ -24,6 +24,7 @@ public:
 	static Camera* GetCamera(int index);
 	static Camera* GetGameCamera();
 	static GameCamera* GetGameCamera(unsigned int index);
+	static std::vector<GameCamera*>& GetGameCameras();
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
 	static void SwitchCameraType();

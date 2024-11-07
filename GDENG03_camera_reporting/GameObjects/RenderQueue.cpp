@@ -41,12 +41,12 @@ void RenderQueue::SortByPriority()
 	std::sort(first, last, compare);
 }
 
-void RenderQueue::Render(std::bitset<4> cullingMask)
+void RenderQueue::Render(std::bitset<4> cullingMask, Matrix4x4 view, Matrix4x4 proj)
 {
 	if (!instance->renderers.empty())
 	{
 		for (GameObject* renderer : instance->renderers)
-			if (cullingMask[renderer->GetLayer()]) renderer->Draw();
+			if (cullingMask[renderer->GetLayer()]) renderer->Draw(view, proj);
 	}
 }
 

@@ -215,6 +215,11 @@ GameCamera* SceneCameraHandler::GetGameCamera(unsigned int index)
 	else return nullptr;
 }
 
+std::vector<GameCamera*>& SceneCameraHandler::GetGameCameras()
+{
+	return instance->gameCameras;
+}
+
 void SceneCameraHandler::SwitchNextCamera()
 {
 	if (instance->camera->GetName().find("Game Camera") == std::string::npos)

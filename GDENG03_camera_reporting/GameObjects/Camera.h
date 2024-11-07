@@ -12,7 +12,7 @@ public:
 	~Camera();
 
 	virtual void Update(float deltaTime) override;
-	virtual void Draw() override;
+	virtual void Draw(Matrix4x4 view, Matrix4x4 proj) override;
 	virtual void Release() override;
 
 	void Render();
@@ -34,6 +34,7 @@ public:
 
 protected:
 	SwapChain* swapChain;
+	Matrix4x4 view;
 	Matrix4x4 projection;
 
 	float deltaTime = 0.0f;

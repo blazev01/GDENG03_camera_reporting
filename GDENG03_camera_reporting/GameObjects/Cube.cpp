@@ -93,13 +93,13 @@ void Cube::Update(float deltaTime)
 	this->transform *= temp;
 }
 
-void Cube::Draw()
+void Cube::Draw(Matrix4x4 view, Matrix4x4 proj)
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;
 	cc.world = this->transform;
-	cc.view = SceneCameraHandler::GetViewMatrix();
-	cc.proj = SceneCameraHandler::GetProjectionMatrix();
+	cc.view = view;
+	cc.proj = proj;
 
 	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
 	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->vertexShader, this->constantBuffer);
