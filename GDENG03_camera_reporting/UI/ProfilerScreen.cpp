@@ -15,14 +15,19 @@ void ProfilerScreen::DrawUI()
 {
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse; 
 
-	ImGui::Begin("Game Camera Viewport", (bool*)0, flags);
+	Camera* gameCam = SceneCameraHandler::GetGameCamera();
 
-	ID3D11ShaderResourceView* texture = SceneCameraHandler::GetCamera(0)->GetViewTexture()->GetSRV();
-	if (texture) 
-		ImGui::Image((ImTextureID)texture, ImVec2(350, 200)); 
+	if (gameCam) {
+		ImGui::Begin("Game Camera Viewport", (bool*)0, flags);
+		ID3D11ShaderResourceView* texture = gameCam->GetViewTexture()->GetSRV();
 
-	else 
-		ImGui::Text("Failed to render camera to texture"); 
+		if (texture)
+			ImGui::Image((ImTextureID)texture, ImVec2(350, 200));
 
-	ImGui::End();
+		else
+			ImGui::Text("Failed to render camera to texture");
+
+		ImGui::End();
+
+	}
 }

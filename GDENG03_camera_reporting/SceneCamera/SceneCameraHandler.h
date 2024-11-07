@@ -22,6 +22,7 @@ public:
 	static void CreateGameCamera(SwapChain* swapchain, void* shaderBytes, size_t shaderSize, VertexShader* vertexShader, PixelShader* pixelShader);
 	static Camera* GetCurCamera();
 	static Camera* GetCamera(int index);
+	static Camera* GetGameCamera();
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
 	static void SwitchCameraType();

@@ -198,6 +198,15 @@ Camera* SceneCameraHandler::GetCamera(int index)
 	return instance->cameras[index];
 }
 
+Camera* SceneCameraHandler::GetGameCamera()
+{
+	if (instance->gameCameraCount > 0)
+		return instance->gameCameras[instance->gameCameraCount - 1];
+
+	else
+		return nullptr;
+}
+
 void SceneCameraHandler::SwitchNextCamera()
 {
 	if (instance->camera->GetName().find("Game Camera") == std::string::npos)
