@@ -10,6 +10,9 @@ SwapChain::SwapChain()
 
 bool SwapChain::Init(HWND hwnd, UINT width, UINT height, bool depthTest)
 {
+	this->width = width;
+	this->height = height;
+
 	ID3D11Device* device = GraphicsEngine::GetDevice();
 	DXGI_SWAP_CHAIN_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -72,6 +75,16 @@ bool SwapChain::Release()
 	this->swapChain->Release();
 	delete this;
 	return true;
+}
+
+int SwapChain::GetWidth()
+{
+	return this->width;
+}
+
+int SwapChain::GetHeight()
+{
+	return this->height;
 }
 
 ID3D11DepthStencilView* SwapChain::getDSV()

@@ -1,9 +1,7 @@
 #include "GameCamera.h"
 #include "../SceneCamera/SceneCameraHandler.h"
-GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize, float width, float height):Camera(name,swapChain)
+GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize):Camera(name,swapChain)
 {
-	this->width = width;
-	this->height = height;
 	Vertex vertices[] =
 	{
 		{Vector3(-0.5f, -0.5f, -0.5f), RGB_RED, RGB_RED},
@@ -60,12 +58,12 @@ void GameCamera::Update(float deltaTime)
 		if (InputSystem::IsKey(VK_RBUTTON))
 		{
 			Vector2 mousePos = InputSystem::GetCursorPosition();
-			InputSystem::SetCursorPosition(this->width / 2.0f, this->height / 2.0f);
+			InputSystem::SetCursorPosition(this->swapChain->GetWidth() / 2.0f, this->swapChain->GetHeight() / 2.0f);
 
 			if (mousePos != this->oldMousePos)
 			{
-				this->localRotation.x += (mousePos.y - (this->height / 2.0f)) * deltaTime * 0.1f;
-				this->localRotation.y += (mousePos.x - (this->width / 2.0f)) * deltaTime * 0.1f;
+				this->localRotation.x += (mousePos.y - (this->swapChain->GetHeight() / 2.0f)) * deltaTime * 0.1f;
+				this->localRotation.y += (mousePos.x - (this->swapChain->GetWidth() / 2.0f)) * deltaTime * 0.1f;
 				this->oldMousePos = mousePos;
 
 			}
@@ -164,7 +162,7 @@ void GameCamera::Release()
 {
 }
 
-void GameCamera::setActive(bool isActive)
+void GameCamera::SetActive(bool isActive)
 {
 	this->isActive = isActive;
 }

@@ -61,8 +61,8 @@ bool ViewTexture::Initialize(int width, int height)
 
 void ViewTexture::Release()
 {
-    this->rtv->Release();
-    this->srv->Release();
+    if (this->rtv) this->rtv->Release();
+    if (this->srv) this->srv->Release();
 
     delete this;
 }

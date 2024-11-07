@@ -23,7 +23,6 @@ public:
 	Matrix4x4 GetProjectionMatrix();
 	void SetOrthoProjection(float width, float height, float nearPlane, float farPlane);
 	void SetPerspProjection(float fov, float aspect, float zNear, float zFar);
-	void SetWindowSize(float width, float height);
 	void Present();
 	
 
@@ -36,9 +35,6 @@ public:
 protected:
 	SwapChain* swapChain;
 	Matrix4x4 projection;
-
-	float width = 0.0f;
-	float height = 0.0f;
 
 	float deltaTime = 0.0f;
 	float speed = 2.0f;

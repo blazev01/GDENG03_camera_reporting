@@ -5,12 +5,16 @@
 
 SceneCameraHandler* SceneCameraHandler::instance = NULL;
 
-void SceneCameraHandler::Initialize(float width, float height)
+void SceneCameraHandler::Initialize(HWND hwnd, float width, float height)
 {
 	instance = new SceneCameraHandler();
 
+	instance->hwnd = hwnd;
 	instance->width = width;
 	instance->height = height;
+
+	instance->swapChain = GraphicsEngine::CreateSwapChain();
+	instance->swapChain->Init(hwnd, width, height);
 
 	instance->position = Vector3(0.0f, 2.0f, -2.0f);
 	instance->rotation = Vector3(1.0f, 0.0f, 0.0f);
@@ -98,8 +102,11 @@ void SceneCameraHandler::Update()
 
 }
 
-void SceneCameraHandler::Draw()
+void SceneCameraHandler::Render()
 {
+	for (Camera* camera : instance->gameCameras)
+		camera->RenderViewTexture();
+
 	instance->camera->Render();
 }
 
@@ -145,15 +152,13 @@ Matrix4x4 SceneCameraHandler::GetProjectionMatrix()
 	return instance->camera->GetProjectionMatrix();
 }
 
-void SceneCameraHandler::CreateNewCamera(SwapChain* swapChain)
+void SceneCameraHandler::CreateNewCamera()
 {
 	if (instance->cameras.size() < instance->cameraLimit)
 	{
 		instance->cameraCount++;
-		instance->cameras.push_back(new Camera("Scene Camera " + std::to_string(instance->cameraCount), swapChain));
-		instance->cameras[instance->cameraCount - 1]->SetWindowSize(instance->width, instance->height);
-		instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
-			0.01f, 1000.0f);
+		instance->cameras.push_back(new Camera("Scene Camera " + std::to_string(instance->cameraCount), instance->swapChain));
+		instance->cameras[instance->cameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height, 0.01f, 1000.0f);
 
 		if (instance->camera == NULL)
 			instance->camera = instance->cameras[instance->cameraCount - 1];
@@ -163,24 +168,20 @@ void SceneCameraHandler::CreateNewCamera(SwapChain* swapChain)
 	}
 }
 
-void SceneCameraHandler::CreateGameCamera(SwapChain* swapChain, void* shaderBytes, size_t shaderSize, VertexShader* vertexShader, PixelShader* pixelShader)
+GameCamera* SceneCameraHandler::CreateGameCamera(void* shaderBytes, size_t shaderSize)
 {
 	if (instance->gameCameras.size() < instance->gameCameraLimit)
 	{
 		instance->gameCameraCount++;
-		instance->gameCameras.push_back(new GameCamera("Game Camera" + std::to_string(instance->gameCameraCount), swapChain, shaderBytes, shaderSize, instance->width, instance->height));
-		instance->gameCameras[instance->gameCameraCount - 1]->SetWindowSize(instance->width, instance->height);
+		instance->gameCameras.push_back(new GameCamera("Game Camera" + std::to_string(instance->gameCameraCount), instance->swapChain, shaderBytes, shaderSize));
 		instance->gameCameras[instance->gameCameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
 			0.01f, 1000.0f);
 		instance->gameCameras[instance->gameCameraCount - 1]->SetScale(Vector3(0.5f));
 		instance->gameCameras[instance->gameCameraCount - 1]->SetPosition(Vector3(0,0,0));
-		instance->gameCameras[instance->gameCameraCount - 1]->SetVertexShader(vertexShader);
-		instance->gameCameras[instance->gameCameraCount - 1]->SetPixelShader(pixelShader);
 		instance->gameCameras[instance->gameCameraCount - 1]->SetPriority(1);
 		instance->gameCameras[instance->gameCameraCount - 1]->SetLayer(1);
-		GameObjectManager::AddGameObject(instance->gameCameras[instance->gameCameraCount - 1]);
-		RenderQueue::AddRenderer(instance->gameCameras[instance->gameCameraCount - 1]); 
 		std::cout << instance->gameCameras[instance->gameCameraCount - 1]->GetName() << std::endl;
+		return instance->gameCameras[instance->gameCameraCount - 1];
 	}
 }
 
@@ -205,6 +206,13 @@ Camera* SceneCameraHandler::GetGameCamera()
 
 	else
 		return nullptr;
+}
+
+GameCamera* SceneCameraHandler::GetGameCamera(unsigned int index)
+{
+	if (!instance->gameCameras.empty() && index < instance->gameCameras.size())
+		return instance->gameCameras[index];
+	else return nullptr;
 }
 
 void SceneCameraHandler::SwitchNextCamera()
@@ -242,7 +250,7 @@ void SceneCameraHandler::SwitchCameraType()
 {
 	if (instance->isSceneCamera && !instance->gameCameras.empty())
 	{
-		instance->gameCameras[0]->setActive(true);
+		instance->gameCameras[0]->SetActive(true);
 		instance->camera = instance->gameCameras[0];
 		instance->isSceneCamera = false;
 		
@@ -250,7 +258,7 @@ void SceneCameraHandler::SwitchCameraType()
 	else if(!instance->isSceneCamera && !instance->gameCameras.empty())
 	{
 		instance->camera = instance->cameras[instance->cameraIterator];
-		instance->gameCameras[0]->setActive(false);
+		instance->gameCameras[0]->SetActive(false);
 		instance->isSceneCamera = true;
 	}
 	std::cout << "Currently using camera: " << instance->camera->GetName()<< std::endl;

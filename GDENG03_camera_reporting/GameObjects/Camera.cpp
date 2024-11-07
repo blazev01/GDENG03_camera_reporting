@@ -11,7 +11,6 @@ Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name)
 
 	this->swapChain = swapChain;
     this->viewTexture = new ViewTexture();
-    this->viewTexture->Initialize(350, 200);
 }
 
 Camera::~Camera()
@@ -52,11 +51,9 @@ void Camera::Release()
 
 void Camera::Render()
 {
-    this->RenderViewTexture();
-
     GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->swapChain, 0.0f, 0.45f, 0.5f, 1.0f);
 
-    GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->width, this->height);
+    GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->swapChain->GetWidth(), this->swapChain->GetHeight());
 
     RenderQueue::Render(this->cullingMask);
 }
@@ -97,12 +94,6 @@ void Camera::SetPerspProjection(float fov, float aspect, float zNear, float zFar
 	this->projection.SetPerspectiveLH(fov, aspect, zNear, zFar);
 }
 
-void Camera::SetWindowSize(float width, float height)
-{
-	this->width = width;
-	this->height = height;
-}
-
 void Camera::Present()
 {
 	this->swapChain->Present(true);
@@ -120,11 +111,11 @@ void Camera::SetCullingMask(std::bitset<4> cullingMask)
 
 float Camera::getWidth()
 {
-    return this->width;
+    return this->swapChain->GetWidth();
 }
 
 float Camera::getHeight()
 {
-    return this->height;
+    return this->swapChain->GetHeight();
 }
 

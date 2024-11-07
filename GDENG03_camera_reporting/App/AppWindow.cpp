@@ -31,15 +31,12 @@ void AppWindow::OnCreate()
 	float width = rect.right - rect.left;
 	float height = rect.bottom - rect.top;
 
-	SceneCameraHandler::Initialize(width, height);
+	SceneCameraHandler::Initialize(this->hwnd, width, height);
 	GameObjectManager::Initialize();
 	RenderQueue::Initialize();
 	UIManager::Initialize(this->hwnd);
 
-	this->swapChain = GraphicsEngine::CreateSwapChain();
-	this->swapChain->Init(this->hwnd, width, height);
-
-	SceneCameraHandler::CreateNewCamera(this->swapChain);
+	SceneCameraHandler::CreateNewCamera();
 	
 	//SwapChain* swapChain2 = GraphicsEngine::CreateSwapChain();
 	//swapChain2->Init(this->hwnd, width, height);
@@ -57,7 +54,6 @@ void AppWindow::OnCreate()
 	//SceneCameraHandler::GetCamera(1)->SetCullingMask(cullingMask1);
 	//SceneCameraHandler::GetCamera(2)->SetCullingMask(cullingMask2);
 
-	SceneCameraHandler::GetSceneCamera()->SetWindowSize(width, height);
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
 	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
 	
@@ -116,7 +112,7 @@ void AppWindow::OnUpdate()
 	SceneCameraHandler::Update();
 	GameObjectManager::Update();
 
-	SceneCameraHandler::Draw();
+	SceneCameraHandler::Render();
 	UIManager::DrawAllUI();
 	SceneCameraHandler::Present();
 }
@@ -195,7 +191,7 @@ void AppWindow::OnKeyDown(int key)
 		break;
 	case VK_RETURN:
 		std::cout << "Enter" << std::endl;
-		SceneCameraHandler::CreateGameCamera(this->swapChain, this->vsBytes, this->vsSize, this->vertexShader, this->pixelShader);
+		//SceneCameraHandler::CreateGameCamera(this->vsBytes, this->vsSize);
 		
 		break;
 	default:

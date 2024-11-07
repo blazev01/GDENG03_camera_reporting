@@ -51,12 +51,12 @@ private:
 	Matrix4x4 cam;
 
 private:
-	VertexShader* vertexShader;
-	PixelShader* pixelShader;
-
 	std::vector<GameObject*> gameObjects;
 	std::vector<Circle*> circles;
 	Cube* cube;
+
+	VertexShader* vertexShader;
+	PixelShader* pixelShader;
 
 	void* vsBytes = nullptr;
 	size_t vsSize = 0;

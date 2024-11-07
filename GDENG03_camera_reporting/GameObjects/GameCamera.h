@@ -10,11 +10,11 @@
 class GameCamera:public Camera
 {
 public:
-	GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize, float width, float height);
+	GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize);
 	virtual void Update(float deltaTime) override;
 	virtual void Draw() override;
 	virtual void Release() override;
-	void setActive(bool isActive);
+	void SetActive(bool isActive);
 	~GameCamera();
 
 private:

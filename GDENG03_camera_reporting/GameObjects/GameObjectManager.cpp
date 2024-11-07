@@ -1,11 +1,28 @@
 #include "GameObjectManager.h"
 #include "../EngineTime/EngineTime.h"
+#include "../GraphicsEngine/GraphicsEngine.h"
+#include "../SceneCamera/SceneCameraHandler.h"
+#include "RenderQueue.h"
+#include "Cube.h"
+#include "Quad.h"
+#include "GameCamera.h"
 
 GameObjectManager* GameObjectManager::instance = NULL;
 
 void GameObjectManager::Initialize()
 {
 	instance = new GameObjectManager();
+
+	GraphicsEngine::CompileVertexShader(L"VertexShader.hlsl", "vsmain", &instance->vsBytes, &instance->vsSize);
+	instance->vertexShader = GraphicsEngine::CreateVertexShader(instance->vsBytes, instance->vsSize);
+
+	void* psBytes = nullptr;
+	size_t psSize = 0;
+
+	GraphicsEngine::CompilePixelShader(L"PixelShader.hlsl", "psmain", &psBytes, &psSize);
+	instance->pixelShader = GraphicsEngine::CreatePixelShader(psBytes, psSize);
+
+	GraphicsEngine::ReleaseCompiledShader();
 }
 
 void GameObjectManager::Update()
@@ -27,6 +44,43 @@ void GameObjectManager::Release()
 		instance->gameObjectMap.clear();
 		instance->gameObjects.clear();
 	}
+}
+
+void GameObjectManager::CreateGameObject(PrimitiveType primitiveType)
+{
+	GameObject* gameObject = NULL;
+
+	switch (primitiveType)
+	{
+	case GameObjectManager::QUAD:
+	{
+		gameObject = new Quad("Quad", instance->vsBytes, instance->vsSize);
+		break;
+	}
+	case GameObjectManager::CUBE:
+	{
+		gameObject = new Cube("Cube", instance->vsBytes, instance->vsSize);
+		break;
+	}
+	case GameObjectManager::SPHERE:
+	{
+		//gameObject = new Cube("Sphere", instance->vsBytes, instance->vsSize);
+		break;
+	}
+	case GameObjectManager::GAME_CAMERA:
+	{
+
+		gameObject = SceneCameraHandler::CreateGameCamera(instance->vsBytes, instance->vsSize);
+		break;
+	}
+	default:
+		break;
+	}
+
+	gameObject->SetVertexShader(instance->vertexShader);
+	gameObject->SetPixelShader(instance->pixelShader);
+	instance->AddGameObject(gameObject);
+	RenderQueue::AddRenderer(gameObject);
 }
 
 void GameObjectManager::AddGameObject(GameObject* gameObject)

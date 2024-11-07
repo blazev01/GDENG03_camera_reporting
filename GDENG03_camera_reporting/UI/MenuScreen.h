@@ -9,5 +9,9 @@ protected:
 	virtual void DrawUI() override;
 
 	friend class UIManager;
+
+private:
+	void ShowMenuFile();
+	void ShowMenuGameObject();
 };
 

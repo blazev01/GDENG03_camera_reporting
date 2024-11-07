@@ -12,11 +12,16 @@ public:
 	bool Present(bool vsync);
 	bool Release();
 
+	int GetWidth();
+	int GetHeight();
 	ID3D11DepthStencilView* getDSV();
 
 	~SwapChain();
 
 private:
+	int width = 0;
+	int height = 0;
+
 	IDXGISwapChain* swapChain;
 	ID3D11RenderTargetView* rtv;
 	ID3D11DepthStencilView* dsv;

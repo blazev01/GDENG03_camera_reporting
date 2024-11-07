@@ -9,17 +9,19 @@ public:
 	typedef std::vector<GameObject*> List;
 	typedef std::unordered_map<std::string, GameObject*> HashTable;
 
-	enum PrimitveType
+	enum PrimitiveType
 	{
+		QUAD,
 		CUBE,
-		PLANE,
 		SPHERE,
+		GAME_CAMERA,
 	};
 
 	static void Initialize();
 	static void Update();
 	static void Release();
 
+	static void CreateGameObject(PrimitiveType primitiveType);
 	static void AddGameObject(GameObject* gameObject);
 	static void DeleteGameObject(GameObject* gameObject);
 	static void DeleteGameObject(std::string name);
@@ -41,5 +43,12 @@ private:
 	List gameObjects;
 	HashTable gameObjectMap;
 	GameObject* selectedObject = NULL;
+
+	VertexShader* vertexShader;
+	PixelShader* pixelShader;
+
+	void* vsBytes = nullptr;
+	size_t vsSize = 0;
+
 };
 

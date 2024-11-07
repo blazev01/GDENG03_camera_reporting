@@ -7,9 +7,9 @@
 class SceneCameraHandler
 {
 public:
-	static void Initialize(float width, float height);
+	static void Initialize(HWND hwnd, float width, float height);
 	static void Update();
-	static void Draw();
+	static void Render();
 	static void Present();
 	static void Release();
 
@@ -18,11 +18,12 @@ public:
 	static Matrix4x4 GetProjectionMatrix();
 
 public:
-	static void CreateNewCamera(SwapChain* swapChain);
-	static void CreateGameCamera(SwapChain* swapchain, void* shaderBytes, size_t shaderSize, VertexShader* vertexShader, PixelShader* pixelShader);
+	static void CreateNewCamera();
+	static GameCamera* CreateGameCamera(void* shaderBytes, size_t shaderSize);
 	static Camera* GetCurCamera();
 	static Camera* GetCamera(int index);
 	static Camera* GetGameCamera();
+	static GameCamera* GetGameCamera(unsigned int index);
 	static void SwitchNextCamera();
 	static void SwitchPrevCamera();
 	static void SwitchCameraType();
@@ -43,6 +44,7 @@ private:
 	std::vector<Camera*> cameras;
 	std::vector<GameCamera*> gameCameras;
 	Camera* camera = NULL;
+	SwapChain* swapChain = NULL;
 
 	int cameraLimit = 1;
 	int gameCameraLimit = 1;
@@ -50,6 +52,7 @@ private:
 	int gameCameraCount = 0;
 	int cameraIterator = 0;
 
+	HWND hwnd = NULL;
 	int width = 0;
 	int height = 0;
 
