@@ -2,12 +2,13 @@
 
 TextureManager::TextureManager() : ResourceManager()
 {
-
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	if (FAILED(hr)) throw std::exception("Texture manager failed to initialize.");
 }
 
 TextureManager::~TextureManager()
 {
-
+	CoUninitialize();
 }
 
 Texture* TextureManager::CreateTextureFromFile(const wchar_t* filePath)

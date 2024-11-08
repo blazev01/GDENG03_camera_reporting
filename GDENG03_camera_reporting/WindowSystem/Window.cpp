@@ -77,7 +77,7 @@ bool Window::Init()
 
     if (!::RegisterClassEx(&wc)) return false;
 
-    this->hwnd=::CreateWindowEx(
+    this->hwnd = ::CreateWindowEx(
         WS_EX_OVERLAPPEDWINDOW,
         L"MyWindowClass",
         L"DirectX Application",

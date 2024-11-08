@@ -122,8 +122,6 @@ void AppWindow::OnCreate()
 		CreateLine(nearPlanePoints[cornerPairs[i][0]], nearPlanePoints[cornerPairs[i][1]])->SetParent(SceneCameraHandler::GetSceneCamera());
 		CreateLine(farPlanePoints[cornerPairs[i][0]], farPlanePoints[cornerPairs[i][1]])->SetParent(SceneCameraHandler::GetSceneCamera());
 	}
-
-	Texture* tex = GraphicsEngine::GetTextureManager()->CreateTextureFromFile(L"..\\Assets\\Textures\\wood.jpg");
 }
 
 Line* AppWindow::CreateLine(const Vector3& startPos, const Vector3& endPos) {

@@ -7,8 +7,7 @@ Texture::Texture(const wchar_t* fullPath) : Resource(fullPath)
 {
 	DirectX::ScratchImage imageData;
 	HRESULT hr = DirectX::LoadFromWICFile(fullPath, DirectX::WIC_FLAGS_NONE, nullptr, imageData);
-	std::wcout << fullPath << "\n";
-	std::cout << imageData.GetMetadata().width << "\n";
+	std::wcout << "Loading texture from: " << fullPath << "\n";
 
 	if (SUCCEEDED(hr))
 	{
