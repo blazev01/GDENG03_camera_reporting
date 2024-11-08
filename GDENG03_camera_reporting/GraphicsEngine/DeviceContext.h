@@ -1,5 +1,6 @@
 #pragma once
 #include "d3d11.h"
+#include "../Resource/Texture.h"
 
 class SwapChain;
 class VertexBuffer;
@@ -28,6 +29,9 @@ public:
 	void SetVertexShader(VertexShader* vertexShader);
 	void SetPixelShader(PixelShader* pixelShader);
 
+	void SetTexture(VertexShader* vertexShader, Texture* texture);
+	void SetTexture(PixelShader* pixelShader, Texture* texture);
+
 	void SetConstantBuffer(VertexShader* vertexShader, ConstantBuffer* buffer);
 	void SetConstantBuffer(PixelShader* pixelShader, ConstantBuffer* buffer);
 
@@ -39,5 +43,8 @@ public:
 
 private:
 	ID3D11DeviceContext* deviceContext;
+
+private:
+	friend class ConstantBuffer;
 };
 

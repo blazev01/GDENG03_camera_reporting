@@ -123,6 +123,18 @@
     </ClCompile>
     <ClCompile Include="GameObjects\ViewTexture.cpp" />
     <ClCompile Include="GameObjects\Line.cpp" />
+    <ClCompile Include="Resource\Resource.cpp">
+      <Filter>GameEngine\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\ResourceManager.cpp">
+      <Filter>GameEngine\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Texture.cpp">
+      <Filter>GameEngine\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\TextureManager.cpp">
+      <Filter>GameEngine\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsEngine\ConstantBuffer.h">
@@ -259,6 +271,18 @@
     </ClInclude>
     <ClInclude Include="GameObjects\ViewTexture.h" />
     <ClInclude Include="GameObjects\Line.h" />
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceManager.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Texture.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\TextureManager.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -296,6 +320,9 @@
     </Filter>
     <Filter Include="GameEngine\IMGUI">
       <UniqueIdentifier>{46097bf9-7f7a-4dae-9e3f-53cd664ba20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Resource">
+      <UniqueIdentifier>{d36aac03-9a11-4372-a49a-603fd1bef0c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

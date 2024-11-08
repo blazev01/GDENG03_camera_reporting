@@ -91,6 +91,16 @@ void DeviceContext::SetPixelShader(PixelShader* pixelShader)
     this->deviceContext->PSSetShader(pixelShader->ps, nullptr, 0);
 }
 
+void DeviceContext::SetTexture(VertexShader* vertexShader, Texture* texture)
+{
+    this->deviceContext->VSSetShaderResources(0, 1, &texture->srv);
+}
+
+void DeviceContext::SetTexture(PixelShader * pixelShader, Texture* texture)
+{
+    this->deviceContext->PSSetShaderResources(0, 1, &texture->srv);
+}
+
 void DeviceContext::SetConstantBuffer(VertexShader* vertexShader, ConstantBuffer* buffer)
 {
     this->deviceContext->VSSetConstantBuffers(0, 1, &buffer->buffer);

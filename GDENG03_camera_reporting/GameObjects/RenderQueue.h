@@ -22,5 +22,6 @@ private:
 	static RenderQueue* instance;
 
 	std::vector<GameObject*> renderers;
+	std::vector<GameObject*> gizmos;
 };
 
