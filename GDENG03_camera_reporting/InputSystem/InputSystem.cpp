@@ -13,10 +13,7 @@ void InputSystem::Update()
 {
     if (!instance->enabled ||
         ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) ||
-        ImGui::IsAnyItemHovered() ||
-        ImGui::IsMouseDragging(0) ||
-        ImGui::IsMouseDragging(1) ||
-        ImGui::IsMouseDragging(2)) return;
+        ImGui::IsAnyItemHovered()) return;
 
     instance->oldCursorPos = instance->cursorPos;
     ::memcpy(instance->oldKeysState, instance->keysState, sizeof(unsigned char) * 256);
