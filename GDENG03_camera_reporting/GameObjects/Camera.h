@@ -15,7 +15,7 @@ public:
 	virtual void Draw(Matrix4x4 view, Matrix4x4 proj) override;
 	virtual void Destroy() override;
 
-	void Recalculate();
+	void Recalculate() override;
 	void Render();
 	void RenderViewTexture();
 	void Present();

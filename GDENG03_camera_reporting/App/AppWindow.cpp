@@ -72,10 +72,19 @@ void AppWindow::OnCreate()
 	//SceneCameraHandler::SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
 	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
 
+	TextureManager::CreateTextureFromFile(L"..\\Assets\\Textures\\brick.png");
+	MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj");
+	MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\bunny.obj");
+	MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\armadillo.obj");
+
 	void* shaderBytes = nullptr;
 	size_t shaderSize = 0;
 
-	ShaderLibrary::RequestVertexShaderData(L"VertexMeshLayout.hlsl", &shaderBytes, &shaderSize);
+	ShaderLibrary::GetMeshLayout(&shaderBytes, &shaderSize);
+
+	this->vsBytes = shaderBytes;
+	this->vsSize = shaderSize;
+
 	this->pixelShader = ShaderLibrary::GetPixelShader(L"PixelShader.hlsl");
 	this->vertexShader = ShaderLibrary::GetVertexShader(L"VertexShader.hlsl");
 	
