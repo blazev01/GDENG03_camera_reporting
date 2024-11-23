@@ -43,45 +43,39 @@ void SceneCameraHandler::Update()
 
 			if (mousePos != instance->oldMousePos)
 			{
-				instance->rotation.x += (mousePos.y - (instance->height / 2.0f)) * deltaTime * 0.1f;
-				instance->rotation.y += (mousePos.x - (instance->width / 2.0f)) * deltaTime * 0.1f;
+				instance->rotation.x -= (mousePos.y - (instance->height / 2.0f)) * deltaTime * 0.1f;
+				instance->rotation.y -= (mousePos.x - (instance->width / 2.0f)) * deltaTime * 0.1f;
 				instance->oldMousePos = mousePos;
 			}
 		}
 
 		if (InputSystem::IsKey('W'))
 		{
-			std::cout << "W" << "\n";
 			instance->position -= instance->speed * deltaTime * instance->camera->GetForward();
 		}
 
 		if (InputSystem::IsKey('S'))
 		{
-			std::cout << "S" << "\n";
 			instance->position += instance->speed * deltaTime * instance->camera->GetForward();
 		}
 
 		if (InputSystem::IsKey('A'))
 		{
-			std::cout << "A" << "\n";
 			instance->position -= instance->speed * deltaTime * instance->camera->GetRight();
 		}
 
 		if (InputSystem::IsKey('D'))
 		{
-			std::cout << "D" << "\n";
 			instance->position += instance->speed * deltaTime * instance->camera->GetRight();
 		}
 
 		if (InputSystem::IsKey('Q'))
 		{
-			std::cout << "Q" << "\n";
 			instance->position.y -= instance->speed * deltaTime;
 		}
 
 		if (InputSystem::IsKey('E'))
 		{
-			std::cout << "E" << "\n";
 			instance->position.y += instance->speed * deltaTime;
 		}
 		/*if (InputSystem::IsKeyDown('G') && !instance->gameCameras.empty())

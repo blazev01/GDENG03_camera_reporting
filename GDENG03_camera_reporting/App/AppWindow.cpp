@@ -49,7 +49,7 @@ void AppWindow::OnCreate()
 
 	RenderQueue::Initialize();
 	UIManager::Initialize(this->hwnd);
-	SceneCameraHandler::Initialize(hwnd, width, height);
+	SceneCameraHandler::Initialize(this->hwnd, width, height);
 
 	SceneCameraHandler::CreateNewCamera();
 	

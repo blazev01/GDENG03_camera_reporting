@@ -72,7 +72,7 @@ bool SwapChain::Present(bool vsync)
 
 bool SwapChain::Release()
 {
-	if (this->swapChain) this->swapChain->Release();
+	this->swapChain->Release();
 	delete this;
 	return true;
 }
