@@ -1,4 +1,6 @@
 #include "ProfilerScreen.h"
+#include "../EngineTime/EngineTime.h"
+#include "../GameObjects/GameObjectManager.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 
 ProfilerScreen::ProfilerScreen() : UIScreen("PROFILER_SCREEN")
@@ -13,25 +15,26 @@ ProfilerScreen::~ProfilerScreen()
 
 void ProfilerScreen::DrawUI()
 {
-	ImGuiWindowFlags flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
-
-	std::vector<GameCamera*> cameras = SceneCameraHandler::GetGameCameras();
-	int i = 0;
-	for (GameCamera* camera : cameras)
+	if (ImGui::Begin("Profiler", &this->enabled))
 	{
-		if (camera)
+		float deltaTime = EngineTime::GetUnscaledDeltaTime();
+		this->ticks += deltaTime;
+
+		this->frameCount++;
+		int fps = frameCount / this->ticks;
+
+		if (this->ticks >= 1.0f)
 		{
-			if (!camera->GetViewTexture()->GetSRV())
-				camera->GetViewTexture()->Initialize(350, 200);
-			std::string name = "Game Camera " + std::to_string(i);
-			ImGui::Begin(name.c_str(), (bool*)0, flags);
-			ID3D11ShaderResourceView* texture = camera->GetViewTexture()->GetSRV();
-
-			if (texture) ImGui::Image((ImTextureID)texture, ImVec2(350, 200));
-			else ImGui::Text("Failed to render camera to texture");
-
-			ImGui::End();
-			i++;
+			this->frameCount = 0;
+			this->ticks = 0.0f;
 		}
+
+		std::string fpsText = "FPS: " + std::to_string(fps);
+		ImGui::Text(fpsText.c_str());
+
+		std::string gameObjectsText = "GameObjects: " + std::to_string(GameObjectManager::GetGameObjects().size());
+		ImGui::Text(gameObjectsText.c_str());
+
+		ImGui::End();
 	}
 }

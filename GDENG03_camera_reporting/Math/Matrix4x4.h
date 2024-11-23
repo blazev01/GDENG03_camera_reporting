@@ -1,6 +1,6 @@
 #pragma once
-#include "Vector3.h"
-#include "Vector4.h"
+#include "Vector3D.h"
+#include "Vector4D.h"
 #include "memory"
 
 class Matrix4x4
@@ -12,17 +12,19 @@ public:
 
 public:
 	void SetIdentity();
-	void SetPosition(const Vector3& position);
-	void SetScale(const Vector3& scale);
+	void SetPosition(const Vector3D& position);
+	void SetScale(const Vector3D& scale);
 	void SetRotationX(float x);
 	void SetRotationY(float y);
 	void SetRotationZ(float z);
-	void SetRotation(float angle, Vector3 axis);
+	void SetRotation(float angle, Vector3D axis);
 
-	Vector3 GetPosition();
-	Vector3 GetRight();
-	Vector3 GetUp();
-	Vector3 GetForward();
+	Vector3D GetPosition();
+	Vector3D GetScale();
+	Vector3D GetRotation();
+	Vector3D GetRight();
+	Vector3D GetUp();
+	Vector3D GetForward();
 
 	float GetDeterminant() const;
 	void Inverse();
@@ -30,6 +32,8 @@ public:
 	void SetPerspectiveLH(float fov, float aspect, float zNear, float zFar);
 	void SetOrthoLH(float width, float height, float nearPlane, float farPlane);
 	void SetMatrix(const Matrix4x4& matrix);
+	void SetMatrix(float matrix[16]);
+	float* GetAs1DArray() const;
 
 	void operator *=(const Matrix4x4& matrix);
 

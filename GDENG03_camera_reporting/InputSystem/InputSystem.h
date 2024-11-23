@@ -1,20 +1,21 @@
 #pragma once
 #include "unordered_set"
 #include "InputListener.h"
-#include "../Math/Vector2.h"
+#include "../Math/Vector2D.h"
 
 class InputSystem
 {
 public:
 	static void Initialize();
 	static void Update();
+	static void Destroy();
 
 	static void AddListener(InputListener* listener);
 	static void RemoveListener(InputListener* listener);
 
-	static Vector2 GetCursorPosition();
+	static Vector2D GetCursorPosition();
 	static void SetCursorPosition(const float& x, const float& y);
-	static void SetCursorPosition(const Vector2& position);
+	static void SetCursorPosition(const Vector2D& position);
 	static void ShowCursor(bool show);
 
 	static bool IsKey(int key);
@@ -36,7 +37,7 @@ private:
 	unsigned char keysState[256] = {};
 	unsigned char oldKeysState[256] = {};
 
-	Vector2 oldCursorPos;
-	Vector2 cursorPos;
+	Vector2D oldCursorPos;
+	Vector2D cursorPos;
 	bool enabled = true;
 };

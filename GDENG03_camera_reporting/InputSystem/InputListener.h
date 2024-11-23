@@ -1,5 +1,5 @@
 #pragma once
-#include "../Math/Vector2.h"
+#include "../Math/Vector2D.h"
 
 class InputListener
 {
@@ -11,7 +11,7 @@ public:
 	virtual void OnKeyDown(int key) = 0;
 	virtual void OnKeyUp(int key) = 0;
 
-	virtual void OnMouseMove(const Vector2& deltaMousePos) = 0;
+	virtual void OnMouseMove(const Vector2D& deltaMousePos) = 0;
 	virtual void OnMouseButton(int button) = 0;
 	virtual void OnMouseButtonDown(int button) = 0;
 	virtual void OnMouseButtonUp(int button) = 0;

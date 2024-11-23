@@ -72,24 +72,19 @@ bool SwapChain::Present(bool vsync)
 
 bool SwapChain::Release()
 {
-	this->swapChain->Release();
+	if (this->swapChain) this->swapChain->Release();
 	delete this;
 	return true;
 }
 
-int SwapChain::GetWidth()
+int SwapChain::GetWidth() const
 {
 	return this->width;
 }
 
-int SwapChain::GetHeight()
+int SwapChain::GetHeight() const
 {
 	return this->height;
-}
-
-ID3D11DepthStencilView* SwapChain::getDSV()
-{
-	return this->dsv;
 }
 
 SwapChain::~SwapChain()

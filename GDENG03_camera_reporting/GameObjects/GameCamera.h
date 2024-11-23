@@ -13,7 +13,7 @@ public:
 	GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes, size_t shaderSize);
 	virtual void Update(float deltaTime) override;
 	virtual void Draw(Matrix4x4 view, Matrix4x4 proj) override;
-	virtual void Release() override;
+	virtual void Destroy() override;
 	void SetActive(bool isActive);
 	~GameCamera();
 

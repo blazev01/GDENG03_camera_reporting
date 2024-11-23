@@ -8,7 +8,7 @@
 
 Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
 {
-	this->radius = 0.5f;
+	/*this->radius = 0.5f;
 	int segments = 32;
 
 	Vertex vertices[32 + 1];
@@ -18,10 +18,10 @@ Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 		float angle = 2.0f * 3.14159f * i / segments;
 		float x = this->radius * cos(angle);
 		float y = this->radius * sin(angle);
-		vertices[i] = { Vector3(x, y, 0.0f), RGB_RED, RGB_BLUE };
+		vertices[i] = { Vector3D(x, y, 0.0f), RGB_RED, RGB_BLUE };
 	}
 
-	vertices[segments] = { Vector3(0.0f), RGB_RED, RGB_BLUE };
+	vertices[segments] = { Vector3D(0.0f), RGB_RED, RGB_BLUE };
 
 	for (int i = 0; i < segments; i++) {
 		indices[i * 3] = (i + 1) % segments;
@@ -42,7 +42,7 @@ Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 	cc.time = 0;
 
 	this->constantBuffer = GraphicsEngine::CreateConstantBuffer();
-	this->constantBuffer->Load(&cc, sizeof(Constant));
+	this->constantBuffer->Load(&cc, sizeof(Constant));*/
 }
 
 Circle::~Circle()
@@ -55,7 +55,7 @@ void Circle::Update(float deltaTime)
 	this->deltaTime = deltaTime;
 	this->ticks += this->deltaTime;
 
-	Vector3 newPos = this->localPosition + (this->velocity * this->deltaTime);
+	Vector3D newPos = this->localPosition + (this->velocity * this->deltaTime);
 
 	float right = 1.5f;
 	float left = -1.5f;
@@ -83,8 +83,8 @@ void Circle::Draw(Matrix4x4 view, Matrix4x4 proj)
 	Constant cc = Constant();
 	cc.time = this->ticks;
 	cc.world = this->transform;
-	cc.view = SceneCameraHandler::GetViewMatrix();
-	cc.proj = SceneCameraHandler::GetProjectionMatrix();
+	cc.view = view;
+	cc.proj = proj;
 
 	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
 	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->vertexShader, this->constantBuffer);
@@ -99,8 +99,10 @@ void Circle::Draw(Matrix4x4 view, Matrix4x4 proj)
 	GraphicsEngine::GetImmediateDeviceContext()->DrawIndexedTriangleList(this->indexBuffer->GetIndexListSize(), 0, 0);
 }
 
-void Circle::Release()
+void Circle::Destroy()
 {
+	GameObject::Destroy();
+
 	this->vertexBuffer->Release();
 	this->indexBuffer->Release();
 	this->constantBuffer->Release();
@@ -108,7 +110,7 @@ void Circle::Release()
 	delete this;
 }
 
-void Circle::SetVelocity(Vector3 velocity)
+void Circle::SetVelocity(Vector3D velocity)
 {
 	this->velocity = velocity;
 }

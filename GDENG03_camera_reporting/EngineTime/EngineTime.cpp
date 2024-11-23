@@ -7,6 +7,11 @@ void EngineTime::Initialize()
     instance = new EngineTime();
 }
 
+void EngineTime::Destroy()
+{
+    delete instance;
+}
+
 double EngineTime::GetTime()
 {
     return instance->time;

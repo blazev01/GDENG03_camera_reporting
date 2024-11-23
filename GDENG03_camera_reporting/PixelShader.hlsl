@@ -1,8 +1,8 @@
 struct PS_INPUT
 {
     float4 position : POSITION;
-    float3 color : COLOR;
-    float3 color1 : COLOR1;
+    float2 texcoord : TEXCOORD0;
+    float4 albedo : ALBEDO;
 };
 
 cbuffer constant : register(b0)
@@ -13,7 +13,10 @@ cbuffer constant : register(b0)
     float time;
 }
 
+Texture2D Texture : register(t0);
+sampler TexSampler : register(s0);
+
 float4 psmain(PS_INPUT input) : SV_TARGET
 {
-    return float4(lerp(input.color, input.color1, (sin(time) + 1.0f) / 2.0f), 1.0f);
+    return input.albedo;
 }

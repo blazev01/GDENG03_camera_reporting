@@ -9,8 +9,11 @@ public:
 	typedef std::unordered_map<std::string, UIScreen*> UITable;
 
 	static void Initialize(HWND hwnd);
-	static void Release();
+	static void Destroy();
 	static void DrawAllUI();
+
+	static bool GetEnabled(std::string name);
+	static void SetEnabled(std::string name, bool enabled);
 
 	static const int WINDOW_WIDTH = 1024;
 	static const int WINDOW_HEIGHT = 768;

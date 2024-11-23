@@ -9,6 +9,8 @@ class EngineTime
 {
 public:
 	static void Initialize();
+	static void Destroy();
+
 	static double GetTime();
 	static double GetDeltaTime();
 	static double GetUnscaledTime();

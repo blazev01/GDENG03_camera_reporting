@@ -7,6 +7,8 @@ class RenderQueue
 {
 public:
 	static void Initialize();
+	static void Destroy();
+
 	static void AddRenderer(GameObject* renderer);
 	static void RemoveRenderer(GameObject* renderer);
 

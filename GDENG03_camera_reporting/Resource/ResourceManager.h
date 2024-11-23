@@ -5,13 +5,12 @@
 
 class ResourceManager
 {
-public:
+protected:
 	ResourceManager();
 	~ResourceManager();
+	void FreeResources();
 
 	Resource* CreateResourceFromFile(const wchar_t* filePath);
-
-protected:
 	virtual Resource* CreateResourceFromFileConcrete(const wchar_t* filePath) = 0;
 
 private:

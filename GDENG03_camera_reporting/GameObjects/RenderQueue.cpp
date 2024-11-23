@@ -7,6 +7,11 @@ void RenderQueue::Initialize()
 	instance = new RenderQueue();
 }
 
+void RenderQueue::Destroy()
+{
+	delete instance;
+}
+
 void RenderQueue::AddRenderer(GameObject* renderer)
 {
 	instance->renderers.push_back(renderer);
@@ -21,11 +26,7 @@ void RenderQueue::RemoveRenderer(GameObject * renderer)
 
 	while (it != instance->renderers.end() && *it != renderer) it++;
 
-	if (*it == renderer)
-	{
-		(*it)->Release();
-		instance->renderers.erase(it);
-	}
+	if (*it == renderer) instance->renderers.erase(it);
 }
 
 void RenderQueue::SortByPriority()
@@ -46,7 +47,8 @@ void RenderQueue::Render(std::bitset<4> cullingMask, Matrix4x4 view, Matrix4x4 p
 	if (!instance->renderers.empty())
 	{
 		for (GameObject* renderer : instance->renderers)
-			if (cullingMask[renderer->GetLayer()]) renderer->Draw(view, proj);
+			if (renderer->GetEnabled() && cullingMask[renderer->GetLayer()])
+				renderer->Draw(view, proj);
 	}
 }
 

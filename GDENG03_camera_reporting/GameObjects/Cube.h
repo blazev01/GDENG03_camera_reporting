@@ -3,6 +3,7 @@
 #include "../GraphicsEngine/VertexBuffer.h"
 #include "../GraphicsEngine/IndexBuffer.h"
 #include "../GraphicsEngine/ConstantBuffer.h"
+#include "../Resource/Texture.h"
 
 class Cube : public GameObject
 {
@@ -12,13 +13,15 @@ public:
 
 	void Update(float deltaTime) override;
 	void Draw(Matrix4x4 view, Matrix4x4 proj) override;
-	void Release() override;
+	void Destroy() override;
 	void SetAnimationSpeed(float speed);
 
 private:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
+	Texture* texture;
+
 	float ticks = 0.0f;
 	float deltaPos = 0.0f;
 	float deltaRot = 0.0f;

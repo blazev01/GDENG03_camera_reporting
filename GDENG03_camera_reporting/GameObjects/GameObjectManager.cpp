@@ -1,28 +1,21 @@
 #include "GameObjectManager.h"
 #include "../EngineTime/EngineTime.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
+#include "../GraphicsEngine/ShaderLibrary.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "RenderQueue.h"
 #include "Cube.h"
 #include "Quad.h"
 #include "GameCamera.h"
+#include "MeshObject.h"
+#include "PhysicsCube.h"
+#include "PhysicsQuad.h"
 
 GameObjectManager* GameObjectManager::instance = NULL;
 
 void GameObjectManager::Initialize()
 {
 	instance = new GameObjectManager();
-
-	GraphicsEngine::CompileVertexShader(L"VertexShader.hlsl", "vsmain", &instance->vsBytes, &instance->vsSize);
-	instance->vertexShader = GraphicsEngine::CreateVertexShader(instance->vsBytes, instance->vsSize);
-
-	void* psBytes = nullptr;
-	size_t psSize = 0;
-
-	GraphicsEngine::CompilePixelShader(L"PixelShader.hlsl", "psmain", &psBytes, &psSize);
-	instance->pixelShader = GraphicsEngine::CreatePixelShader(psBytes, psSize);
-
-	GraphicsEngine::ReleaseCompiledShader();
 }
 
 void GameObjectManager::Update()
@@ -30,66 +23,113 @@ void GameObjectManager::Update()
 	if (!instance->gameObjects.empty())
 	{
 		for (GameObject* gameObject : instance->gameObjects)
-			gameObject->Update(EngineTime::GetDeltaTime());
+			if (gameObject->GetEnabled()) gameObject->Update(EngineTime::GetDeltaTime());
 	}
 }
 
-void GameObjectManager::Release()
+void GameObjectManager::Destroy()
 {
 	if (!instance->gameObjects.empty())
 	{
 		for (int i = instance->gameObjects.size() - 1; i >= 0; i--)
-			instance->gameObjects[i]->Release();
+			instance->gameObjects[i]->Destroy();
 
 		instance->gameObjectMap.clear();
 		instance->gameObjects.clear();
 	}
+
+	delete instance;
 }
 
-void GameObjectManager::CreateGameObject(PrimitiveType primitiveType)
+GameObject* GameObjectManager::CreateGameObject(PrimitiveType primitiveType, bool textured)
 {
 	GameObject* gameObject = NULL;
+
+	void* shaderBytes = nullptr;
+	size_t shaderSize = 0;
+
+	ShaderLibrary::GetMeshLayout(&shaderBytes, &shaderSize);
 
 	switch (primitiveType)
 	{
 	case GameObjectManager::QUAD:
 	{
-		gameObject = new Quad("Quad", instance->vsBytes, instance->vsSize);
+		gameObject = new Quad("Quad", shaderBytes, shaderSize);
 		break;
 	}
 	case GameObjectManager::CUBE:
 	{
-		gameObject = new Cube("Cube", instance->vsBytes, instance->vsSize);
+		gameObject = new Cube("Cube", shaderBytes, shaderSize);
 		break;
 	}
 	case GameObjectManager::SPHERE:
 	{
-		//gameObject = new Cube("Sphere", instance->vsBytes, instance->vsSize);
+		//gameObject = new Cube("Sphere", shaderBytes, shaderSize);
 		break;
 	}
 	case GameObjectManager::GAME_CAMERA:
 	{
-
-		gameObject = SceneCameraHandler::CreateGameCamera(instance->vsBytes, instance->vsSize);
+		gameObject = SceneCameraHandler::CreateGameCamera(shaderBytes, shaderSize);
+		break;
+	}
+	case GameObjectManager::MESH:
+	{
+		gameObject = new MeshObject("Mesh", shaderBytes, shaderSize);
+		break;
+	}
+	case GameObjectManager::PHYSICS_CUBE:
+	{
+		gameObject = new PhysicsCube("PhysicsCube", shaderBytes, shaderSize);
+		break;
+	}
+	case GameObjectManager::PHYSICS_QUAD:
+	{
+		gameObject = new PhysicsQuad("PhysicsQuad", shaderBytes, shaderSize);
 		break;
 	}
 	default:
 		break;
 	}
 
-	if (gameObject)
+	VertexShader* vertexShader = ShaderLibrary::GetVertexShader(L"VertexShader.hlsl");
+	PixelShader* pixelShader;
+
+	if (textured) pixelShader = ShaderLibrary::GetPixelShader(L"TexturePixelShader.hlsl");
+	else pixelShader = ShaderLibrary::GetPixelShader(L"PixelShader.hlsl");
+
+	gameObject->SetVertexShader(vertexShader);
+	gameObject->SetPixelShader(pixelShader);
+
+	std::string name = gameObject->GetName();
+	std::string num = "";
+
+	int i = 1;
+	bool added = false;
+
+	while (!added)
 	{
-		gameObject->SetVertexShader(instance->vertexShader);
-		gameObject->SetPixelShader(instance->pixelShader);
-		instance->AddGameObject(gameObject);
-		RenderQueue::AddRenderer(gameObject);
+		if (instance->gameObjectMap.find(name + num) == instance->gameObjectMap.end())
+		{
+			gameObject->SetName(name + num);
+			instance->AddGameObject(gameObject);
+			added = true;
+		}
+		else
+		{
+			num = "_" + std::to_string(i);
+			i++;
+		}
 	}
+
+	return gameObject;
 }
 
 void GameObjectManager::AddGameObject(GameObject* gameObject)
 {
 	instance->gameObjects.push_back(gameObject);
 	instance->gameObjectMap[gameObject->GetName()] = gameObject;
+	RenderQueue::AddRenderer(gameObject);
+	gameObject->Awake();
 }
 
 void GameObjectManager::DeleteGameObject(GameObject* gameObject)
@@ -102,9 +142,13 @@ void GameObjectManager::DeleteGameObject(GameObject* gameObject)
 
 	if (*it == gameObject)
 	{
-		instance->gameObjectMap[gameObject->GetName()] = NULL;
-		(*it)->Release();
+		if (instance->selectedObject == gameObject)
+			instance->selectedObject = NULL;
+
+		RenderQueue::RemoveRenderer(gameObject);
+		instance->gameObjectMap.erase(gameObject->GetName());
 		instance->gameObjects.erase(it);
+		gameObject->Destroy();
 	}
 }
 
@@ -115,12 +159,17 @@ void GameObjectManager::DeleteGameObject(std::string name)
 	List::iterator it = instance->gameObjects.begin();
 
 	while (it != instance->gameObjects.end() && (*it)->GetName() != name) it++;
-
-	if ((*it)->GetName() == name)
+	
+	GameObject* gameObject = *it;
+	if (gameObject && gameObject->GetName() == name)
 	{
-		(*it)->Release();
+		if (instance->selectedObject == gameObject)
+			instance->selectedObject = NULL;
+
+		RenderQueue::RemoveRenderer(gameObject);
+		instance->gameObjectMap.erase(name);
 		instance->gameObjects.erase(it);
-		instance->gameObjectMap[name] = NULL;
+		gameObject->Destroy();
 	}
 }
 
@@ -142,6 +191,31 @@ GameObject* GameObjectManager::GetSelectedObject()
 GameObject* GameObjectManager::FindGameObject(std::string name)
 {
 	return instance->gameObjectMap[name];
+}
+
+const std::vector<GameObject*>& GameObjectManager::GetGameObjects()
+{
+	return instance->gameObjects;
+}
+
+void GameObjectManager::SetObjectName(std::string name, std::string newName)
+{
+	GameObject* gameObject = instance->gameObjectMap[name];
+	gameObject->SetName(newName);
+	instance->gameObjectMap.erase(name);
+	instance->gameObjectMap[newName] = gameObject;
+
+	std::cout << "Renamed object: " << name << " to name: " << newName << "\n";
+}
+
+void GameObjectManager::SaveEditStates()
+{
+
+}
+
+void GameObjectManager::RestoreEditStates()
+{
+
 }
 
 GameObjectManager::GameObjectManager()

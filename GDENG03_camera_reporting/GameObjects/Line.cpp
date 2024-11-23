@@ -4,12 +4,12 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 
-Line::Line(std::string name, void* shaderBytes, size_t shaderSize, const Vector3& startPos, const Vector3& endPos) : GameObject(name)
+Line::Line(std::string name, void* shaderBytes, size_t shaderSize, const Vector3D& startPos, const Vector3D& endPos) : GameObject(name)
 {
 	Vertex vertices[] =
 	{
-		{startPos, RGB_RED, RGB_RED},
-		{endPos, RGB_BLUE, RGB_BLUE}
+		{startPos, Vector2D(), RGBA_RED},
+		{endPos, Vector2D(), RGBA_BLUE}
 	};
 
 	this->vertexBuffer = GraphicsEngine::CreateVertexBuffer();
@@ -24,9 +24,9 @@ Line::Line(std::string name, void* shaderBytes, size_t shaderSize, const Vector3
 	this->constantBuffer->Load(&cc, sizeof(Constant));
 
 
-	this->localPosition = Vector3(0);
-	this->localRotation = Vector3(0);
-	this->localScale = Vector3(1);
+	this->localPosition = Vector3D(0);
+	this->localRotation = Vector3D(0);
+	this->localScale = Vector3D(1);
 }
 
 Line::~Line()
@@ -62,7 +62,7 @@ void Line::Update(float deltaTime)
 	//temp.SetPosition(this->localPosition);
 	//this->transform *= temp;
 
-	this->SetTransform(((Camera*)parent)->worldTransform);
+	this->SetTransform(((Camera*)parent)->GetTransform());
 	
 	//this->transform *= parent->GetTransform();
 }
@@ -87,7 +87,7 @@ void Line::Draw(Matrix4x4 view, Matrix4x4 proj)
 	GraphicsEngine::GetImmediateDeviceContext()->DrawLineStrip(this->vertexBuffer->GetVertexListSize(), 0);
 }
 
-void Line::Release()
+void Line::Destroy()
 {
 	this->vertexBuffer->Release();
 	this->constantBuffer->Release();

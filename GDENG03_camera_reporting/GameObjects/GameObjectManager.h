@@ -14,14 +14,18 @@ public:
 		QUAD,
 		CUBE,
 		SPHERE,
+		LINE,
 		GAME_CAMERA,
+		MESH,
+		PHYSICS_CUBE,
+		PHYSICS_QUAD,
 	};
 
 	static void Initialize();
 	static void Update();
-	static void Release();
+	static void Destroy();
 
-	static void CreateGameObject(PrimitiveType primitiveType);
+	static GameObject* CreateGameObject(PrimitiveType primitiveType, bool textured = false);
 	static void AddGameObject(GameObject* gameObject);
 	static void DeleteGameObject(GameObject* gameObject);
 	static void DeleteGameObject(std::string name);
@@ -31,6 +35,11 @@ public:
 	static GameObject* GetSelectedObject();
 
 	static GameObject* FindGameObject(std::string name);
+	static const List& GetGameObjects();
+	static void SetObjectName(std::string name, std::string newName);
+
+	static void SaveEditStates();
+	static void RestoreEditStates();
 
 private:
 	GameObjectManager();
@@ -43,12 +52,5 @@ private:
 	List gameObjects;
 	HashTable gameObjectMap;
 	GameObject* selectedObject = NULL;
-
-	VertexShader* vertexShader;
-	PixelShader* pixelShader;
-
-	void* vsBytes = nullptr;
-	size_t vsSize = 0;
-
 };
 

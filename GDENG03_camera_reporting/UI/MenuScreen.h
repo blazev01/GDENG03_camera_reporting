@@ -1,5 +1,7 @@
 #pragma once
 #include "UIScreen.h"
+#include "UINames.h"
+#include "CustomStyles.h"
 
 class MenuScreen : public UIScreen
 {
@@ -13,5 +15,13 @@ protected:
 private:
 	void ShowMenuFile();
 	void ShowMenuGameObject();
+	void ShowMenuWindow();
+	void ShowMenuAbout();
+
+	void ShowMenuThemes();
+	void ShowMenuCreateMesh();
+
+	UINames uiNames;
+	CustomStyles styles;
 };
 

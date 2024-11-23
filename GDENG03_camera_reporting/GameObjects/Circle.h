@@ -12,8 +12,8 @@ public:
 
 	void Update(float deltaTime) override;
 	void Draw(Matrix4x4 view, Matrix4x4 proj) override;
-	void Release() override;
-	void SetVelocity(Vector3 velocity);
+	void Destroy() override;
+	void SetVelocity(Vector3D velocity);
 
 private:
 	VertexBuffer* vertexBuffer;
@@ -23,6 +23,6 @@ private:
 	float ticks = 0.0f;
 	float deltaTime = 0.0f;
 	float radius = 0.5f;
-	Vector3 velocity;
+	Vector3D velocity;
 };
 

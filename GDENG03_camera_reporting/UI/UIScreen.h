@@ -17,6 +17,7 @@ protected:
 	virtual void DrawUI() = 0;
 
 	std::string name;
+	bool enabled = true;
 
 	friend class UIManager;
 };

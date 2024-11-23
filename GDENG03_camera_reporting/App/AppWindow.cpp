@@ -6,17 +6,23 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "../GameObjects/GameObjectManager.h"
 #include "../GameObjects/RenderQueue.h"
+#include "../GraphicsEngine/ShaderLibrary.h"
+#include "../Resource/MeshManager.h"
+#include "../Resource/TextureManager.h"
 #include "../UI/UIManager.h"
-
+#include "../Components/BaseComponentSystem.h"
+#include "../GameObjects/PhysicsQuad.h"
+#include "../GameObjects/PhysicsCube.h"
+#include "../Backend/EngineBackend.h"
+#include "../Backend/ActionHistory.h"
 
 AppWindow* AppWindow::instance = NULL;
+
 AppWindow::AppWindow()
 {
 	instance = this;
-
 	this->vertexShader = NULL;
 	this->pixelShader = NULL;
-	this->cube = NULL;
 }
 
 AppWindow::~AppWindow()
@@ -27,18 +33,23 @@ AppWindow::~AppWindow()
 void AppWindow::OnCreate()
 {
 	InputSystem::Initialize();
+	EngineBackend::Initialize();
 	EngineTime::Initialize();
+	ActionHistory::Initialize();
 	GraphicsEngine::Initialize();
+	ShaderLibrary::Initialize();
+	MeshManager::Initialize();
+	TextureManager::Initialize();
+	GameObjectManager::Initialize();
+	BaseComponentSystem::Initialize();
 
 	RECT rect = this->GetWindowRect();
-
 	float width = rect.right - rect.left;
 	float height = rect.bottom - rect.top;
 
-	SceneCameraHandler::Initialize(this->hwnd, width, height);
-	GameObjectManager::Initialize();
 	RenderQueue::Initialize();
 	UIManager::Initialize(this->hwnd);
+	SceneCameraHandler::Initialize(hwnd, width, height);
 
 	SceneCameraHandler::CreateNewCamera();
 	
@@ -64,55 +75,35 @@ void AppWindow::OnCreate()
 	void* shaderBytes = nullptr;
 	size_t shaderSize = 0;
 
-	GraphicsEngine::CompileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderBytes, &shaderSize);
-	this->vertexShader = GraphicsEngine::CreateVertexShader(shaderBytes, shaderSize);
-
-	this->vsBytes = shaderBytes;
-	this->vsSize = shaderSize;
-
-	GraphicsEngine::CompilePixelShader(L"PixelShader.hlsl", "psmain", &shaderBytes, &shaderSize);
-	this->pixelShader = GraphicsEngine::CreatePixelShader(shaderBytes, shaderSize);
-
-
-
-	GraphicsEngine::ReleaseCompiledShader();
-
-	
+	ShaderLibrary::RequestVertexShaderData(L"VertexMeshLayout.hlsl", &shaderBytes, &shaderSize);
+	this->pixelShader = ShaderLibrary::GetPixelShader(L"PixelShader.hlsl");
+	this->vertexShader = ShaderLibrary::GetVertexShader(L"VertexShader.hlsl");
 	
 	for (int i = 0; i < 3; i++)
 	{
-		Cube* cube = new Cube("coob" + std::to_string(i), this->vsBytes, this->vsSize);
+		Cube* cube = (Cube*)GameObjectManager::CreateGameObject(GameObjectManager::CUBE);
 		cube->SetAnimationSpeed(0.0f);
-		cube->SetScale(Vector3(0.5f));
-		cube->SetPosition(Vector3(i - 1, 0.0f, i - 1));
-		cube->SetVertexShader(this->vertexShader);
-		cube->SetPixelShader(this->pixelShader);
+		cube->SetScale(Vector3D(0.5f));
+		cube->SetPosition(Vector3D(i - 1, 0.0f, i - 1));
 		cube->SetPriority(1);
 		if (i != 1) cube->SetLayer(1);
-
-		GameObjectManager::AddGameObject(cube);
-		RenderQueue::AddRenderer(cube);
 	}
 	
 	for (int i = 0; i < 2; i++)
 	{
-		Quad* quad = new Quad("kwad" + std::to_string(i), this->vsBytes, this->vsSize);
+		Quad* quad = (Quad*)GameObjectManager::CreateGameObject(GameObjectManager::QUAD);
 		if (i == 0) quad->SetRotation(1.5708f, 0.0f, 0.0f);
 		else quad->SetRotation(-1.5708f, 0.0f, 0.0f);
-		quad->SetScale(Vector3(4.0f));
-		quad->SetVertexShader(this->vertexShader);
-		quad->SetPixelShader(this->pixelShader);
+		quad->SetScale(Vector3D(4.0f));
 		quad->SetLayer(1);
-
-		GameObjectManager::AddGameObject(quad);
-		RenderQueue::AddRenderer(quad);
 	}
 
 
 
-	//std::vector<Vector3> renderLines = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 0.01f, 1000.0f);
-	std::vector<Vector3> nearPlanePoints = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 0.01f);
-	std::vector<Vector3> farPlanePoints = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 1000.0f);
+	//std::vector<Vector3D> renderLines = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 0.01f, 1000.0f);
+	/*
+	std::vector<Vector3D> nearPlanePoints = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 0.01f);
+	std::vector<Vector3D> farPlanePoints = SceneCameraHandler::GetSceneCamera()->CreateRenderRegionOutliner(1.57f, width / height, 1000.0f);
 
 	for (int i = 0; i < farPlanePoints.size(); i++) {
 		CreateLine(nearPlanePoints[i], farPlanePoints[i])->SetParent(SceneCameraHandler::GetSceneCamera());
@@ -121,10 +112,11 @@ void AppWindow::OnCreate()
 	for (int i = 0; i < 4; i++) {
 		CreateLine(nearPlanePoints[cornerPairs[i][0]], nearPlanePoints[cornerPairs[i][1]])->SetParent(SceneCameraHandler::GetSceneCamera());
 		CreateLine(farPlanePoints[cornerPairs[i][0]], farPlanePoints[cornerPairs[i][1]])->SetParent(SceneCameraHandler::GetSceneCamera());
-	}
+	}*/
+
 }
 
-Line* AppWindow::CreateLine(const Vector3& startPos, const Vector3& endPos) {
+Line* AppWindow::CreateLine(const Vector3D& startPos, const Vector3D& endPos) {
 	Line* line = new Line("lyn", AppWindow::instance->vsBytes, AppWindow::instance->vsSize, startPos, endPos);
 	line->SetVertexShader(AppWindow::instance->vertexShader);
 	line->SetPixelShader(AppWindow::instance->pixelShader);
@@ -140,7 +132,25 @@ void AppWindow::OnUpdate()
 {
 	InputSystem::Update();
 	SceneCameraHandler::Update();
-	GameObjectManager::Update();
+
+	if (EngineBackend::GetMode() == EngineBackend::EDITOR)
+	{
+		GameObjectManager::Update();
+	}
+
+	else if (EngineBackend::GetMode() == EngineBackend::PLAY)
+	{
+		BaseComponentSystem::GetPhysicsSystem()->UpdateAllComponents();
+		GameObjectManager::Update();
+	}
+
+	else if (EngineBackend::GetMode() == EngineBackend::PAUSED &&
+		EngineBackend::InsideFrameStep())
+	{
+		BaseComponentSystem::GetPhysicsSystem()->UpdateAllComponents();
+		GameObjectManager::Update();
+		EngineBackend::EndFrameStep();
+	}
 
 	SceneCameraHandler::Render();
 	UIManager::DrawAllUI();
@@ -162,12 +172,19 @@ void AppWindow::OnKillFocus()
 void AppWindow::OnDestroy()
 {
 	Window::OnDestroy();
-	this->vertexShader->Release();
-	this->pixelShader->Release();
-
-	GameObjectManager::Release();
+	UIManager::Destroy();
+	GameObjectManager::Destroy();
+	BaseComponentSystem::Destroy();
+	SceneCameraHandler::Destroy();
+	RenderQueue::Destroy();
+	InputSystem::Destroy();
+	ActionHistory::Destroy();
+	EngineTime::Destroy();
+	EngineBackend::Destroy();
+	TextureManager::Destroy();
+	MeshManager::Destroy();
+	ShaderLibrary::Destroy();
 	GraphicsEngine::Release();
-	SceneCameraHandler::Release();
 }
 
 void AppWindow::OnKey(int key)
@@ -189,20 +206,19 @@ void AppWindow::OnKeyDown(int key)
 	case VK_SPACE:
 	{
 		std::cout << "SPACE" << "\n";
-		//this->SpawnCircles();
 		SceneCameraHandler::SwitchCameraType();
 		break;
 	}
 	case VK_BACK:
 	{
 		std::cout << "BACKSPACE" << "\n";
-		this->DespawnCircles();
+		//this->DespawnCircles();
 		break;
 	}
 	case VK_DELETE:
 	{
 		std::cout << "DELETE" << "\n";
-		this->DespawnAllCircles();
+		//this->DespawnAllCircles();
 		break;
 	}
 	case VK_ESCAPE:
@@ -234,7 +250,7 @@ void AppWindow::OnKeyUp(int key)
 
 }
 
-void AppWindow::OnMouseMove(const Vector2& deltaMousePos)
+void AppWindow::OnMouseMove(const Vector2D& deltaMousePos)
 {
 	
 }
@@ -254,43 +270,3 @@ void AppWindow::OnMouseButtonUp(int button)
 	
 }
 
-void AppWindow::SpawnCircles()
-{
-	int size = this->circles.size();
-	for (int i = size; i < size + this->spawnSize; i++)
-	{
-		Circle* circle = new Circle("circle", this->vsBytes, this->vsSize);
-		circle->SetScale(Vector3(0.2f));
-		circle->SetVelocity(Vector3(sinf(rand()), sinf(rand()), 0.0f));
-
-		this->circles.push_back(circle);
-		GameObjectManager::AddGameObject(circle);
-	}
-}
-
-void AppWindow::DespawnCircles()
-{
-	if (!this->circles.empty())
-	{
-		int size = this->circles.size();
-		for (int i = size - 1; i >= size - this->spawnSize; i--)
-		{
-			GameObjectManager::DeleteGameObject(this->circles[i]);
-			this->circles.pop_back();
-		}
-	}
-}
-
-void AppWindow::DespawnAllCircles()
-{
-	if (!this->circles.empty())
-	{
-		int size = this->circles.size();
-		for (int i = size - 1; i >= 0; i--)
-		{
-			GameObjectManager::DeleteGameObject(this->circles[i]);
-			this->circles.pop_back();
-			
-		}
-	}
-}

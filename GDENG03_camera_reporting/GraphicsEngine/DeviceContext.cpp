@@ -1,5 +1,6 @@
 #include "DeviceContext.h"
 #include "SwapChain.h"
+#include "ViewTexture.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
@@ -12,20 +13,22 @@ DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext)
     this->deviceContext = deviceContext;
 }
 
-void DeviceContext::ClearRenderTargetColor(SwapChain* swapChain, float r, float g, float b, float a)
-{
-    FLOAT clearColor[] = {r, g, b, a};
-    this->deviceContext->ClearRenderTargetView(swapChain->rtv, clearColor);
-    this->deviceContext->ClearDepthStencilView(swapChain->dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
-    this->deviceContext->OMSetRenderTargets(1, &swapChain->rtv, swapChain->dsv);
-}
-
 void DeviceContext::ClearRenderTargetColor(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, float r, float g, float b, float a)
 {
     FLOAT clearColor[] = { r, g, b, a };
     this->deviceContext->ClearRenderTargetView(rtv, clearColor);
     this->deviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
     this->deviceContext->OMSetRenderTargets(1, &rtv, dsv);
+}
+
+void DeviceContext::ClearRenderTargetColor(SwapChain* swapChain, float r, float g, float b, float a)
+{
+    this->ClearRenderTargetColor(swapChain->rtv, swapChain->dsv, r, g, b, a);
+}
+
+void DeviceContext::ClearRenderTargetColor(ViewTexture* viewTexture, float r, float g, float b, float a)
+{
+    this->ClearRenderTargetColor(viewTexture->rtv, viewTexture->dsv, r, g, b, a);
 }
 
 void DeviceContext::SetVertexBuffer(VertexBuffer * vertexBuffer)
@@ -79,6 +82,16 @@ void DeviceContext::SetViewportSize(UINT width, UINT height)
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
     this->deviceContext->RSSetViewports(1, &vp);
+}
+
+void DeviceContext::SetViewportSize(SwapChain* swapChain)
+{
+    this->SetViewportSize(swapChain->GetWidth(), swapChain->GetHeight());
+}
+
+void DeviceContext::SetViewportSize(ViewTexture* viewTexture)
+{
+    this->SetViewportSize(viewTexture->GetWidth(), viewTexture->GetHeight());
 }
 
 void DeviceContext::SetVertexShader(VertexShader* vertexShader)

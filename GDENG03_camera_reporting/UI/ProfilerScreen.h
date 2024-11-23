@@ -9,5 +9,9 @@ protected:
 	virtual void DrawUI() override;
 
 	friend class UIManager;
+
+private:
+	float ticks = 0.0f;
+	int frameCount = 0;
 };
 

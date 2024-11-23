@@ -22,14 +22,14 @@ void Matrix4x4::SetIdentity()
 	this->mat[3][3] = 1;
 }
 
-void Matrix4x4::SetPosition(const Vector3& position)
+void Matrix4x4::SetPosition(const Vector3D& position)
 {
 	this->mat[3][0] = position.x;
 	this->mat[3][1] = position.y;
 	this->mat[3][2] = position.z;
 }
 
-void Matrix4x4::SetScale(const Vector3& scale)
+void Matrix4x4::SetScale(const Vector3D& scale)
 {
 	this->mat[0][0] = scale.x;
 	this->mat[1][1] = scale.y;
@@ -60,7 +60,7 @@ void Matrix4x4::SetRotationZ(float z)
 	this->mat[1][1] = cos(z);
 }
 
-void Matrix4x4::SetRotation(float angle, Vector3 axis)
+void Matrix4x4::SetRotation(float angle, Vector3D axis)
 {
 	const double pi = 3.1415926535;
 	float angleRads = (angle * pi) / 180.0f;
@@ -87,24 +87,34 @@ void Matrix4x4::SetRotation(float angle, Vector3 axis)
 	this->mat[3][3] = 1;
 }
 
-Vector3 Matrix4x4::GetPosition()
+Vector3D Matrix4x4::GetPosition()
 {
-	return Vector3(this->mat[3][0], this->mat[3][1], this->mat[3][2]);;
+	return Vector3D(this->mat[3][0], this->mat[3][1], this->mat[3][2]);;
 }
 
-Vector3 Matrix4x4::GetRight()
+Vector3D Matrix4x4::GetScale()
 {
-	return Vector3(this->mat[0][0], this->mat[1][0], this->mat[2][0]);
+	return Vector3D();
 }
 
-Vector3 Matrix4x4::GetUp()
+Vector3D Matrix4x4::GetRotation()
 {
-	return Vector3(this->mat[0][1], this->mat[1][1], this->mat[2][1]);
+	return Vector3D();
 }
 
-Vector3 Matrix4x4::GetForward()
+Vector3D Matrix4x4::GetRight()
 {
-	return -Vector3(this->mat[0][2], this->mat[1][2], this->mat[2][2]);
+	return Vector3D(this->mat[0][0], this->mat[1][0], this->mat[2][0]);
+}
+
+Vector3D Matrix4x4::GetUp()
+{
+	return Vector3D(this->mat[0][1], this->mat[1][1], this->mat[2][1]);
+}
+
+Vector3D Matrix4x4::GetForward()
+{
+	return -Vector3D(this->mat[0][2], this->mat[1][2], this->mat[2][2]);
 }
 
 void Matrix4x4::SetPerspectiveLH(float fov, float aspect, float zNear, float zFar)
@@ -149,16 +159,44 @@ void Matrix4x4::SetMatrix(const Matrix4x4& matrix)
 	::memcpy(this->mat, matrix.mat, sizeof(float) * 16);
 }
 
+void Matrix4x4::SetMatrix(float matrix[16])
+{
+	//::memcpy(this->mat, matrix, sizeof(float) * 16);
+	int index = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			this->mat[i][j] = matrix[index];
+			index++;
+		}
+	}
+}
+
+float* Matrix4x4::GetAs1DArray() const
+{
+	float matrix[16] = {};
+	//::memcpy(matrix, this->mat, sizeof(float) * 16);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			matrix[(4 * i) + j] = this->mat[i][j];
+		}
+	}
+	return matrix;
+}
+
 float Matrix4x4::GetDeterminant() const
 {
-	Vector4 minor, v1, v2, v3;
+	Vector4D minor, v1, v2, v3;
 	float det;
 
-	v1 = Vector4(this->mat[0][0], this->mat[1][0], this->mat[2][0], this->mat[3][0]);
-	v2 = Vector4(this->mat[0][1], this->mat[1][1], this->mat[2][1], this->mat[3][1]);
-	v3 = Vector4(this->mat[0][2], this->mat[1][2], this->mat[2][2], this->mat[3][2]);
+	v1 = Vector4D(this->mat[0][0], this->mat[1][0], this->mat[2][0], this->mat[3][0]);
+	v2 = Vector4D(this->mat[0][1], this->mat[1][1], this->mat[2][1], this->mat[3][1]);
+	v3 = Vector4D(this->mat[0][2], this->mat[1][2], this->mat[2][2], this->mat[3][2]);
 
-	minor = Vector4::Cross(v1, v2, v3);
+	minor = Vector4D::Cross(v1, v2, v3);
 	det = -(this->mat[0][3] * minor.x + this->mat[1][3] * minor.y + this->mat[2][3] * minor.z +
 		this->mat[3][3] * minor.w);
 	return det;
@@ -168,7 +206,7 @@ void Matrix4x4::Inverse()
 {
 	int a, i, j;
 	Matrix4x4 out;
-	Vector4 v, vec[3];
+	Vector4D v, vec[3];
 	float det = 0.0f;
 
 	det = this->GetDeterminant();
@@ -187,7 +225,7 @@ void Matrix4x4::Inverse()
 				vec[a].w = (this->mat[j][3]);
 			}
 		}
-		v = Vector4::Cross(vec[0], vec[1], vec[2]);
+		v = Vector4D::Cross(vec[0], vec[1], vec[2]);
 
 		out.mat[0][i] = powf(-1.0f, i) * v.x / det;
 		out.mat[1][i] = powf(-1.0f, i) * v.y / det;

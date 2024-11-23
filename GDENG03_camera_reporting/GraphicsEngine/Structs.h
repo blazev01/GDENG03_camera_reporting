@@ -1,12 +1,12 @@
 #pragma once
 #include "../Math/Matrix4x4.h"
+#include "../Math/Vector2D.h"
 
 struct Vertex
 {
-	Vector3 position;
-	Vector3 position1;
-	Vector3 color;
-	Vector3 color1;
+	Vector3D position;
+	Vector2D texcoord;
+	Vector4D albedo;
 };
 
 __declspec(align(16))

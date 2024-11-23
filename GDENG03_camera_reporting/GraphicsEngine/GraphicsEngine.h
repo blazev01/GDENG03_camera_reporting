@@ -33,7 +33,6 @@ public:
 
 	static ID3D11Device* GetDevice();
 	static IDXGIFactory* GetFactory();
-	static TextureManager* GetTextureManager();
 
 private:
 	GraphicsEngine();
@@ -42,9 +41,6 @@ private:
 	GraphicsEngine& operator=(GraphicsEngine const&) {};
 
 	static GraphicsEngine* instance;
-
-private:
-	TextureManager* textureManager = NULL;
 
 private:
 	DeviceContext* immDeviceContext = NULL;

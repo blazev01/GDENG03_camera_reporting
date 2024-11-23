@@ -1,5 +1,6 @@
 #include "InspectorScreen.h"
-#include "../SceneCamera/SceneCameraHandler.h"
+#include "../GameObjects/GameObjectManager.h"
+#include "../Backend/ActionHistory.h"
 
 #define RAD2DEG 57.2958
 #define DEG2RAD 0.0174533
@@ -16,66 +17,204 @@ InspectorScreen::~InspectorScreen()
 
 void InspectorScreen::DrawUI()
 {
-Camera* sceneCam = SceneCameraHandler::GetCamera(0);
-    if (sceneCam) {
-        Vector3 sceneCamPosition = sceneCam->GetLocalPosition();
-        Vector3 sceneCamRotation = sceneCam->GetLocalRotation();
+	if (ImGui::Begin("Inspector", &this->enabled, ImGuiWindowFlags_NoCollapse))
+    {
+        GameObject* selected = GameObjectManager::GetSelectedObject();
+        bool toDelete = false;
 
-        float position_scene[3] = { sceneCamPosition.x, sceneCamPosition.y, sceneCamPosition.z };
-        float rotation_scene[3] = { sceneCamRotation.x * RAD2DEG, sceneCamRotation.y * RAD2DEG, sceneCamRotation.z * RAD2DEG };
-
-        ImGui::Begin("Camera Controls");
-
-        ImGui::Text("Scene Camera");
-
-        // Position controls
-        if (ImGui::InputFloat3("SCam Pos", position_scene))
-            SceneCameraHandler::SetSceneCameraPos(Vector3(position_scene[0], position_scene[1], position_scene[2]));
-
-        // Rotation controls
-        if (ImGui::InputFloat3("SCam Rot", rotation_scene)) {
-            rotation_scene[0] *= DEG2RAD;
-            rotation_scene[1] *= DEG2RAD;
-            rotation_scene[2] *= DEG2RAD;
-
-            SceneCameraHandler::SetSceneCameraRot(Vector3(rotation_scene[0], rotation_scene[1], rotation_scene[2]));
-        }
-    }
-
-    // Game Camera position and rotation
-    std::vector<GameCamera*> cameras = SceneCameraHandler::GetGameCameras();
-	int i = 0;
-	for (GameCamera* camera : cameras)
-	{
-        if (camera)
+        if (!selected)
         {
-            Vector3 cameraPosition = camera->GetLocalPosition();
-            Vector3 cameraRotation = camera->GetLocalRotation();
+            ImGui::Text("No game object selected.");
+        }
+        else
+        {
+            const int maxLen = 21;
+            char name[maxLen];
+            strcpy_s(name, selected->GetName().c_str());
 
-            float position_game[3] = { cameraPosition.x, cameraPosition.y, cameraPosition.z };
-            float rotation_game[3] = { cameraRotation.x * RAD2DEG, cameraRotation.y * RAD2DEG, cameraRotation.z * RAD2DEG };
+            if (ImGui::InputText("Name", name, maxLen) &&
+                ImGui::IsKeyPressed(ImGuiKey_Enter) &&
+                name[0] != '\0')
+                GameObjectManager::SetObjectName(selected->GetName(), name);
 
-            std::string name = "Game Camera " + std::to_string(i);
-            ImGui::Text(name.c_str());
-
-            // Position controls
-            name = "GCam Pos " + std::to_string(i);
-            if (ImGui::InputFloat3(name.c_str(), position_game))
-                camera->SetPosition(Vector3(position_game[0], position_game[1], position_game[2]));
-
-            // Rotation controls
-            name = "GCam Rot " + std::to_string(i);
-            if (ImGui::InputFloat3(name.c_str(), rotation_game))
+            if (ImGui::BeginTable("EnableDelete", 3))
             {
-                rotation_game[0] *= DEG2RAD;
-                rotation_game[1] *= DEG2RAD;
-                rotation_game[2] *= DEG2RAD;
+                ImGui::TableNextColumn();
+                bool enabled = selected->GetEnabled();
+                ImGui::Checkbox("Enabled", &enabled);
+                selected->SetEnabled(enabled);
 
-                camera->SetRotation(Vector3(rotation_game[0], rotation_game[1], rotation_game[2]));
+                ImGui::TableSetColumnIndex(2);
+                toDelete = ImGui::Button("Delete", ImVec2(ImGui::GetColumnWidth(2), 0));
+                ImGui::EndTable();
             }
-            i++;
+
+            this->ShowComponentList(selected);
+
+            ImGui::NewLine();
+            if (ImGui::Button("Add Component", ImVec2(ImGui::GetColumnWidth(), 20)))
+            {
+                ImGui::OpenPopup("Components");
+            }
+
+            this->ShowComponentsPopup(selected);
+        }
+
+        if (toDelete) GameObjectManager::DeleteGameObject(selected);
+        ImGui::End();
+    }
+}
+
+void InspectorScreen::ShowComponentList(GameObject* selected)
+{
+    ImGuiChildFlags childFlags =
+        ImGuiChildFlags_Borders |
+        ImGuiChildFlags_AutoResizeY;
+
+    if (ImGui::BeginChild("Transform", ImVec2(0, 0), childFlags))
+    {
+        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+            this->ShowTransform(selected);
+
+        ImGui::EndChild();
+    }
+
+    for (Component* component : selected->GetComponents())
+    {
+        const int maxLen = 21;
+        char compName[maxLen];
+        strcpy_s(compName, component->GetName().c_str());
+        if (ImGui::BeginChild(compName, ImVec2(0, 0), childFlags))
+        {
+            if (ImGui::CollapsingHeader(compName, ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                switch (component->GetType())
+                {
+                case Component::Physics:
+                {
+                    this->ShowRigidBody((PhysicsComponent*)component);
+                    break;
+                }
+                default:
+                    this->ShowComponent();
+                    break;
+                }
+
+                if (ImGui::Button("Remove", ImVec2(ImGui::GetColumnWidth(), 0)))
+                {
+                    selected->DetachComponent(component);
+                }
+            }
+
+            ImGui::EndChild();
         }
     }
-    
-    ImGui::End();
+
+    //if (ImGui::BeginChild("Dummy Component", ImVec2(0, 0), childFlags))
+    //{
+    //    if (ImGui::CollapsingHeader("Rick Roll Component", ImGuiTreeNodeFlags_DefaultOpen))
+    //        this->ShowDummyComponent();
+    //    ImGui::EndChild();
+    //}
+}
+
+void InspectorScreen::ShowTransform(GameObject* selected)
+{
+    Vector3D pos = selected->GetLocalPosition();
+    Vector3D rot = selected->GetLocalRotation();
+    Vector3D scale = selected->GetLocalScale();
+
+    float scenePos[3] = { pos.x, pos.y, pos.z };
+    float sceneRot[3] = { rot.x * RAD2DEG, rot.y * RAD2DEG, rot.z * RAD2DEG };
+    float sceneScale[3] = { scale.x, scale.y, scale.z };
+
+    float width = 0.7f;
+    ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
+    if (ImGui::InputFloat3("Position", scenePos) &&
+        ImGui::IsKeyPressed(ImGuiKey_Enter))
+    {
+        ActionHistory::RecordAction(selected);
+        selected->SetPosition(Vector3D(scenePos[0], scenePos[1], scenePos[2]));
+        selected->Recalculate();
+    }
+
+    ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
+    if (ImGui::InputFloat3("Rotation", sceneRot) &&
+        ImGui::IsKeyPressed(ImGuiKey_Enter))
+    {
+        sceneRot[0] *= DEG2RAD;
+        sceneRot[1] *= DEG2RAD;
+        sceneRot[2] *= DEG2RAD;
+
+        ActionHistory::RecordAction(selected);
+        selected->SetRotation(Vector3D(sceneRot[0], sceneRot[1], sceneRot[2]));
+        selected->Recalculate();
+    }
+
+    ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
+    if (ImGui::InputFloat3("Scale", sceneScale) &&
+        ImGui::IsKeyPressed(ImGuiKey_Enter))
+    {
+        ActionHistory::RecordAction(selected);
+        selected->SetScale(Vector3D(sceneScale[0], sceneScale[1], sceneScale[2]));
+        selected->Recalculate();
+    }
+}
+
+void InspectorScreen::ShowRigidBody(PhysicsComponent* component)
+{
+    float mass = component->GetMass();
+    float width = 0.7f;
+    ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
+    if (ImGui::InputFloat("Mass", &mass) &&
+        ImGui::IsKeyPressed(ImGuiKey_Enter))
+        component->SetMass(mass);
+
+    static const char* items[]{ "Static","Kinematic","Dynamic" };
+    int selectedItem = (int)component->GetRigidBody()->getType();
+    ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
+    if (ImGui::Combo("Body Type", &selectedItem, items, IM_ARRAYSIZE(items)))
+    {
+        component->GetRigidBody()->setType((BodyType)selectedItem);
+    }
+
+    bool gravity = component->GetRigidBody()->isGravityEnabled();
+    if (ImGui::Checkbox("Gravity Enabled", &gravity))
+    {
+        component->GetRigidBody()->enableGravity(gravity);
+    }
+}
+
+void InspectorScreen::ShowDummyComponent()
+{
+    ImGui::Text("Never gonna give you up");
+    ImGui::Text("Never gonna let you down");
+    ImGui::Text("Never gonna run around and desert you");
+    ImGui::Text("Never gonna make you cry");
+    ImGui::Text("Never gonna say goodbye");
+    ImGui::Text("Never gonna tell a lie and hurt you");
+}
+
+void InspectorScreen::ShowComponent()
+{
+    ImGui::Text("Insert serialized fields\n\n\n\n\n");
+}
+
+void InspectorScreen::ShowComponentsPopup(GameObject* selected)
+{
+    if (ImGui::BeginPopup("Components", ImGuiWindowFlags_NoDocking))
+    {
+        if (ImGui::Button("Physics Component", ImVec2(ImGui::GetColumnWidth(), 0)))
+        {
+            if (!selected->GetComponentOfType(Component::Physics, "RigidBody"))
+            {
+                PhysicsComponent* component = new PhysicsComponent("RigidBody", selected);
+                selected->AttachComponent(component);
+            }
+            
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
 }

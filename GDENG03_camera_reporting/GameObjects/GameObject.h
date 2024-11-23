@@ -4,6 +4,7 @@
 #include "../GraphicsEngine/VertexShader.h"
 #include "../GraphicsEngine/PixelShader.h"
 #include "../Math/Matrix4x4.h"
+#include "../Components/Component.h"
 
 class GameObject
 {
@@ -11,39 +12,52 @@ public:
 	GameObject(std::string name);
 	~GameObject();
 
+	virtual void Awake() {};
 	virtual void Update(float deltaTime) = 0;
 	virtual void Draw(Matrix4x4 view, Matrix4x4 proj) = 0;
-	virtual void Release() = 0;
+	virtual void Destroy();
 
 public:
 	std::string GetName();
+	void SetName(std::string name);
 
 	void SetPosition(float x, float y, float z);
-	void SetPosition(Vector3 position);
-	Vector3 GetLocalPosition() const;
+	void SetPosition(Vector3D position);
+	Vector3D GetLocalPosition() const;
 	
 	void SetScale(float x, float y, float z);
-	void SetScale(Vector3 scale);
-	Vector3 GetLocalScale() const;
+	void SetScale(Vector3D scale);
+	Vector3D GetLocalScale() const;
 	
 	void SetRotation(float x, float y, float z);
-	void SetRotation(Vector3 rotation);
-	Vector3 GetLocalRotation() const;
+	void SetRotation(Vector3D rotation);
+	Vector3D GetLocalRotation() const;
 
 	void SetTransform(const Matrix4x4& transform);
+	void SetTransform(float array[16]);
+	Matrix4x4 GetTransform() const;
+	Matrix4x4 GetOrientation() const;
 
-	Vector3 GetRight();
-	Vector3 GetUp();
-	Vector3 GetForward();
+	Vector3D GetRight();
+	Vector3D GetUp();
+	Vector3D GetForward();
 
-	Matrix4x4 GetTransform();
-	void MultiplyTransform(Matrix4x4 transform);
 	GameObject* GetParent();
 	GameObject* GetChild(int index);
-	std::vector<GameObject*> GetChildren();
+	const std::vector<GameObject*>& GetChildren();
 
-	bool IsEnabled() const;
-	void setEnabled(bool enabled);
+	bool GetEnabled() const;
+	void SetEnabled(bool enabled);
+
+public:
+	void AttachComponent(Component* component);
+	void DetachComponent(Component* component);
+
+	Component* FindComponentByName(std::string name);
+	Component* GetComponentOfType(Component::ComponentType type, std::string name);
+	std::vector<Component*>& GetComponentsOfType(Component::ComponentType type);
+	std::vector<Component*>& GetComponentsOfTypeRecursive(Component::ComponentType type);
+	const std::vector<Component*>& GetComponents();
 
 public:
 	unsigned int GetLayer() const;
@@ -58,17 +72,21 @@ public:
 	void SetPixelShader(PixelShader* pixelShader);
 	void SetVertexShader(VertexShader* vertexShader);
 
+	virtual void Recalculate();
+
 protected:
 	std::string name;
 
-	Vector3 localPosition;
-	Vector3 localScale;
-	Vector3 localRotation;
+	Vector3D localPosition;
+	Vector3D localScale;
+	Vector3D localRotation;
 
+	Matrix4x4 orientation;
 	Matrix4x4 transform;
 
 	GameObject* parent;
 	std::vector<GameObject*> children;
+	std::vector<Component*> components;
 
 	unsigned int layer;
 	int priority;

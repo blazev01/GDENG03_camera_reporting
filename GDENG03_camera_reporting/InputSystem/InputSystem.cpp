@@ -20,14 +20,14 @@ void InputSystem::Update()
 
     POINT currentCursorPos = {};
     ::GetCursorPos(&currentCursorPos);
-    instance->cursorPos = Vector2(currentCursorPos.x, currentCursorPos.y);
+    instance->cursorPos = Vector2D(currentCursorPos.x, currentCursorPos.y);
 
     if (instance->cursorPos != instance->oldCursorPos)
     {
         std::unordered_set<InputListener*>::iterator it = instance->listenerSet.begin();
         while (it != instance->listenerSet.end())
         {
-            Vector2 deltaCursorPos = instance->cursorPos - instance->oldCursorPos;
+            Vector2D deltaCursorPos = instance->cursorPos - instance->oldCursorPos;
 
             (*it)->OnMouseMove(deltaCursorPos);
             ++it;
@@ -110,6 +110,11 @@ void InputSystem::Update()
     }
 }
 
+void InputSystem::Destroy()
+{
+    delete instance;
+}
+
 void InputSystem::AddListener(InputListener* listener)
 {
     instance->listenerSet.insert(listener);
@@ -120,11 +125,11 @@ void InputSystem::RemoveListener(InputListener * listener)
     instance->listenerSet.erase(listener);
 }
 
-Vector2 InputSystem::GetCursorPosition()
+Vector2D InputSystem::GetCursorPosition()
 {
     POINT currentCursorPos = {};
     ::GetCursorPos(&currentCursorPos);
-    Vector2 cursorPos = Vector2(currentCursorPos.x, currentCursorPos.y);
+    Vector2D cursorPos = Vector2D(currentCursorPos.x, currentCursorPos.y);
 
     return cursorPos;
 }
@@ -134,7 +139,7 @@ void InputSystem::SetCursorPosition(const float& x, const float& y)
     ::SetCursorPos(x, y);
 }
 
-void InputSystem::SetCursorPosition(const Vector2& position)
+void InputSystem::SetCursorPosition(const Vector2D& position)
 {
     ::SetCursorPos(position.x, position.y);
 }

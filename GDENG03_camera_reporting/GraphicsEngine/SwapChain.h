@@ -12,9 +12,8 @@ public:
 	bool Present(bool vsync);
 	bool Release();
 
-	int GetWidth();
-	int GetHeight();
-	ID3D11DepthStencilView* getDSV();
+	int GetWidth() const;
+	int GetHeight() const;
 
 	~SwapChain();
 

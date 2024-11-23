@@ -1,9 +1,9 @@
 #include "Window.h"
-#include "../IMGUI/imgui.h"
 #include "../EngineTime/EngineTime.h"
 #include "../InputSystem/InputSystem.h"
+#include "../UI/UIManager.h"
 
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 Window::Window()
 {
@@ -18,9 +18,8 @@ Window::~Window()
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
+    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
         return true;
-    }
 
     switch (msg)
     {
@@ -84,8 +83,8 @@ bool Window::Init()
         WS_CAPTION | WS_SYSMENU,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        1024,
-        768,
+        UIManager::WINDOW_WIDTH,
+        UIManager::WINDOW_HEIGHT,
         NULL,
         NULL,
         NULL,
@@ -93,7 +92,7 @@ bool Window::Init()
     
     if (!this->hwnd) return false;
 
-    ::ShowWindow(hwnd, SW_SHOW);
+    ::ShowWindow(this->hwnd, SW_SHOW);
     ::UpdateWindow(this->hwnd);
 
     this->isRunning = true;

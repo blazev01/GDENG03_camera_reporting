@@ -1,5 +1,7 @@
 #include "TextureManager.h"
 
+TextureManager* TextureManager::instance = NULL;
+
 TextureManager::TextureManager() : ResourceManager()
 {
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
@@ -11,9 +13,21 @@ TextureManager::~TextureManager()
 	CoUninitialize();
 }
 
+void TextureManager::Initialize()
+{
+	instance = new TextureManager();
+}
+
+void TextureManager::Destroy()
+{
+	instance->FreeResources();
+
+	delete instance;
+}
+
 Texture* TextureManager::CreateTextureFromFile(const wchar_t* filePath)
 {
-	return (Texture*)this->CreateResourceFromFile(filePath);
+	return (Texture*)instance->CreateResourceFromFile(filePath);
 }
 
 Resource* TextureManager::CreateResourceFromFileConcrete(const wchar_t* filePath)

@@ -30,3 +30,11 @@ ResourceManager::~ResourceManager()
 {
 
 }
+
+void ResourceManager::FreeResources()
+{
+	for (auto it = this->resourceMap.begin(); it != this->resourceMap.end(); it++)
+		delete it->second;
+
+	this->resourceMap.clear();
+}

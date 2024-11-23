@@ -1,7 +1,7 @@
 #pragma once
 #include "UIScreen.h"
-
-class Camera;
+#include "../GameObjects/GameObject.h"
+#include "../Components/PhysicsComponent.h"
 
 class InspectorScreen : public UIScreen
 {
@@ -10,7 +10,17 @@ protected:
 	~InspectorScreen();
 	virtual void DrawUI() override;
 
-	void CreateCameraControlsHeader(Camera* cam);
-
 	friend class UIManager;
+
+private:
+	void ShowComponentList(GameObject* selected);
+	void ShowTransform(GameObject* selected);
+	void ShowRigidBody(PhysicsComponent* component);
+	void ShowDummyComponent();
+	void ShowComponent();
+
+	void ShowComponentsPopup(GameObject* selected);
+
+	bool showTransform = true;
 };
+

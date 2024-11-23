@@ -13,7 +13,6 @@ GraphicsEngine* GraphicsEngine::instance = NULL;
 bool GraphicsEngine::Initialize()
 {
 	instance = new GraphicsEngine();
-	instance->textureManager = new TextureManager();
 
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
@@ -60,14 +59,14 @@ bool GraphicsEngine::Initialize()
 
 void GraphicsEngine::Release()
 {
-	delete instance->textureManager;
-
 	instance->dxgiDevice->Release();
 	instance->dxgiAdapter->Release();
 	instance->dxgiFactory->Release();
 
 	instance->immDeviceContext->Release();
 	instance->d3dDevice->Release();
+
+	delete instance;
 }
 
 SwapChain* GraphicsEngine::CreateSwapChain()
@@ -169,11 +168,6 @@ ID3D11Device* GraphicsEngine::GetDevice()
 IDXGIFactory* GraphicsEngine::GetFactory()
 {
 	return instance->dxgiFactory;
-}
-
-TextureManager* GraphicsEngine::GetTextureManager()
-{
-	return instance->textureManager;
 }
 
 GraphicsEngine::GraphicsEngine()

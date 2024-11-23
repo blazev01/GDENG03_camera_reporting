@@ -31,14 +31,10 @@ public:
 	virtual void OnKeyDown(int key) override;
 	virtual void OnKeyUp(int key) override;
 
-	virtual void OnMouseMove(const Vector2& deltaMousePos) override;
+	virtual void OnMouseMove(const Vector2D& deltaMousePos) override;
 	virtual void OnMouseButton(int button) override;
 	virtual void OnMouseButtonDown(int button) override;
 	virtual void OnMouseButtonUp(int button) override;
-
-	void SpawnCircles();
-	void DespawnCircles();
-	void DespawnAllCircles();
 
 private:
 	float deltaRot = 0.0f;
@@ -48,16 +44,12 @@ private:
 	float rotX = 0.0f;
 	float rotY = 0.0f;
 
-	Vector3 camPos;
+	Vector3D camPos;
 	bool mouseButtonHeld = false;
 
 	Matrix4x4 cam;
 
 private:
-	std::vector<GameObject*> gameObjects;
-	std::vector<Circle*> circles;
-	Cube* cube;
-
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
 
@@ -70,6 +62,6 @@ private:
 	static AppWindow* instance;
 	friend class Camera;
 
-	Line* CreateLine(const Vector3& startPos, const Vector3& endPos);
+	Line* CreateLine(const Vector3D& startPos, const Vector3D& endPos);
 };
 

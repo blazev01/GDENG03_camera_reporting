@@ -16,8 +16,8 @@ void SceneCameraHandler::Initialize(HWND hwnd, float width, float height)
 	instance->swapChain = GraphicsEngine::CreateSwapChain();
 	instance->swapChain->Init(hwnd, width, height);
 
-	instance->position = Vector3(0.0f, 2.0f, -2.0f);
-	instance->rotation = Vector3(1.0f, 0.0f, 0.0f);
+	instance->position = Vector3D(0.0f, 2.0f, -2.0f);
+	instance->rotation = Vector3D(1.0f, 0.0f, 0.0f);
 }
 
 void SceneCameraHandler::Update()
@@ -38,7 +38,7 @@ void SceneCameraHandler::Update()
 
 		if (InputSystem::IsKey(VK_RBUTTON))
 		{
-			Vector2 mousePos = InputSystem::GetCursorPosition();
+			Vector2D mousePos = InputSystem::GetCursorPosition();
 			InputSystem::SetCursorPosition(instance->width / 2.0f, instance->height / 2.0f);
 
 			if (mousePos != instance->oldMousePos)
@@ -84,13 +84,13 @@ void SceneCameraHandler::Update()
 			std::cout << "E" << "\n";
 			instance->position.y += instance->speed * deltaTime;
 		}
-		if (InputSystem::IsKeyDown('G') && !instance->gameCameras.empty())
+		/*if (InputSystem::IsKeyDown('G') && !instance->gameCameras.empty())
 		{
 			std::cout << "G" << "\n";
 			instance->gameCameras[0]->SetPosition(instance->position);
 			instance->gameCameras[0]->SetRotation(instance->rotation);
-
-		}
+			instance->gameCameras[0]->SetRotation(instance->rotation);
+		}*/
 	}
 
 	for (Camera* camera : instance->cameras)
@@ -98,6 +98,7 @@ void SceneCameraHandler::Update()
 		camera->SetRotation(instance->rotation);
 		camera->SetPosition(instance->position);
 		camera->Update(deltaTime);
+		camera->Recalculate();
 	}
 }
 
@@ -114,13 +115,13 @@ void SceneCameraHandler::Present()
 	instance->camera->Present();
 }
 
-void SceneCameraHandler::Release()
+void SceneCameraHandler::Destroy()
 {
 	if (!instance->cameras.empty())
 	{
 		for (int i = instance->cameras.size() - 1; i >= 0; i--)
 		{
-			instance->cameras[i]->Release();
+			instance->cameras[i]->Destroy();
 			instance->cameras.pop_back();
 		}
 	}
@@ -128,7 +129,7 @@ void SceneCameraHandler::Release()
 	{
 		for (int i = instance->gameCameras.size() - 1; i >= 0; i--)
 		{
-			instance->gameCameras[i]->Release();
+			instance->gameCameras[i]->Destroy();
 			instance->gameCameras.pop_back();
 		}
 	}
@@ -143,12 +144,12 @@ Camera* SceneCameraHandler::GetSceneCamera()
 
 Matrix4x4 SceneCameraHandler::GetViewMatrix()
 {
-	return instance->camera->GetViewMatrix();
+	return instance->camera->GetView();
 }
 
 Matrix4x4 SceneCameraHandler::GetProjectionMatrix()
 {
-	return instance->camera->GetProjectionMatrix();
+	return instance->camera->GetProjection();
 }
 
 void SceneCameraHandler::CreateNewCamera()
@@ -172,14 +173,10 @@ GameCamera* SceneCameraHandler::CreateGameCamera(void* shaderBytes, size_t shade
 	if (instance->gameCameras.size() < instance->gameCameraLimit)
 	{
 		instance->gameCameraCount++;
-		instance->gameCameras.push_back(new GameCamera("Game Camera" + std::to_string(instance->gameCameraCount), instance->swapChain, shaderBytes, shaderSize));
-		instance->gameCameras[instance->gameCameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height,
-			0.01f, 1000.0f);
-		instance->gameCameras[instance->gameCameraCount - 1]->SetScale(Vector3(0.5f));
-		instance->gameCameras[instance->gameCameraCount - 1]->SetPosition(Vector3(0,0,0));
-		instance->gameCameras[instance->gameCameraCount - 1]->SetPriority(1);
-		instance->gameCameras[instance->gameCameraCount - 1]->SetLayer(1);
-		std::cout << instance->gameCameras[instance->gameCameraCount - 1]->GetName() << std::endl;
+		instance->gameCameras.push_back(new GameCamera("Game Camera", instance->swapChain, shaderBytes, shaderSize));
+		instance->gameCameras[instance->gameCameraCount - 1]->SetPerspProjection(1.57f, instance->width / (float)instance->height, 0.01f, 1000.0f);
+		instance->gameCameras[instance->gameCameraCount - 1]->SetScale(Vector3D(0.5f));
+		instance->gameCameras[instance->gameCameraCount - 1]->SetPosition(Vector3D(0,0,0));
 		return instance->gameCameras[instance->gameCameraCount - 1];
 	}
 
@@ -270,12 +267,12 @@ void SceneCameraHandler::SwitchCameraType()
 	std::cout << "Currently using camera: " << instance->camera->GetName()<< std::endl;
 }
 
-void SceneCameraHandler::SetSceneCameraPos(Vector3 pos)
+void SceneCameraHandler::SetSceneCameraPos(Vector3D pos)
 {
 	instance->position = pos;
 }
 
-void SceneCameraHandler::SetSceneCameraRot(Vector3 rot)
+void SceneCameraHandler::SetSceneCameraRot(Vector3D rot)
 {
 	instance->rotation = rot;
 }
@@ -285,8 +282,8 @@ void SceneCameraHandler::AlignGameCamerasToView()
 	if (!instance->cameras.empty() && !instance->gameCameras.empty())
 	{
 		Camera* sceneCamera = instance->cameras[0]; // Assuming cameras[0] is the main scene camera
-		Vector3 scenePosition = sceneCamera->GetLocalPosition();
-		Vector3 sceneRotation = sceneCamera->GetLocalRotation();
+		Vector3D scenePosition = sceneCamera->GetLocalPosition();
+		Vector3D sceneRotation = sceneCamera->GetLocalRotation();
 
 		for (GameCamera* gameCamera : instance->gameCameras)
 		{

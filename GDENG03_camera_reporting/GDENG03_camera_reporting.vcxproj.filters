@@ -1,62 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GraphicsEngine\ConstantBuffer.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\DepthStencilState.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\DeviceContext.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\GraphicsEngine.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\IndexBuffer.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\PixelShader.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\SwapChain.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\VertexBuffer.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine\VertexShader.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Matrix4x4.cpp">
       <Filter>GameEngine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector2.cpp">
-      <Filter>GameEngine\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector3.cpp">
-      <Filter>GameEngine\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowSystem\Window.cpp">
-      <Filter>GameEngine\WindowSystem</Filter>
-    </ClCompile>
     <ClCompile Include="EngineTime\EngineTime.cpp">
       <Filter>GameEngine\EngineTime</Filter>
-    </ClCompile>
-    <ClCompile Include="InputSystem\InputSystem.cpp">
-      <Filter>GameEngine\InputSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Circle.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Cube.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\GameObject.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\Quad.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="App\AppWindow.cpp">
       <Filter>App</Filter>
@@ -64,20 +13,8 @@
     <ClCompile Include="main.cpp">
       <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Camera.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\GameObjectManager.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="SceneCamera\SceneCameraHandler.cpp">
       <Filter>GameEngine\SceneCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector4.cpp">
-      <Filter>GameEngine\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjects\RenderQueue.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="IMGUI\imgui.cpp">
       <Filter>GameEngine\IMGUI</Filter>
@@ -100,29 +37,114 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
       <Filter>GameEngine\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="UI\HierarchyScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
+    <ClCompile Include="Backend\ActionHistory.cpp">
+      <Filter>GameEngine\Backend</Filter>
     </ClCompile>
-    <ClCompile Include="UI\InspectorScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
+    <ClCompile Include="Backend\EditorAction.cpp">
+      <Filter>GameEngine\Backend</Filter>
     </ClCompile>
-    <ClCompile Include="UI\MenuScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
+    <ClCompile Include="Backend\EngineBackend.cpp">
+      <Filter>GameEngine\Backend</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ProfilerScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
+    <ClCompile Include="Math\Vector2D.cpp">
+      <Filter>GameEngine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="UI\UIManager.cpp">
-      <Filter>GameEngine\UI</Filter>
+    <ClCompile Include="Math\Vector3D.cpp">
+      <Filter>GameEngine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="UI\UIScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
+    <ClCompile Include="Math\Vector4D.cpp">
+      <Filter>GameEngine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\ConstantBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\DepthStencilState.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\DeviceContext.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\GraphicsEngine.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\IndexBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\PixelShader.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\ShaderLibrary.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\SwapChain.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\VertexBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\VertexShader.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine\ViewTexture.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Camera.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Circle.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Cube.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\GameCamera.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\ViewTexture.cpp" />
-    <ClCompile Include="GameObjects\Line.cpp" />
+    <ClCompile Include="GameObjects\GameObject.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\GameObjectManager.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Line.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\MeshObject.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PhysicsCube.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\PhysicsQuad.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Quad.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\RenderQueue.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\BaseComponentSystem.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Component.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PhysicsComponent.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PhysicsSystem.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Renderer.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Mesh.cpp">
+      <Filter>GameEngine\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\MeshManager.cpp">
+      <Filter>GameEngine\Resource</Filter>
+    </ClCompile>
     <ClCompile Include="Resource\Resource.cpp">
       <Filter>GameEngine\Resource</Filter>
     </ClCompile>
@@ -135,91 +157,68 @@
     <ClCompile Include="Resource\TextureManager.cpp">
       <Filter>GameEngine\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ActionsScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ColorPickerScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CreditsScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CustomStyles.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\GameObjectSpawner.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\HierarchyScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\InspectorScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\MenuScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\OutlinerScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ProfilerScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ScenePlayOptionsScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIManager.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem\InputSystem.cpp">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowSystem\Window.cpp">
+      <Filter>GameEngine\WindowSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CameraViewportScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsEngine\ConstantBuffer.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\DepthStencilState.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\DeviceContext.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\GraphicsEngine.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\IndexBuffer.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\PixelShader.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\Structs.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\SwapChain.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\VertexBuffer.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsEngine\VertexShader.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Colors.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Matrix4x4.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector2.h">
-      <Filter>GameEngine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector3.h">
-      <Filter>GameEngine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowSystem\Window.h">
-      <Filter>GameEngine\WindowSystem</Filter>
-    </ClInclude>
     <ClInclude Include="EngineTime\EngineTime.h">
       <Filter>GameEngine\EngineTime</Filter>
-    </ClInclude>
-    <ClInclude Include="InputSystem\InputListener.h">
-      <Filter>GameEngine\InputSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="InputSystem\InputSystem.h">
-      <Filter>GameEngine\InputSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Circle.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Cube.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\GameObject.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\Quad.h">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="App\AppWindow.h">
       <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Camera.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\GameObjectManager.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SceneCamera\SceneCameraHandler.h">
       <Filter>GameEngine\SceneCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector4.h">
-      <Filter>GameEngine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjects\RenderQueue.h">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="IMGUI\imconfig.h">
       <Filter>GameEngine\IMGUI</Filter>
@@ -245,32 +244,117 @@
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>GameEngine\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\HierarchyScreen.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="Backend\ActionHistory.h">
+      <Filter>GameEngine\Backend</Filter>
     </ClInclude>
-    <ClInclude Include="UI\InspectorScreen.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="Backend\EditorAction.h">
+      <Filter>GameEngine\Backend</Filter>
     </ClInclude>
-    <ClInclude Include="UI\MenuScreen.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="Backend\EngineBackend.h">
+      <Filter>GameEngine\Backend</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ProfilerScreen.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="Math\Vector2D.h">
+      <Filter>GameEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIManager.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="Math\Vector3D.h">
+      <Filter>GameEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UINames.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="Math\Vector4D.h">
+      <Filter>GameEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIScreen.h">
-      <Filter>GameEngine\UI</Filter>
+    <ClInclude Include="GraphicsEngine\ConstantBuffer.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\DepthStencilState.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\DeviceContext.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\GraphicsEngine.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\IndexBuffer.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\PixelShader.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\ShaderLibrary.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\Structs.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\SwapChain.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\VertexBuffer.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\VertexShader.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine\ViewTexture.h">
+      <Filter>GameEngine\GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Camera.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Circle.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Cube.h">
+      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\GameCamera.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\ViewTexture.h" />
-    <ClInclude Include="GameObjects\Line.h" />
+    <ClInclude Include="GameObjects\GameObject.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameObjectManager.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Line.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\MeshObject.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\PhysicsCube.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\PhysicsQuad.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Quad.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\RenderQueue.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BaseComponentSystem.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Component.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PhysicsComponent.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PhysicsSystem.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Renderer.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Mesh.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\MeshManager.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
     <ClInclude Include="Resource\Resource.h">
       <Filter>GameEngine\Resource</Filter>
     </ClInclude>
@@ -283,6 +367,61 @@
     <ClInclude Include="Resource\TextureManager.h">
       <Filter>GameEngine\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\VertexMesh.h">
+      <Filter>GameEngine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ActionsScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ColorPickerScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CreditsScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CustomStyles.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\GameObjectSpawner.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\HierarchyScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\InspectorScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MenuScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\OutlinerScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ProfilerScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ScenePlayOptionsScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIManager.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UINames.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\InputListener.h">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\InputSystem.h">
+      <Filter>GameEngine\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowSystem\Window.h">
+      <Filter>GameEngine\WindowSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CameraViewportScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -324,13 +463,8 @@
     <Filter Include="GameEngine\Resource">
       <UniqueIdentifier>{d36aac03-9a11-4372-a49a-603fd1bef0c0}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
+    <Filter Include="GameEngine\Backend">
+      <UniqueIdentifier>{3973f504-9a4e-4253-b931-37f676c70a0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

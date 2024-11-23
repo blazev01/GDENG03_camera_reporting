@@ -4,6 +4,7 @@
 #include "../GameObjects/Cube.h"
 #include "../GameObjects/GameObjectManager.h"
 #include "../GameObjects/RenderQueue.h"
+
 class SceneCameraHandler
 {
 public:
@@ -11,7 +12,7 @@ public:
 	static void Update();
 	static void Render();
 	static void Present();
-	static void Release();
+	static void Destroy();
 
 	static Camera* GetSceneCamera();
 	static Matrix4x4 GetViewMatrix();
@@ -29,8 +30,8 @@ public:
 	static void SwitchPrevCamera();
 	static void SwitchCameraType();
 
-	static void SetSceneCameraPos(Vector3 pos);
-	static void SetSceneCameraRot(Vector3 rot);
+	static void SetSceneCameraPos(Vector3D pos);
+	static void SetSceneCameraRot(Vector3D rot);
 
 	static void AlignGameCamerasToView();
 
@@ -63,8 +64,8 @@ private:
 	float speed = 2.0f;
 	bool isSceneCamera = true;
 
-	Vector2 oldMousePos;
+	Vector2D oldMousePos;
 
-	Vector3 position;
-	Vector3 rotation;
+	Vector3D position;
+	Vector3D rotation;
 };

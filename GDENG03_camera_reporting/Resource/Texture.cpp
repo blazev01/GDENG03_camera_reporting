@@ -5,9 +5,10 @@
 
 Texture::Texture(const wchar_t* fullPath) : Resource(fullPath)
 {
+	std::cout << "Loading texture..." << "\n";
+
 	DirectX::ScratchImage imageData;
 	HRESULT hr = DirectX::LoadFromWICFile(fullPath, DirectX::WIC_FLAGS_NONE, nullptr, imageData);
-	std::wcout << "Loading texture from: " << fullPath << "\n";
 
 	if (SUCCEEDED(hr))
 	{
@@ -25,10 +26,11 @@ Texture::Texture(const wchar_t* fullPath) : Resource(fullPath)
 		desc.Texture2D.MostDetailedMip = 0;
 
 		GraphicsEngine::GetDevice()->CreateShaderResourceView(this->texture, &desc, &this->srv);
+		std::cout << "Texture loaded." << "\n";
 	}
 	else
 	{
-		std::cout << "FAILED TO LOAD TEXTURE." << "\n";
+		//std::cout << "FAILED TO LOAD TEXTURE." << "\n";
 		throw std::exception("FAILED TO LOAD TEXTURE.");
 	}
 }
