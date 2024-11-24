@@ -67,9 +67,9 @@ GameObject* GameObjectManager::CreateGameObject(PrimitiveType primitiveType, boo
 		//gameObject = new Cube("Sphere", shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::GAME_CAMERA:
+	case GameObjectManager::CAMERA:
 	{
-		gameObject = SceneCameraHandler::CreateGameCamera(shaderBytes, shaderSize);
+		gameObject = SceneCameraHandler::AddGameCamera(shaderBytes, shaderSize);
 		break;
 	}
 	case GameObjectManager::MESH:

@@ -4,15 +4,21 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 {
 	Vector3D posList[] =
 	{
-		{ Vector3D(-0.5f,-0.5f,-0.5f)},
-		{ Vector3D(-0.5f,0.5f,-0.5f) },
-		{ Vector3D(0.5f,0.5f,-0.5f) },
-		{ Vector3D(0.5f,-0.5f,-0.5f) },
+		{ Vector3D(-0.25f,-0.25f,-0.5f)},
+		{ Vector3D(-0.25f,0.25f,-0.5f) },
+		{ Vector3D(0.25f,0.25f,-0.5f) },
+		{ Vector3D(0.25f,-0.25f,-0.5f) },
 
-		{ Vector3D(0.5f,-0.5f,0.5f) },
-		{ Vector3D(0.5f,0.5f,0.5f) },
-		{ Vector3D(-0.5f,0.5f,0.5f) },
-		{ Vector3D(-0.5f,-0.5f,0.5f) }
+		{ Vector3D(0.25f,-0.25f,0.25f) },
+		{ Vector3D(0.25f,0.25f,0.25f) },
+		{ Vector3D(-0.25f,0.25f,0.25f) },
+		{ Vector3D(-0.25f,-0.25f,0.25f) },
+
+		{ Vector3D(-0.25f,-0.25f,0.5f) },
+		{ Vector3D(-0.25f,0.25f,0.5f) },
+		{ Vector3D(0.25f,0.25f,0.5f) },
+		{ Vector3D(0.25f,-0.25f,0.5f) },
+		{ Vector3D(0.0f,0.0f,0.0f) }
 	};
 
 	Vector2D texcoordList[] =
@@ -25,35 +31,57 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 
 	Vertex vertices[] =
 	{
-		{ posList[0], texcoordList[1], RGBA_GREY },
+		//FRONT
+		{ posList[0], texcoordList[1], RGBA_BLACK },
 		{ posList[1], texcoordList[0], RGBA_GREY },
 		{ posList[2], texcoordList[2], RGBA_GREY },
-		{ posList[3], texcoordList[3], RGBA_GREY },
-
-		{ posList[4], texcoordList[1], RGBA_GREY },
+		{ posList[3], texcoordList[3], RGBA_BLACK },
+		//BACK
+		{ posList[4], texcoordList[1], RGBA_BLACK },
 		{ posList[5], texcoordList[0], RGBA_GREY },
 		{ posList[6], texcoordList[2], RGBA_GREY },
-		{ posList[7], texcoordList[3], RGBA_GREY },
+		{ posList[7], texcoordList[3], RGBA_BLACK },
 
-		{ posList[1], texcoordList[1], RGBA_GREY },
+		{ posList[1], texcoordList[1], RGBA_BLACK },
 		{ posList[6], texcoordList[0], RGBA_GREY },
 		{ posList[5], texcoordList[2], RGBA_GREY },
-		{ posList[2], texcoordList[3], RGBA_GREY },
+		{ posList[2], texcoordList[3], RGBA_BLACK },
 
-		{ posList[7], texcoordList[1], RGBA_GREY },
+		{ posList[7], texcoordList[1], RGBA_BLACK },
 		{ posList[0], texcoordList[0], RGBA_GREY },
 		{ posList[3], texcoordList[2], RGBA_GREY },
-		{ posList[4], texcoordList[3], RGBA_GREY },
+		{ posList[4], texcoordList[3], RGBA_BLACK },
 
-		{ posList[3], texcoordList[1], RGBA_GREY },
+		{ posList[3], texcoordList[1], RGBA_BLACK },
 		{ posList[2], texcoordList[0], RGBA_GREY },
 		{ posList[5], texcoordList[2], RGBA_GREY },
-		{ posList[4], texcoordList[3], RGBA_GREY },
+		{ posList[4], texcoordList[3], RGBA_BLACK },
 
-		{ posList[7], texcoordList[1], RGBA_GREY },
+		{ posList[7], texcoordList[1], RGBA_BLACK },
 		{ posList[6], texcoordList[0], RGBA_GREY },
 		{ posList[1], texcoordList[2], RGBA_GREY },
-		{ posList[0], texcoordList[3], RGBA_GREY }
+		{ posList[0], texcoordList[3], RGBA_BLACK },
+		//PYRAMID BACK
+		{ posList[11], texcoordList[1], RGBA_GREY },
+		{ posList[10], texcoordList[0], RGBA_GREY },
+		{ posList[9], texcoordList[2], RGBA_GREY },
+		{ posList[8], texcoordList[3], RGBA_GREY },
+
+		{ posList[8], texcoordList[1], RGBA_GREY },
+		{ posList[9], texcoordList[0], RGBA_GREY },
+		{ posList[12], texcoordList[2], RGBA_BLACK },
+		
+		{ posList[9], texcoordList[1], RGBA_GREY },
+		{ posList[10], texcoordList[0], RGBA_GREY },
+		{ posList[12], texcoordList[2], RGBA_BLACK },
+		
+		{ posList[10], texcoordList[1], RGBA_GREY },
+		{ posList[11], texcoordList[0], RGBA_GREY },
+		{ posList[12], texcoordList[2], RGBA_BLACK },
+		
+		{ posList[11], texcoordList[1], RGBA_GREY },
+		{ posList[8], texcoordList[0], RGBA_GREY },
+		{ posList[12], texcoordList[2], RGBA_BLACK }
 	};
 
 	this->vertexBuffer = GraphicsEngine::CreateVertexBuffer();
@@ -77,7 +105,18 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 		18,19,16,
 
 		20,21,22,
-		22,23,20
+		22,23,20,
+
+		24,25,26,
+		26,27,24,
+
+		28,29,30,
+
+		31,32,33,
+
+		34,35,36,
+
+		37,38,39
 	};
 
 	this->indexBuffer = GraphicsEngine::CreateIndexBuffer();
@@ -95,105 +134,14 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 
 void GameCamera::Update(float deltaTime)
 {
-	if (isActive)
-	{
-		/*if (InputSystem::IsKeyDown(VK_RBUTTON))
-		{
-			std::cout << "RMB HELD" << "\n";
-			InputSystem::ShowCursor(false);
-		}
-		else if (InputSystem::IsKeyUp(VK_RBUTTON))
-		{
-			std::cout << "RMB RELEASED" << "\n";
-			InputSystem::ShowCursor(true);
-		}
-
-		if (InputSystem::IsKey(VK_RBUTTON))
-		{
-			Vector2 mousePos = InputSystem::GetCursorPosition();
-			InputSystem::SetCursorPosition(this->swapChain->GetWidth() / 2.0f, this->swapChain->GetHeight() / 2.0f);
-
-			if (mousePos != this->oldMousePos)
-			{
-				this->localRotation.x += (mousePos.y - (this->swapChain->GetHeight() / 2.0f)) * deltaTime * 0.2f;
-				this->localRotation.y += (mousePos.x - (this->swapChain->GetWidth() / 2.0f)) * deltaTime * 0.2f;
-				this->oldMousePos = mousePos;
-
-			}
-		}*/
-
-		/*if (InputSystem::IsKey('W'))
-		{
-			std::cout << "W" << "\n";
-			this->localPosition -= this->speed * deltaTime * this->GetForward();
-		}
-
-		if (InputSystem::IsKey('S'))
-		{
-			std::cout << "S" << "\n";
-			this->localPosition += this->speed * deltaTime * this->GetForward();
-
-
-		}
-
-		if (InputSystem::IsKey('A'))
-		{
-			std::cout << "A" << "\n";
-			this->localPosition -= this->speed * deltaTime * this->GetRight();
-		}
-
-		if (InputSystem::IsKey('D'))
-		{
-			std::cout << "D" << "\n";
-			this->localPosition += this->speed * deltaTime * this->GetRight();
-		}
-
-		if (InputSystem::IsKey('Q'))
-		{
-			std::cout << "Q" << "\n";
-			this->localPosition.y -= this->speed * deltaTime;
-		}
-
-		if (InputSystem::IsKey('E'))
-		{
-			std::cout << "E" << "\n";
-			this->localPosition.y += this->speed * deltaTime;
-		}*/
-	}
-	/*
-	Matrix4x4 temp;
-	Matrix4x4 temp2;
-	this->transform.SetIdentity();
-	this->gameCameraTransforms.SetIdentity();
-
-	temp.SetIdentity();
-	temp2.SetIdentity();
-	temp.SetRotationX(this->localRotation.x);
-	temp2.SetRotationX(this->localRotation.x);
-	this->transform *= temp;
-	this->gameCameraTransforms *= temp2;
-
-
-	temp.SetIdentity();
-	temp2.SetIdentity();
-	temp.SetRotationY(this->localRotation.y);
-	temp2.SetRotationY(this->localRotation.y);
-	this->transform *= temp;
-	this->gameCameraTransforms *= temp2;
-
 	
-	this->transform.SetPosition(this->localPosition);
-	this->gameCameraTransforms.SetPosition(this->localPosition);
-
-
-	this->transform.Inverse();*/
 }
 
 void GameCamera::Draw(Matrix4x4 view, Matrix4x4 proj)
 {
 	Constant cc = Constant();
 	cc.time = this->ticks;
-	cc.world = this->gameCameraTransforms;
+	cc.world = this->transform;
 	cc.view = view;
 	cc.proj = proj;
 
@@ -213,12 +161,14 @@ void GameCamera::Draw(Matrix4x4 view, Matrix4x4 proj)
 
 void GameCamera::Destroy()
 {
-	Camera::Destroy();
-}
+	GameObject::Destroy();
 
-void GameCamera::SetActive(bool isActive)
-{
-	this->isActive = isActive;
+	this->viewTexture->Release();
+	this->vertexBuffer->Release();
+	this->indexBuffer->Release();
+	this->constantBuffer->Release();
+
+	delete this;
 }
 
 GameCamera::~GameCamera()

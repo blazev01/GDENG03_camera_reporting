@@ -7,6 +7,7 @@ class SwapChain
 {
 public:
 	SwapChain();
+	~SwapChain();
 
 	bool Init(HWND hwnd, UINT width, UINT height, bool depthTest = true);
 	bool Present(bool vsync);
@@ -15,7 +16,7 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 
-	~SwapChain();
+	ID3D11DepthStencilView* GetDSV();
 
 private:
 	int width = 0;

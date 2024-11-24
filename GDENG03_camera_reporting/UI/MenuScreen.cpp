@@ -4,7 +4,6 @@
 #include "../GameObjects/MeshObject.h"
 #include "../Resource/MeshManager.h"
 #include "../Resource/TextureManager.h"
-#include "../SceneCamera/SceneCameraHandler.h"
 #include "GameObjectSpawner.h"
 
 MenuScreen::MenuScreen() : UIScreen("MENU_SCREEN")
@@ -47,9 +46,7 @@ void MenuScreen::DrawUI()
 			this->ShowMenuAbout();
 			ImGui::EndMenu();
 		}
-		if (ImGui::SmallButton("Align with View"))
-			SceneCameraHandler::AlignGameCamerasToView();
-
+		
 		ImGui::EndMainMenuBar();
 	
 	ImGui::PopStyleVar();
@@ -79,7 +76,15 @@ void MenuScreen::ShowMenuGameObject()
 		GameObjectManager::CreateGameObject(GameObjectManager::CUBE);
 	}
 
-	if (ImGui::MenuItem("Create Circle")) {}
+	if (ImGui::MenuItem("Create Sphere"))
+	{
+		//GameObjectManager::CreateGameObject(GameObjectManager::CUBE);
+	}
+
+	if (ImGui::MenuItem("Create Camera"))
+	{
+		GameObjectManager::CreateGameObject(GameObjectManager::CAMERA);
+	}
 
 	if (ImGui::MenuItem("Create Physics Cube"))
 	{
@@ -90,12 +95,7 @@ void MenuScreen::ShowMenuGameObject()
 	{
 		GameObjectManager::CreateGameObject(GameObjectManager::PHYSICS_QUAD);
 	}
-
-	if (ImGui::MenuItem("Create Game Camera"))
-	{
-		GameObjectManager::CreateGameObject(GameObjectManager::GAME_CAMERA);
-	}
-
+	
 	if (ImGui::MenuItem("Create Physics Objects"))
 	{
 		GameObjectSpawner::SpawnPhysicsObjects();

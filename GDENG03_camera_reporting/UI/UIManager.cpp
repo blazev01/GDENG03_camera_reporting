@@ -80,9 +80,8 @@ UIManager::UIManager(HWND hwnd)
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX11_Init(GraphicsEngine::GetDevice(), GraphicsEngine::GetImmediateDeviceContext()->GetDeviceContext());
 
-	//CustomStyles styles;
-	//styles.StyleColorsEvangelion();
-	ImGui::StyleColorsDark();
+	CustomStyles styles;
+	styles.StyleColorsCrimson();
 
 	UINames uiNames;
 	MenuScreen* menuScreen = new MenuScreen();
@@ -100,11 +99,11 @@ UIManager::UIManager(HWND hwnd)
 	InspectorScreen* inspectorScreen = new InspectorScreen();
 	this->uiTable[uiNames.INSPECTOR_SCREEN] = inspectorScreen;
 	this->uiList.push_back(inspectorScreen);
-	
+
 	CameraViewportScreen* cameraViewportScreen = new CameraViewportScreen();
 	this->uiTable[uiNames.CAMERA_VIEWPORT_SCREEN] = cameraViewportScreen;
 	this->uiList.push_back(cameraViewportScreen);
-	
+
 	CreditsScreen* creditsScreen = new CreditsScreen();
 	this->uiTable[uiNames.CREDITS_SCREEN] = creditsScreen;
 	this->uiList.push_back(creditsScreen);

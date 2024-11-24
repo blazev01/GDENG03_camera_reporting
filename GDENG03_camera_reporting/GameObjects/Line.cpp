@@ -72,8 +72,8 @@ void Line::Draw(Matrix4x4 view, Matrix4x4 proj)
 	Constant cc = Constant();
 	cc.time = this->ticks;
 	cc.world = this->transform;
-	cc.view = SceneCameraHandler::GetViewMatrix();
-	cc.proj = SceneCameraHandler::GetProjectionMatrix();
+	cc.view = SceneCameraHandler::GetView();
+	cc.proj = SceneCameraHandler::GetProjection();
 
 	this->constantBuffer->Update(GraphicsEngine::GetImmediateDeviceContext(), &cc);
 	GraphicsEngine::GetImmediateDeviceContext()->SetConstantBuffer(this->vertexShader, this->constantBuffer);

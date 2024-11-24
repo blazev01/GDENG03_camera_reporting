@@ -27,7 +27,6 @@ public:
 	void SetOrthoProjection(float width, float height, float nearPlane, float farPlane);
 	void SetPerspProjection(float fov, float aspect, float zNear, float zFar);
 
-	std::vector<Vector3D> CreateRenderRegionOutliner(float fov, float aspect, float z);
 	std::bitset<4> GetCullingMask() const;
 	void SetCullingMask(std::bitset<4> cullingMask);
 
@@ -40,11 +39,5 @@ protected:
 	std::bitset<4> cullingMask;
 
 	float deltaTime = 0.0f;
-	float speed = 2.0f;
-	float rotX = 0.0f;
-	float rotY = 0.0f;
-
-	Vector3D camPos;
-	Vector2D oldMousePos;
 };
 

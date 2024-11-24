@@ -47,7 +47,8 @@ void RenderQueue::Render(std::bitset<4> cullingMask, Matrix4x4 view, Matrix4x4 p
 	if (!instance->renderers.empty())
 	{
 		for (GameObject* renderer : instance->renderers)
-			if (renderer->GetEnabled() && cullingMask[renderer->GetLayer()])
+			if (renderer->GetEnabled() &&
+				cullingMask[renderer->GetLayer()])
 				renderer->Draw(view, proj);
 	}
 }

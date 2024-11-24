@@ -2,7 +2,6 @@
 #include "RenderQueue.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../GraphicsEngine/DeviceContext.h"
-#include "../InputSystem/InputSystem.h"
 
 Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name)
 {
@@ -32,7 +31,6 @@ void Camera::Destroy()
 {
 	GameObject::Destroy();
 
-	this->swapChain->Release();
 	this->viewTexture->Release();
 
 	delete this;
@@ -72,7 +70,7 @@ void Camera::Render()
 
 void Camera::RenderViewTexture()
 {
-	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->viewTexture, 0.0f, 0.45f, 0.5f, 1.0f);
+	GraphicsEngine::GetImmediateDeviceContext()->ClearRenderTargetColor(this->viewTexture->GetRTV(), this->swapChain->GetDSV(), 0.0f, 0.45f, 0.5f, 1.0f);
 
 	GraphicsEngine::GetImmediateDeviceContext()->SetViewportSize(this->viewTexture);
 
@@ -107,28 +105,6 @@ void Camera::SetOrthoProjection(float width, float height, float nearPlane, floa
 void Camera::SetPerspProjection(float fov, float aspect, float zNear, float zFar)
 {
 	this->projection.SetPerspectiveLH(fov, aspect, zNear, zFar);
-}
-
-std::vector<Vector3D> Camera::CreateRenderRegionOutliner(float fov, float aspect, float z)
-{
-	float angle = fov; //already in radians
-	//float angle = fov * 3.14 / 180 * 1.047;
-
-	float heightZ = 2 * z * std::tan(angle / 2);
-	float widthZ = heightZ * aspect;
-
-	Vector3D zTL = Vector3D(-widthZ / 2, heightZ / 2, z);
-	Vector3D zTR = Vector3D(widthZ / 2, heightZ / 2, z);
-	Vector3D zBL = Vector3D(-widthZ / 2, -heightZ / 2, z);
-	Vector3D zBR = Vector3D(widthZ / 2, -heightZ / 2, z);
-
-	/*Line* line = new Line("lyn", AppWindow::instance->vsBytes, AppWindow::instance->vsSize, Vector3D(0), Vector3D(1));
-	line->SetVertexShader(AppWindow::instance->vertexShader);
-	line->SetPixelShader(AppWindow::instance->pixelShader);
-	GameObjectManager::AddGameObject(line);
-	RenderQueue::AddRenderer(line);*/
-
-	return { zTL, zTR, zBL, zBR };
 }
 
 std::bitset<4> Camera::GetCullingMask() const

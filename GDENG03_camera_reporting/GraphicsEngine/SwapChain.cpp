@@ -8,6 +8,11 @@ SwapChain::SwapChain()
 	this->dsv = NULL;
 }
 
+SwapChain::~SwapChain()
+{
+
+}
+
 bool SwapChain::Init(HWND hwnd, UINT width, UINT height, bool depthTest)
 {
 	this->width = width;
@@ -87,7 +92,7 @@ int SwapChain::GetHeight() const
 	return this->height;
 }
 
-SwapChain::~SwapChain()
+ID3D11DepthStencilView* SwapChain::GetDSV()
 {
-
+	return this->dsv;
 }

@@ -14,15 +14,13 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void Draw(Matrix4x4 view, Matrix4x4 proj) override;
 	virtual void Destroy() override;
-	void SetActive(bool isActive);
 	~GameCamera();
 
 private:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
-	bool isActive = false;
+
 	float ticks = 0.0f;
-	Matrix4x4 gameCameraTransforms;
 };
 

@@ -15,6 +15,7 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 
+	ID3D11RenderTargetView* GetRTV();
 	ID3D11ShaderResourceView* GetSRV();
 
 private:

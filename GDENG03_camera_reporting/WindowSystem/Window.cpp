@@ -79,7 +79,7 @@ bool Window::Init()
     this->hwnd = ::CreateWindowEx(
         WS_EX_OVERLAPPEDWINDOW,
         L"MyWindowClass",
-        L"DirectX Application",
+        L"Scene Editor",
         WS_CAPTION | WS_SYSMENU,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
