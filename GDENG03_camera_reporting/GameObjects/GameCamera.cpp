@@ -9,15 +9,15 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 		{ Vector3D(0.25f,0.25f,-1.0f) },
 		{ Vector3D(0.25f,-0.25f,-1.0f) },
 
-		{ Vector3D(0.25f,-0.25f,-0.25f) },
-		{ Vector3D(0.25f,0.25f,-0.25f) },
-		{ Vector3D(-0.25f,0.25f,-0.25f) },
-		{ Vector3D(-0.25f,-0.25f,-0.25f) },
+		{ Vector3D(0.25f,-0.25f,-0.4f) },
+		{ Vector3D(0.25f,0.25f,-0.4f) },
+		{ Vector3D(-0.25f,0.25f,-0.4f) },
+		{ Vector3D(-0.25f,-0.25f,-0.4f) },
 
-		{ Vector3D(-0.25f,-0.25f,0.0f) },
-		{ Vector3D(-0.25f,0.25f,0.0f) },
-		{ Vector3D(0.25f,0.25f,0.0f) },
-		{ Vector3D(0.25f,-0.25f,0.0f) },
+		{ Vector3D(-0.25f,-0.25f,-0.1f) },
+		{ Vector3D(-0.25f,0.25f,-0.1f) },
+		{ Vector3D(0.25f,0.25f,-0.1f) },
+		{ Vector3D(0.25f,-0.25f,-0.1f) },
 		{ Vector3D(0.0f,0.0f,-0.5f) }
 	};
 
@@ -169,6 +169,29 @@ void GameCamera::Destroy()
 	this->constantBuffer->Release();
 
 	delete this;
+}
+
+void GameCamera::Recalculate()
+{
+	GameObject::Recalculate();
+
+	Matrix4x4 temp;
+	this->view.SetIdentity();
+
+	temp.SetIdentity();
+	temp.SetRotationX(this->localRotation.x);
+	this->view *= temp;
+
+	temp.SetIdentity();
+	temp.SetRotationY(this->localRotation.y);
+	this->view *= temp;
+
+	temp.SetIdentity();
+	temp.SetRotationZ(this->localRotation.z);
+	this->view *= temp;
+
+	this->view.SetPosition(this->localPosition);
+	this->view.Inverse();
 }
 
 GameCamera::~GameCamera()

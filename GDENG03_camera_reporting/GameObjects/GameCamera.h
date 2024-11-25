@@ -14,6 +14,7 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void Draw(Matrix4x4 view, Matrix4x4 proj) override;
 	virtual void Destroy() override;
+	virtual void Recalculate() override;
 	~GameCamera();
 
 private:
