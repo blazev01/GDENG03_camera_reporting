@@ -120,6 +120,9 @@ void SceneCameraHandler::DeleteSceneCamera(int index)
 GameCamera* SceneCameraHandler::AddGameCamera(void* shaderBytes, size_t shaderSize)
 {
 	GameCamera* gameCamera = new GameCamera("Camera", instance->swapChain, shaderBytes, shaderSize);
+	gameCamera->SetPerspProjection(1.57f, instance->swapChain->GetWidth() / instance->swapChain->GetHeight(), 0.01f, 1000.0f);
+	gameCamera->SetScale(Vector3D(0.5f));
+	gameCamera->SetPosition(Vector3D(0, 0, 0));
 	instance->gameCameras.push_back(gameCamera);
 	return gameCamera;
 }
