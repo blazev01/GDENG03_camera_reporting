@@ -106,6 +106,7 @@ void SceneCameraHandler::AddSceneCamera()
 {
 	instance->position = Vector3D(0.0f, 2.0f, -10.0f);
 	Camera* camera = new Camera("Scene Camera", instance->swapChain);
+	camera->SetPerspProjection(1.0f, (float)instance->swapChain->GetWidth() / instance->swapChain->GetHeight(), 0.01f, 1000.0f);
 	if (!instance->camera) instance->camera = camera;
 	instance->sceneCameras.push_back(camera);
 }
@@ -120,9 +121,7 @@ void SceneCameraHandler::DeleteSceneCamera(int index)
 GameCamera* SceneCameraHandler::AddGameCamera(void* shaderBytes, size_t shaderSize)
 {
 	GameCamera* gameCamera = new GameCamera("Camera", instance->swapChain, shaderBytes, shaderSize);
-	gameCamera->SetPerspProjection(1.57f, instance->swapChain->GetWidth() / instance->swapChain->GetHeight(), 0.01f, 1000.0f);
-	gameCamera->SetScale(Vector3D(0.5f));
-	gameCamera->SetPosition(Vector3D(0, 0, 0));
+	gameCamera->SetPerspProjection(1.0f, (float)instance->swapChain->GetWidth() / instance->swapChain->GetHeight(), 0.01f, 1000.0f);
 	instance->gameCameras.push_back(gameCamera);
 	return gameCamera;
 }

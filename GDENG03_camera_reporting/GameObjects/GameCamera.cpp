@@ -4,21 +4,21 @@ GameCamera::GameCamera(std::string name, SwapChain* swapChain, void* shaderBytes
 {
 	Vector3D posList[] =
 	{
-		{ Vector3D(-0.25f,-0.25f,-0.5f)},
-		{ Vector3D(-0.25f,0.25f,-0.5f) },
-		{ Vector3D(0.25f,0.25f,-0.5f) },
-		{ Vector3D(0.25f,-0.25f,-0.5f) },
+		{ Vector3D(-0.25f,-0.25f,-1.0f)},
+		{ Vector3D(-0.25f,0.25f,-1.0f) },
+		{ Vector3D(0.25f,0.25f,-1.0f) },
+		{ Vector3D(0.25f,-0.25f,-1.0f) },
 
-		{ Vector3D(0.25f,-0.25f,0.25f) },
-		{ Vector3D(0.25f,0.25f,0.25f) },
-		{ Vector3D(-0.25f,0.25f,0.25f) },
-		{ Vector3D(-0.25f,-0.25f,0.25f) },
+		{ Vector3D(0.25f,-0.25f,-0.25f) },
+		{ Vector3D(0.25f,0.25f,-0.25f) },
+		{ Vector3D(-0.25f,0.25f,-0.25f) },
+		{ Vector3D(-0.25f,-0.25f,-0.25f) },
 
-		{ Vector3D(-0.25f,-0.25f,0.5f) },
-		{ Vector3D(-0.25f,0.25f,0.5f) },
-		{ Vector3D(0.25f,0.25f,0.5f) },
-		{ Vector3D(0.25f,-0.25f,0.5f) },
-		{ Vector3D(0.0f,0.0f,0.0f) }
+		{ Vector3D(-0.25f,-0.25f,0.0f) },
+		{ Vector3D(-0.25f,0.25f,0.0f) },
+		{ Vector3D(0.25f,0.25f,0.0f) },
+		{ Vector3D(0.25f,-0.25f,0.0f) },
+		{ Vector3D(0.0f,0.0f,-0.5f) }
 	};
 
 	Vector2D texcoordList[] =

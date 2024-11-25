@@ -49,7 +49,7 @@ void AppWindow::OnCreate()
 	SceneCameraHandler::Initialize(this->hwnd, width, height);
 	//SceneCameraHandler::GetSceneCamera()->SetOrthoProjection(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
 	//SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.57f, width / height, 0.01f, 1000.0f);
-	SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.0f, width / height, 0.01f, 1000.0f);
+	//SceneCameraHandler::GetSceneCamera()->SetPerspProjection(1.0f, width / height, 0.01f, 1000.0f);
 
 	TextureManager::CreateTextureFromFile(L"..\\Assets\\Textures\\brick.png");
 	MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj");

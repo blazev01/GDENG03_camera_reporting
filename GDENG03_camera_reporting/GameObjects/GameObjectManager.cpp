@@ -130,6 +130,7 @@ void GameObjectManager::AddGameObject(GameObject* gameObject)
 	instance->gameObjectMap[gameObject->GetName()] = gameObject;
 	RenderQueue::AddRenderer(gameObject);
 	gameObject->Awake();
+	gameObject->Recalculate();
 }
 
 void GameObjectManager::DeleteGameObject(GameObject* gameObject)
