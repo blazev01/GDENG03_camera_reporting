@@ -205,6 +205,7 @@
     <ClCompile Include="GameObjects\RenderQueue.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Libs\JsonCpp\dist\jsoncpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Colors.h">

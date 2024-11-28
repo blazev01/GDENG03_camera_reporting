@@ -5,6 +5,7 @@
 #include "../Resource/MeshManager.h"
 #include "../Resource/TextureManager.h"
 #include "GameObjectSpawner.h"
+#include "json/json.h"
 
 MenuScreen::MenuScreen() : UIScreen("MENU_SCREEN")
 {
@@ -56,9 +57,14 @@ void MenuScreen::DrawUI()
 void MenuScreen::ShowMenuFile()
 {
 	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "//Dummy Menu");
-	if (ImGui::MenuItem("New Scene")) {}
+	if (ImGui::MenuItem("New Scene")) {
+	
+		
+
+	}
 	if (ImGui::MenuItem("Save Scene")) {}
 	if (ImGui::MenuItem("Save Scene As...")) {}
+	if (ImGui::MenuItem("Load Scene")) {}
 	ImGui::Separator();
 
 	if (ImGui::MenuItem("Project Settings")) {}
