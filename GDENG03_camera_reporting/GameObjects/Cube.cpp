@@ -5,7 +5,7 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "../Resource/TextureManager.h"
 
-Cube::Cube(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
+Cube::Cube(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name, CUBE)
 {
 	Vector3D posList[] =
 	{

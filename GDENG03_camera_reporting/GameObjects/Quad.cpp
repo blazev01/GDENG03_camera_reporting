@@ -3,7 +3,7 @@
 #include "../GraphicsEngine/Structs.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
 
-Quad::Quad(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
+Quad::Quad(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name,QUAD)
 {
 	Vertex vertices[] =
 	{

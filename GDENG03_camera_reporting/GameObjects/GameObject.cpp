@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include "RenderQueue.h"
 
-GameObject::GameObject(std::string name)
+GameObject::GameObject(std::string name, PrimitiveType primitiveType)
 {
     this->name = name;
     this->localPosition = Vector3D::Zero();
@@ -15,6 +15,7 @@ GameObject::GameObject(std::string name)
     this->enabled = true;
     this->vertexShader = NULL;
     this->pixelShader = NULL;
+    this->primitiveType = primitiveType;
 }
 
 GameObject::~GameObject()
@@ -127,6 +128,37 @@ GameObject* GameObject::GetChild(int index)
 const std::vector<GameObject*>& GameObject::GetChildren()
 {
     return this->children;
+}
+
+std::string GameObject::GetPrimitiveTypeString()
+{
+    switch (this->primitiveType)
+    {
+        case CUBE:
+            return "Cube";
+        case CAMERA:
+            return "Camera";
+        case QUAD:
+            return "Quad";
+        case SPHERE:
+            return "Sphere";
+        case MESH:
+            return "Mesh";
+        case PHYSICS_CUBE:
+            return "Physics_Cube";
+        case PHYSICS_QUAD:
+            return "Physics_Quad";
+        case LINE:
+            return "Line";
+        case CIRCLE:
+            return "Circle";
+            
+    }
+}
+
+PrimitiveType GameObject::GetPrimitiveType()
+{
+    return this->primitiveType;
 }
 
 bool GameObject::GetEnabled() const

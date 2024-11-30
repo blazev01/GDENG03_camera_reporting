@@ -198,6 +198,7 @@
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Resource\Texture.cpp" />
     <ClCompile Include="Resource\TextureManager.cpp" />
+    <ClCompile Include="SaveSystem\SaveSystem.cpp" />
     <ClCompile Include="SceneCamera\SceneCameraHandler.cpp" />
     <ClCompile Include="UI\ActionsScreen.cpp" />
     <ClCompile Include="UI\CameraViewportScreen.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Components\PhysicsSystem.h" />
     <ClInclude Include="Components\Renderer.h" />
     <ClInclude Include="EngineTime\EngineTime.h" />
+    <ClInclude Include="Enum\Enums.h" />
     <ClInclude Include="GameObjects\Camera.h" />
     <ClInclude Include="GameObjects\Circle.h" />
     <ClInclude Include="GameObjects\Cube.h" />
@@ -274,6 +276,7 @@
     <ClInclude Include="Resource\Texture.h" />
     <ClInclude Include="Resource\TextureManager.h" />
     <ClInclude Include="Resource\VertexMesh.h" />
+    <ClInclude Include="SaveSystem\SaveSystem.h" />
     <ClInclude Include="SceneCamera\SceneCameraHandler.h" />
     <ClInclude Include="UI\ActionsScreen.h" />
     <ClInclude Include="UI\CameraViewportScreen.h" />

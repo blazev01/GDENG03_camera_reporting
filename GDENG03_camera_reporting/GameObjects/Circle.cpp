@@ -6,7 +6,7 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 
 
-Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
+Circle::Circle(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name, CIRCLE)
 {
 	/*this->radius = 0.5f;
 	int segments = 32;

@@ -4,12 +4,14 @@
 #include "../GraphicsEngine/IndexBuffer.h"
 #include "../GraphicsEngine/ConstantBuffer.h"
 #include "../Resource/Texture.h"
+#include "../GameObjects/GameObjectManager.h"
 
 class Cube : public GameObject
 {
 public:
 	Cube(std::string name, void* shaderBytes, size_t shaderSize);
 	~Cube();
+
 
 	void Update(float deltaTime) override;
 	void Draw(Matrix4x4 view, Matrix4x4 proj) override;
@@ -27,5 +29,6 @@ private:
 	float deltaRot = 0.0f;
 	float deltaTime = 0.0f;
 	float speed = 1.0f;
+	//PrimitiveType;
 };
 

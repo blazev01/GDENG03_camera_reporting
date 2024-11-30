@@ -1,0 +1,288 @@
+[
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_1",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_2",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_3",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_4",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_5",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_6",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_7",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_8",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Dynamic",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_9",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : 5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	},
+	{
+		"BodyType" : "Static",
+		"Gravity" : true,
+		"Mass" : 1000.0,
+		"Name" : "Cube_10",
+		"Physics" : true,
+		"Rotation" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Scale" : 
+		{
+			"X" : 0.0,
+			"Y" : 0.0,
+			"Z" : 0.0
+		},
+		"Translate" : 
+		{
+			"X" : 0.0,
+			"Y" : -5.0,
+			"Z" : 0.0
+		},
+		"Type" : "Cube"
+	}
+]

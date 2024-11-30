@@ -5,7 +5,8 @@
 #include "../Resource/MeshManager.h"
 #include "../Resource/TextureManager.h"
 #include "GameObjectSpawner.h"
-#include "json/json.h"
+#include "../SaveSystem/SaveSystem.h"
+
 
 MenuScreen::MenuScreen() : UIScreen("MENU_SCREEN")
 {
@@ -59,10 +60,12 @@ void MenuScreen::ShowMenuFile()
 	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "//Dummy Menu");
 	if (ImGui::MenuItem("New Scene")) {
 	
-		
+		GameObjectManager::DeleteAllGameObjects();
 
 	}
-	if (ImGui::MenuItem("Save Scene")) {}
+	if (ImGui::MenuItem("Save Scene")) {
+		SaveSystem::GetInstance()->SaveScene();
+	}
 	if (ImGui::MenuItem("Save Scene As...")) {}
 	if (ImGui::MenuItem("Load Scene")) {}
 	ImGui::Separator();
@@ -74,12 +77,12 @@ void MenuScreen::ShowMenuGameObject()
 {
 	if (ImGui::MenuItem("Create Quad"))
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::QUAD);
+		GameObjectManager::CreateGameObject(QUAD);
 	}
 
 	if (ImGui::MenuItem("Create Cube"))
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::CUBE);
+		GameObjectManager::CreateGameObject(CUBE);
 	}
 
 	if (ImGui::MenuItem("Create Sphere"))
@@ -89,17 +92,17 @@ void MenuScreen::ShowMenuGameObject()
 
 	if (ImGui::MenuItem("Create Camera"))
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::CAMERA);
+		GameObjectManager::CreateGameObject(CAMERA);
 	}
 
 	if (ImGui::MenuItem("Create Physics Cube"))
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::PHYSICS_CUBE);
+		GameObjectManager::CreateGameObject(PHYSICS_CUBE);
 	}
 	
 	if (ImGui::MenuItem("Create Physics Quad"))
 	{
-		GameObjectManager::CreateGameObject(GameObjectManager::PHYSICS_QUAD);
+		GameObjectManager::CreateGameObject(PHYSICS_QUAD);
 	}
 	
 	if (ImGui::MenuItem("Create Physics Objects"))
@@ -190,20 +193,20 @@ void MenuScreen::ShowMenuCreateMesh()
 {
 	if (ImGui::MenuItem("Create teapot"))
 	{
-		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(GameObjectManager::MESH, true);
+		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH, true);
 		mesh->SetMesh(MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj"));
 		mesh->SetTexture(TextureManager::CreateTextureFromFile(L"..\\Assets\\Textures\\brick.png"));
 	}
 	
 	if (ImGui::MenuItem("Create bunny"))
 	{
-		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(GameObjectManager::MESH);
+		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH);
 		mesh->SetMesh(MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\bunny.obj"));
 	}
 	
 	if (ImGui::MenuItem("Create armadillo"))
 	{
-		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(GameObjectManager::MESH);
+		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH);
 		mesh->SetMesh(MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\armadillo.obj"));
 	}
 

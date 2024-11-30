@@ -52,37 +52,37 @@ GameObject* GameObjectManager::CreateGameObject(PrimitiveType primitiveType, boo
 
 	switch (primitiveType)
 	{
-	case GameObjectManager::QUAD:
+	case QUAD:
 	{
 		gameObject = new Quad("Quad", shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::CUBE:
+	case CUBE:
 	{
 		gameObject = new Cube("Cube", shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::SPHERE:
+	case SPHERE:
 	{
 		//gameObject = new Cube("Sphere", shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::CAMERA:
+	case CAMERA:
 	{
 		gameObject = SceneCameraHandler::AddGameCamera(shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::MESH:
+	case MESH:
 	{
 		gameObject = new MeshObject("Mesh", shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::PHYSICS_CUBE:
+	case PHYSICS_CUBE:
 	{
 		gameObject = new PhysicsCube("PhysicsCube", shaderBytes, shaderSize);
 		break;
 	}
-	case GameObjectManager::PHYSICS_QUAD:
+	case PHYSICS_QUAD:
 	{
 		gameObject = new PhysicsQuad("PhysicsQuad", shaderBytes, shaderSize);
 		break;
@@ -172,6 +172,15 @@ void GameObjectManager::DeleteGameObject(std::string name)
 		instance->gameObjects.erase(it);
 		gameObject->Destroy();
 	}
+}
+
+void GameObjectManager::DeleteAllGameObjects()
+{
+	while (instance->gameObjects.size() > 0)
+	{
+		instance->DeleteGameObject(instance->gameObjects[0]);
+	}
+
 }
 
 void GameObjectManager::SetSelectedObject(std::string name)

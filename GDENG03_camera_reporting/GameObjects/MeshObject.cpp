@@ -7,7 +7,7 @@
 #include "../Resource/TextureManager.h"
 #include "../GraphicsEngine/ShaderLibrary.h"
 
-MeshObject::MeshObject(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
+MeshObject::MeshObject(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name,MESH)
 {
 	Constant cc = Constant();
 	cc.time = 0;

@@ -6,7 +6,7 @@
 #include "../Resource/TextureManager.h"
 #include "../Components/PhysicsComponent.h"
 
-PhysicsCube::PhysicsCube(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
+PhysicsCube::PhysicsCube(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name, PHYSICS_CUBE)
 {
 	Vector3D posList[] =
 	{
@@ -111,7 +111,7 @@ PhysicsCube::~PhysicsCube()
 
 void PhysicsCube::Awake()
 {
-	PhysicsComponent* component = new PhysicsComponent("Cube Physics", this);
+	PhysicsComponent* component = new PhysicsComponent("RigidBody", this);
 	this->AttachComponent(component);
 	std::cout << this->transform.mat[1][1] << "\n";
 

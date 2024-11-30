@@ -17,6 +17,7 @@
 #include "../Backend/ActionHistory.h"
 #include "../UI/GameObjectSpawner.h"
 #include "../Backend/Debug.h"
+#include "../SaveSystem/SaveSystem.h"
 
 AppWindow::AppWindow()
 {

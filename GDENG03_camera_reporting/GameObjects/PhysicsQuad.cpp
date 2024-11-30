@@ -4,7 +4,7 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../Components/PhysicsComponent.h"
 
-PhysicsQuad::PhysicsQuad(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name)
+PhysicsQuad::PhysicsQuad(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name, PHYSICS_QUAD)
 {
 	Vertex vertices[] =
 	{
@@ -28,7 +28,7 @@ PhysicsQuad::PhysicsQuad(std::string name, void* shaderBytes, size_t shaderSize)
 	//this->SetScale(Vector3D(4.0f));
 	this->SetRotation(1.5708f, 0.0f, 0.0f);
 
-	PhysicsComponent* component = new PhysicsComponent("Quad Physics", this);
+	PhysicsComponent* component = new PhysicsComponent("RigidBody", this);
 	component->GetRigidBody()->setType(BodyType::STATIC);
 	this->components.push_back(component);
 }

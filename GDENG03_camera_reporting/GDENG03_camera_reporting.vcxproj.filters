@@ -206,6 +206,11 @@
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Libs\JsonCpp\dist\jsoncpp.cpp" />
+    <ClCompile Include="SaveSystem\SaveSystem.cpp">
+      <Filter>GameEngine\SaveSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Backend\Debug.cpp" />
+    <ClCompile Include="UI\ConsoleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Colors.h">
@@ -427,6 +432,12 @@
     <ClInclude Include="GameObjects\RenderQueue.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="SaveSystem\SaveSystem.h">
+      <Filter>GameEngine\SaveSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend\Debug.h" />
+    <ClInclude Include="UI\ConsoleScreen.h" />
+    <ClInclude Include="Enum\Enums.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -470,6 +481,9 @@
     </Filter>
     <Filter Include="GameEngine\Backend">
       <UniqueIdentifier>{3973f504-9a4e-4253-b931-37f676c70a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\SaveSystem">
+      <UniqueIdentifier>{25b3a0f8-4655-46be-a978-5ebe29079ebc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

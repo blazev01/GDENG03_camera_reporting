@@ -3,7 +3,7 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../GraphicsEngine/DeviceContext.h"
 
-Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name)
+Camera::Camera(std::string name, SwapChain* swapChain) : GameObject(name, CAMERA)
 {
 	for (int i = 0; i < this->cullingMask.size(); i++)
 		this->cullingMask[i] = true;

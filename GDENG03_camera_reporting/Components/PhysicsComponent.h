@@ -15,6 +15,7 @@ public:
 
 	RigidBody* GetRigidBody();
 	BoxShape* GetBoxShape();
+	std::string GetBodyType();
 
 	float GetMass() const;
 	void SetMass(float mass);

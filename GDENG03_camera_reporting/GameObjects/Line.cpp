@@ -4,7 +4,7 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 
-Line::Line(std::string name, void* shaderBytes, size_t shaderSize, const Vector3D& startPos, const Vector3D& endPos) : GameObject(name)
+Line::Line(std::string name, void* shaderBytes, size_t shaderSize, const Vector3D& startPos, const Vector3D& endPos) : GameObject(name, LINE)
 {
 	Vertex vertices[] =
 	{

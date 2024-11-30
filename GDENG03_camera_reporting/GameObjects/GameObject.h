@@ -5,11 +5,13 @@
 #include "../GraphicsEngine/PixelShader.h"
 #include "../Math/Matrix4x4.h"
 #include "../Components/Component.h"
+#include "../GameObjects/GameObjectManager.h"
+#include "../Enum/Enums.h"
 
 class GameObject
 {
 public:
-	GameObject(std::string name);
+	GameObject(std::string name, PrimitiveType primitiveType);
 	~GameObject();
 
 	virtual void Awake() {};
@@ -45,6 +47,9 @@ public:
 	GameObject* GetParent();
 	GameObject* GetChild(int index);
 	const std::vector<GameObject*>& GetChildren();
+
+	std::string GetPrimitiveTypeString();
+	PrimitiveType GetPrimitiveType();
 
 	bool GetEnabled() const;
 	void SetEnabled(bool enabled);
@@ -94,5 +99,6 @@ protected:
 	
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
+	PrimitiveType primitiveType;
 };
 

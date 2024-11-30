@@ -2,23 +2,14 @@
 #include "vector"
 #include "unordered_map"
 #include "GameObject.h"
-
+#include "../Enum/Enums.h"
 class GameObjectManager
 {
 public:
 	typedef std::vector<GameObject*> List;
 	typedef std::unordered_map<std::string, GameObject*> HashTable;
 
-	enum PrimitiveType
-	{
-		QUAD,
-		CUBE,
-		SPHERE,
-		CAMERA,
-		MESH,
-		PHYSICS_CUBE,
-		PHYSICS_QUAD,
-	};
+	
 
 	static void Initialize();
 	static void Update();
@@ -28,6 +19,7 @@ public:
 	static void AddGameObject(GameObject* gameObject);
 	static void DeleteGameObject(GameObject* gameObject);
 	static void DeleteGameObject(std::string name);
+	static void DeleteAllGameObjects();
 
 	static void SetSelectedObject(std::string name);
 	static void SetSelectedObject(GameObject* gameObject);

@@ -65,6 +65,19 @@ BoxShape* PhysicsComponent::GetBoxShape()
     return this->boxShape;
 }
 
+std::string PhysicsComponent::GetBodyType()
+{
+    switch (this->rigidBody->getType())
+    {
+    case BodyType::DYNAMIC:
+        return "Dynamic";
+    case BodyType::KINEMATIC:
+        return "Kinematic";
+    case BodyType::STATIC:
+        return "Static";
+    }
+}
+
 float PhysicsComponent::GetMass() const
 {
     return this->mass;
