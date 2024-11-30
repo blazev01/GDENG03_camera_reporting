@@ -64,8 +64,8 @@ void InspectorScreen::DrawUI()
         }
 
         if (toDelete) GameObjectManager::DeleteGameObject(selected);
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void InspectorScreen::ShowComponentList(GameObject* selected)

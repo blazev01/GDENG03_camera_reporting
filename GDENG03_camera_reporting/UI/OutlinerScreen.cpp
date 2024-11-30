@@ -36,9 +36,8 @@ void OutlinerScreen::DrawUI()
 				this->selection[i] = selected;
 			}
 		}
-
-		ImGui::End();
 	}
+	ImGui::End();
 }
 
 void OutlinerScreen::ResetSelection()

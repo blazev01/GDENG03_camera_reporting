@@ -18,7 +18,6 @@ void ColorPickerScreen::DrawUI()
 	if (ImGui::Begin("Color Picker", &this->enabled))
 	{
 		ImGui::Image(this->color, ImVec2(250, 250));
-
-		ImGui::End();
 	}
+	ImGui::End();
 }

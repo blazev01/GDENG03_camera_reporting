@@ -17,5 +17,6 @@ public:
 	const std::string COLOR_PICKER_SCREEN = "COLOR_PICKER_SCREEN";
 	const std::string SCENE_PLAY_OPTIONS_SCREEN = "SCENE_PLAY_OPTIONS_SCREEN";
 	const std::string ACTIONS_SCREEN = "ACTIONS_SCREEN";
+	const std::string CONSOLE_SCREEN = "CONSOLE_SCREEN";
 };
 

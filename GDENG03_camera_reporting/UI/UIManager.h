@@ -12,6 +12,7 @@ public:
 	static void Destroy();
 	static void DrawAllUI();
 
+	static UIScreen* GetUIScreen(std::string name);
 	static bool GetEnabled(std::string name);
 	static void SetEnabled(std::string name, bool enabled);
 

@@ -10,6 +10,7 @@
 #include "ColorPickerScreen.h"
 #include "ScenePlayOptionsScreen.h"
 #include "ActionsScreen.h"
+#include "ConsoleScreen.h"
 
 UIManager* UIManager::instance = NULL;
 
@@ -53,6 +54,11 @@ void UIManager::DrawAllUI()
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
+}
+
+UIScreen* UIManager::GetUIScreen(std::string name)
+{
+	return instance->uiTable[name];
 }
 
 bool UIManager::GetEnabled(std::string name)
@@ -119,6 +125,10 @@ UIManager::UIManager(HWND hwnd)
 	ActionsScreen* actionsScreen = new ActionsScreen();
 	this->uiTable[uiNames.ACTIONS_SCREEN] = actionsScreen;
 	this->uiList.push_back(actionsScreen);
+	
+	ConsoleScreen* consoleScreen = new ConsoleScreen();
+	this->uiTable[uiNames.CONSOLE_SCREEN] = consoleScreen;
+	this->uiList.push_back(consoleScreen);
 
 }
 

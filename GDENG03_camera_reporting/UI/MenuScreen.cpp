@@ -130,6 +130,11 @@ void MenuScreen::ShowMenuWindow()
 	{
 		UIManager::SetEnabled(this->uiNames.PROFILER_SCREEN, true);
 	}
+	
+	if (ImGui::MenuItem("Console"))
+	{
+		UIManager::SetEnabled(this->uiNames.CONSOLE_SCREEN, true);
+	}
 
 	if (ImGui::MenuItem("Color Picker"))
 	{

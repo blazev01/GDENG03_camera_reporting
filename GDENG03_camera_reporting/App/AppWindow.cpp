@@ -16,6 +16,7 @@
 #include "../Backend/EngineBackend.h"
 #include "../Backend/ActionHistory.h"
 #include "../UI/GameObjectSpawner.h"
+#include "../Backend/Debug.h"
 
 AppWindow::AppWindow()
 {

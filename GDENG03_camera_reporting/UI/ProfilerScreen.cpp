@@ -34,7 +34,6 @@ void ProfilerScreen::DrawUI()
 
 		std::string gameObjectsText = "GameObjects: " + std::to_string(GameObjectManager::GetGameObjects().size());
 		ImGui::Text(gameObjectsText.c_str());
-
-		ImGui::End();
 	}
+	ImGui::End();
 }

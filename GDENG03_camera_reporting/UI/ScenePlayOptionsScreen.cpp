@@ -61,7 +61,6 @@ void ScenePlayOptionsScreen::DrawUI()
 			EngineBackend::StartFrameStep();
 		}
 		ImGui::EndDisabled();
-
-		ImGui::End();
 	}
+	ImGui::End();
 }

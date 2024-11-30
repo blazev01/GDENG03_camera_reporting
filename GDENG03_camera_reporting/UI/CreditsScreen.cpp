@@ -26,7 +26,6 @@ void CreditsScreen::DrawUI()
 		ImGui::TextColored(ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Acknowledgements:");
 		ImGui::Text("PardCode Game Engine Tutorial");
 		ImGui::Text("Doc Neil's GDENG03 Course");
-
-		ImGui::End();
 	}
+	ImGui::End();
 }

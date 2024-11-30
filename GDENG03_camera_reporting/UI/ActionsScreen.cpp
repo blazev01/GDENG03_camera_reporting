@@ -38,9 +38,8 @@ void ActionsScreen::DrawUI()
 			if (action) this->SetGameObjectData(action);
 		}
 		ImGui::EndDisabled();
-
-		ImGui::End();
 	}
+	ImGui::End();
 }
 
 void ActionsScreen::SetGameObjectData(EditorAction* action)
