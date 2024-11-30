@@ -200,14 +200,16 @@ void MenuScreen::ShowMenuCreateMesh()
 	
 	if (ImGui::MenuItem("Create bunny"))
 	{
-		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH);
+		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH, true);
 		mesh->SetMesh(MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\bunny.obj"));
+		mesh->SetTexture(TextureManager::CreateTextureFromFile(L"..\\Assets\\Textures\\placeholder.jpg"));
 	}
 	
 	if (ImGui::MenuItem("Create armadillo"))
 	{
-		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH);
+		MeshObject* mesh = (MeshObject*)GameObjectManager::CreateGameObject(MESH, true);
 		mesh->SetMesh(MeshManager::CreateMeshFromFile(L"..\\Assets\\Meshes\\armadillo.obj"));
+		mesh->SetTexture(TextureManager::CreateTextureFromFile(L"..\\Assets\\Textures\\placeholder.jpg"));
 	}
 
 }

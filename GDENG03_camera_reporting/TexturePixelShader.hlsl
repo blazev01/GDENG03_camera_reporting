@@ -18,5 +18,6 @@ sampler TexSampler : register(s0);
 
 float4 psmain(PS_INPUT input) : SV_TARGET
 {
-    return Texture.Sample(TexSampler, input.texcoord * 0.5);
+    float4 texColor = Texture.Sample(TexSampler, input.texcoord * 0.5);
+    return input.albedo * texColor;
 }

@@ -9,7 +9,7 @@ public:
 	VertexMesh() {}
 	~VertexMesh() {}
 
-	VertexMesh(Vector3D position, Vector2D texcoord) : position(position), texcoord(texcoord), albedo(1.0f, 0.0f, 1.0f, 1.0f) {}
+	VertexMesh(Vector3D position, Vector2D texcoord) : position(position), texcoord(texcoord), albedo(1.0f) {}
 	VertexMesh(const VertexMesh& vertex) : position(vertex.position), texcoord(vertex.texcoord), albedo(vertex.albedo) {}
 
 public:

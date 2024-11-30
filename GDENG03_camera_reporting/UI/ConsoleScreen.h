@@ -20,8 +20,17 @@ protected:
 	virtual void DrawUI() override;
 
 private:
+	void ShowMenuBar();
+	void ShowLogs();
+
+private:
 	std::vector<LogType> types;
 	std::vector<std::string> logs;
+	bool newLine = false;
+
+	bool showLogs = true;
+	bool showWarnings = true;
+	bool showErrors = true;
 
 	friend class UIManager;
 };

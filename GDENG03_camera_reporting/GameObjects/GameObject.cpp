@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "RenderQueue.h"
+#include "../Backend/Debug.h"
 
 GameObject::GameObject(std::string name, PrimitiveType primitiveType)
 {
@@ -337,7 +338,11 @@ void GameObject::SetTransform(float array[16])
     scale *= matrix;
     translation *= scale;
     this->transform.SetMatrix(translation);
+    Vector3D pos = this->transform.GetPosition();
     //this->localPosition = this->transform.GetPosition();
+
+    Debug::Log("(" + std::to_string(this->localPosition.x) + ", " + std::to_string(this->localPosition.y) + ", " + std::to_string(this->localPosition.z) + ")");
+    Debug::Log("(" + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z) + ")");
 }
 
 
