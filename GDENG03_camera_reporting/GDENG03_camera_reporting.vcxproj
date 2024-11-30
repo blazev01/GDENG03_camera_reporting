@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>Libs\DirectXTex\include;Libs\tinyobjloader\include;$(IncludePath)</IncludePath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
-    <LibraryPath>Libs\DirectXTex\bin;Libs\ReactPhysics3D;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)Libs\DirectXTex\bin;$(ProjectDir)Libs\ReactPhysics3D\;$(LibraryPath)</LibraryPath>
     <SourcePath>C:\Users\theas\Documents\GitHub\GDENG03_camera_reporting\GDENG03_camera_reporting\Libs\JsonCpp\dist;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -116,7 +116,7 @@
       <PreprocessorDefinitions>NOMINMAX;CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Libs\ReactPhysics3D\include;C:\Users\theas\Documents\GitHub\GDENG03_camera_reporting\GDENG03_camera_reporting\Libs\JsonCpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Libs\ReactPhysics3D\include;$(ProjectDir)Libs\JsonCpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
