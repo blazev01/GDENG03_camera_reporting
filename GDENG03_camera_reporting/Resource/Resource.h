@@ -7,6 +7,8 @@ public:
 	Resource(const wchar_t* fullPath);
 	virtual ~Resource();
 
+	std::wstring GetFilePath();
+
 protected:
 	std::wstring fullPath;
 };

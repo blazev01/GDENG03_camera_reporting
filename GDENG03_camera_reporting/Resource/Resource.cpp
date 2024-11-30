@@ -9,3 +9,8 @@ Resource::~Resource()
 {
 
 }
+
+std::wstring Resource::GetFilePath()
+{
+	return this->fullPath;
+}

@@ -1,6 +1,9 @@
 #include "InspectorScreen.h"
+#include "../Resource/TextureManager.h"
 #include "../GameObjects/GameObjectManager.h"
 #include "../Backend/ActionHistory.h"
+
+#include "filesystem"
 
 #define RAD2DEG 57.2958
 #define DEG2RAD 0.0174533
@@ -95,6 +98,13 @@ void InspectorScreen::ShowComponentList(GameObject* selected)
                     this->ShowRigidBody((PhysicsComponent*)component);
                     break;
                 }
+                
+                case Component::Renderer:
+                {
+                    this->ShowTexture((Renderer*) component);
+                    break;
+                }
+
                 default:
                     this->ShowComponent();
                     break;
@@ -185,6 +195,48 @@ void InspectorScreen::ShowRigidBody(PhysicsComponent* component)
     }
 }
 
+void InspectorScreen::ShowTexture(Renderer* component)
+{
+    static std::wstring selectedFile = L"DLSU-LOGO.png";
+    static Texture* currentTexture = nullptr;
+
+    if (!currentTexture || currentTexture->GetFilePath() != selectedFile)
+    {
+        std::wstring fullPath = L"..\\Assets\\Textures\\" + selectedFile;
+        currentTexture = TextureManager::CreateTextureFromFile(fullPath.c_str());
+        component->SetTexture(currentTexture);
+    }
+
+    ImGui::Image((ImTextureID)currentTexture->GetSRV(), ImVec2(50, 50));
+
+    ImGui::SameLine(); 
+    ImGui::BeginGroup(); 
+        ImGui::Text(std::string(selectedFile.begin(), selectedFile.end()).c_str());
+
+        if (ImGui::Button("Change Texture"))
+            ImGui::OpenPopup("Select Texture");
+    ImGui::EndGroup(); 
+
+    if (ImGui::BeginPopup("Select Texture"))
+    {
+        for (const auto& entry : std::filesystem::directory_iterator("..\\Assets\\Textures"))
+        {
+            if (entry.is_regular_file())
+            {
+                std::wstring filename = entry.path().filename().wstring();
+
+                if (ImGui::Selectable(std::string(filename.begin(), filename.end()).c_str(), filename == selectedFile))
+                {
+                    selectedFile = filename;
+                    component->SetTexture(currentTexture);
+                }
+            }
+        }
+        ImGui::EndPopup();
+    }
+}
+
+
 void InspectorScreen::ShowDummyComponent()
 {
     ImGui::Text("Never gonna give you up");
@@ -212,6 +264,17 @@ void InspectorScreen::ShowComponentsPopup(GameObject* selected)
                 selected->AttachComponent(component);
             }
             
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Texture Component", ImVec2(ImGui::GetColumnWidth(), 0))) 
+        {
+            if (!selected->GetComponentOfType(Component::Renderer, "Renderer")) 
+            {
+                Renderer* component = new Renderer("Renderer", selected, selected->GetVertexShader(), selected->GetPixelShader());
+                selected->AttachComponent(component);
+            }
+
             ImGui::CloseCurrentPopup();
         }
 
