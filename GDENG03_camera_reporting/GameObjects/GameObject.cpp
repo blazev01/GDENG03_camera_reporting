@@ -338,7 +338,6 @@ void GameObject::SetTransform(float array[16])
     scale *= matrix;
     translation *= scale;
     this->transform.SetMatrix(translation);
-    Vector3D pos = this->transform.GetPosition();
     //this->localPosition = this->transform.GetPosition();
 }
 
