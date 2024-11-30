@@ -192,6 +192,7 @@
     <ClCompile Include="Math\Vector2D.cpp" />
     <ClCompile Include="Math\Vector3D.cpp" />
     <ClCompile Include="Math\Vector4D.cpp" />
+    <ClCompile Include="Components\RendererSystem.cpp" />
     <ClCompile Include="Resource\Mesh.cpp" />
     <ClCompile Include="Resource\MeshManager.cpp" />
     <ClCompile Include="Resource\Resource.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="Math\Vector2D.h" />
     <ClInclude Include="Math\Vector3D.h" />
     <ClInclude Include="Math\Vector4D.h" />
+    <ClInclude Include="Components\RendererSystem.h" />
     <ClInclude Include="Resource\Mesh.h" />
     <ClInclude Include="Resource\MeshManager.h" />
     <ClInclude Include="Resource\Resource.h" />

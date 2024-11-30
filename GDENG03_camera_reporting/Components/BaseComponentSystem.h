@@ -1,5 +1,6 @@
 #pragma once
 #include "PhysicsSystem.h"
+#include "RendererSystem.h"
 
 class BaseComponentSystem
 {
@@ -8,6 +9,7 @@ public:
 	static void Destroy();
 
 	static PhysicsSystem* GetPhysicsSystem();
+	static RendererSystem* GetRendererSystem();
 
 private:
 	BaseComponentSystem();
@@ -18,5 +20,6 @@ private:
 	static BaseComponentSystem* instance;
 
 	PhysicsSystem* physicsSystem = nullptr;
+	RendererSystem* rendererSystem = nullptr;
 };
 

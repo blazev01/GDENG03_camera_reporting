@@ -30,6 +30,9 @@ public:
 	Texture* GetTexture();
 	void SetTexture(Texture* texture);
 
+	std::wstring GetTextureFilePath();
+	void SetTextureFilePath(std::wstring path);
+
 	void SetWorld(const Matrix4x4& world);
 	void SetView(const Matrix4x4& view);
 	void SetProjection(const Matrix4x4& projection);
@@ -43,5 +46,7 @@ private:
 
 	Mesh* mesh = NULL;
 	Texture* texture = NULL;
+
+	std::wstring texFilePath = L"";
 };
 

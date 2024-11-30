@@ -100,6 +100,7 @@ void AppWindow::OnUpdate()
 		EngineBackend::EndFrameStep();
 	}
 
+	BaseComponentSystem::GetRendererSystem()->UpdateAllComponents();
 	SceneCameraHandler::Render();
 	UIManager::DrawAllUI();
 	SceneCameraHandler::Present();

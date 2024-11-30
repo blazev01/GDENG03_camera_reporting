@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "BaseComponentSystem.h"
 #include "../GraphicsEngine/Structs.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../GraphicsEngine/DeviceContext.h"
@@ -11,6 +12,8 @@ Renderer::Renderer(
     PixelShader* pixelShader) :
     Component(name, ComponentType::Renderer, owner)
 {
+    BaseComponentSystem::GetRendererSystem()->RegisterComponent(this);
+
     this->vertexShader = vertexShader;
     this->pixelShader = pixelShader;
 
@@ -54,6 +57,7 @@ void Renderer::Perform(float deltaTime)
 
 void Renderer::Destroy()
 {
+    BaseComponentSystem::GetRendererSystem()->UnregisterComponent(this);
     if (this->constantBuffer) this->constantBuffer->Release();
 }
 
@@ -95,6 +99,16 @@ Texture* Renderer::GetTexture()
 void Renderer::SetTexture(Texture* texture)
 {
     this->texture = texture;
+}
+
+std::wstring Renderer::GetTextureFilePath()
+{
+    return this->texFilePath;
+}
+
+void Renderer::SetTextureFilePath(std::wstring path)
+{
+    this->texFilePath = path;
 }
 
 void Renderer::SetWorld(const Matrix4x4& world)

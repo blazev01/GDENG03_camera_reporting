@@ -1,7 +1,9 @@
 #include "InspectorScreen.h"
 #include "../Resource/TextureManager.h"
+#include "../GraphicsEngine/ShaderLibrary.h"
 #include "../GameObjects/GameObjectManager.h"
 #include "../Backend/ActionHistory.h"
+#include "../EngineTime/EngineTime.h"
 
 #include "filesystem"
 
@@ -197,8 +199,10 @@ void InspectorScreen::ShowRigidBody(PhysicsComponent* component)
 
 void InspectorScreen::ShowTexture(Renderer* component)
 {
-    static std::wstring selectedFile = L"DLSU-LOGO.png";
-    static Texture* currentTexture = nullptr;
+    std::wstring selectedFile = component->GetTextureFilePath();
+    if (selectedFile.empty()) selectedFile = L"DLSU-LOGO.png";
+
+    Texture* currentTexture = component->GetTexture();
 
     if (!currentTexture || currentTexture->GetFilePath() != selectedFile)
     {
@@ -228,6 +232,7 @@ void InspectorScreen::ShowTexture(Renderer* component)
                 if (ImGui::Selectable(std::string(filename.begin(), filename.end()).c_str(), filename == selectedFile))
                 {
                     selectedFile = filename;
+                    component->SetTextureFilePath(selectedFile);
                     component->SetTexture(currentTexture);
                 }
             }
@@ -271,7 +276,9 @@ void InspectorScreen::ShowComponentsPopup(GameObject* selected)
         {
             if (!selected->GetComponentOfType(Component::Renderer, "Renderer")) 
             {
-                Renderer* component = new Renderer("Renderer", selected, selected->GetVertexShader(), selected->GetPixelShader());
+                PixelShader* pixelShader = ShaderLibrary::GetPixelShader(L"TexturePixelShader.hlsl");
+                Renderer* component = new Renderer("Renderer", selected, selected->GetVertexShader(), pixelShader);
+                selected->SetPixelShader(pixelShader);
                 selected->AttachComponent(component);
             }
 
