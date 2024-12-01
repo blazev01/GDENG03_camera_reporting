@@ -17,7 +17,8 @@ Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 	for (int latNumber = 0; latNumber <= latitudeBands; ++latNumber)
 	{
 		float theta = latNumber * DirectX::XM_PI / latitudeBands; 
-		float sinTheta = sinf(theta); float cosTheta = cosf(theta);
+		float sinTheta = sinf(theta); 
+		float cosTheta = cosf(theta);
 
 		for (int longNumber = 0; longNumber <= longitudeBands; ++longNumber)
 		{
@@ -26,7 +27,8 @@ Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 			float cosPhi = cosf(phi);
 
 			Vector3D position = { radius * cosPhi * sinTheta, radius * cosTheta, radius * sinPhi * sinTheta };
-			Vector2D texCoord = { 1.0f - (float)longNumber / longitudeBands, 1.0f - (float)latNumber / latitudeBands };
+			Vector2D texCoord = { (float)longNumber / longitudeBands, (float)latNumber / latitudeBands };
+
 			vertices.push_back({ position, texCoord, RGBA_WHITE });
 		}
 	}
@@ -35,13 +37,16 @@ Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 	{
 		for (int longNumber = 0; longNumber < longitudeBands; ++longNumber)
 		{
-			int first = (latNumber * (longitudeBands + 1)) + longNumber; int second = first + longitudeBands + 1;
+			int first = latNumber * (longitudeBands + 1) + longNumber;
+			int second = first + longitudeBands + 1;
+
 			indices.push_back(first);
-			indices.push_back(second);
 			indices.push_back(first + 1);
 			indices.push_back(second);
+
+			indices.push_back(second);
+			indices.push_back(first + 1);
 			indices.push_back(second + 1);
-			indices.push_back(first + 1);
 		}
 	}
 
