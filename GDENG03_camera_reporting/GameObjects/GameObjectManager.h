@@ -28,7 +28,7 @@ public:
 	static void AddSelectedObject(GameObject* gameObject);
 	static void RemoveSelectedObject(GameObject* gameObject);
 	static void ClearSelection();
-	static List& GetSelectedObjects();
+	static const List& GetSelectedObjects();
 
 	static GameObject* FindGameObject(std::string name);
 	static const List& GetGameObjects();

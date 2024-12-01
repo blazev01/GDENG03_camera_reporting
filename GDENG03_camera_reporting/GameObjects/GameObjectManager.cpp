@@ -224,7 +224,7 @@ void GameObjectManager::ClearSelection()
 	instance->selectedObjects.clear();
 }
 
-std::vector<GameObject*>& GameObjectManager::GetSelectedObjects()
+const std::vector<GameObject*>& GameObjectManager::GetSelectedObjects()
 {
 	return instance->selectedObjects;
 }

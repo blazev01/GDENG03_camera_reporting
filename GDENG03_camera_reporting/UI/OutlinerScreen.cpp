@@ -22,7 +22,10 @@ void OutlinerScreen::DrawUI()
 
 		const std::vector<GameObject*>& gameObjects = GameObjectManager::GetGameObjects();
 		if (gameObjects.size() != this->selection.size())
+		{
 			this->selection.resize(gameObjects.size());
+			std::fill(this->selection.begin(), this->selection.end(), false);
+		}
 
 		if (!gameObjects.empty())
 		{

@@ -92,7 +92,11 @@ void InspectorScreen::DrawUI()
             }
         }
 
-        if (toDelete) for (auto o : selected) GameObjectManager::DeleteGameObject(o);
+        if (toDelete)
+        {
+            for (auto o : selected) GameObjectManager::DeleteGameObject(o);
+            GameObjectManager::ClearSelection();
+        }
     }
     ImGui::End();
 }
