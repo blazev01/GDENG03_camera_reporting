@@ -205,6 +205,30 @@ GameObject* GameObjectManager::GetSelectedObject()
 	return instance->selectedObject;
 }
 
+void GameObjectManager::AddSelectedObject(GameObject* gameObject)
+{
+	instance->selectedObjects.push_back(gameObject);
+}
+
+void GameObjectManager::RemoveSelectedObject(GameObject* gameObject)
+{
+	if (instance->selectedObjects.empty()) return;
+
+	List::iterator it = instance->selectedObjects.begin();
+	while (it != instance->selectedObjects.end() && *it != gameObject) it++;
+	if (*it == gameObject) instance->selectedObjects.erase(it);
+}
+
+void GameObjectManager::ClearSelection()
+{
+	instance->selectedObjects.clear();
+}
+
+std::vector<GameObject*>& GameObjectManager::GetSelectedObjects()
+{
+	return instance->selectedObjects;
+}
+
 GameObject* GameObjectManager::FindGameObject(std::string name)
 {
 	return instance->gameObjectMap[name];

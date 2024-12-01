@@ -36,10 +36,7 @@ private:
 	std::vector<Camera*> sceneCameras;
 	std::vector<GameCamera*> gameCameras;
 
-	Vector3D position;
-	Vector3D rotation;
 	float speed = 5;
-
 	Vector3D camPos;
 	Vector2D oldMousePos;
 };

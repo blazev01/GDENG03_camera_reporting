@@ -167,11 +167,6 @@
     <ClCompile Include="SaveSystem\SaveSystem.cpp">
       <Filter>GameEngine\SaveSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Backend\Debug.cpp" />
-    <ClCompile Include="UI\ConsoleScreen.cpp" />
-    <ClCompile Include="Components\RendererSystem.cpp" />
-    <ClCompile Include="GameObjects\Sphere.cpp" />
-    <ClCompile Include="GameObjects\Cylinder.cpp" />
     <ClCompile Include="IMGUI\GraphEditor.cpp">
       <Filter>GameEngine\IMGUI</Filter>
     </ClCompile>
@@ -234,6 +229,21 @@
     </ClCompile>
     <ClCompile Include="UI\UIScreen.cpp">
       <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ConsoleScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Backend\Debug.cpp">
+      <Filter>GameEngine\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Sphere.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\Cylinder.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\RendererSystem.cpp">
+      <Filter>GameEngine\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -414,12 +424,7 @@
     <ClInclude Include="SaveSystem\SaveSystem.h">
       <Filter>GameEngine\SaveSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Backend\Debug.h" />
-    <ClInclude Include="UI\ConsoleScreen.h" />
     <ClInclude Include="Enum\Enums.h" />
-    <ClInclude Include="Components\RendererSystem.h" />
-    <ClInclude Include="GameObjects\Sphere.h" />
-    <ClInclude Include="GameObjects\Cylinder.h" />
     <ClInclude Include="IMGUI\GraphEditor.h">
       <Filter>GameEngine\IMGUI</Filter>
     </ClInclude>
@@ -500,6 +505,21 @@
     </ClInclude>
     <ClInclude Include="UI\UIScreen.h">
       <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ConsoleScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend\Debug.h">
+      <Filter>GameEngine\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Sphere.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\Cylinder.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RendererSystem.h">
+      <Filter>GameEngine\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

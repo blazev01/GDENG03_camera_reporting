@@ -12,8 +12,6 @@ protected:
 	friend class UIManager;
 
 private:
-	void ResetSelection();
-
 	std::vector<bool> selection;
 };
 

@@ -13,6 +13,7 @@ void SceneCameraHandler::Initialize(HWND hwnd, int width, int height)
 	instance->swapChain->Init(hwnd, width, height);
 
 	instance->AddSceneCamera();
+	instance->camera->SetPosition(0.0f, 2.0f, -10.0f);
 }
 
 void SceneCameraHandler::Update()
@@ -30,6 +31,7 @@ void SceneCameraHandler::Update()
 		InputSystem::ShowCursor(true);
 	}
 
+	Vector3D rotation = instance->camera->GetLocalRotation();
 	if (InputSystem::IsKey(VK_RBUTTON))
 	{
 		Vector2D mousePos = InputSystem::GetCursorPosition();
@@ -37,44 +39,45 @@ void SceneCameraHandler::Update()
 
 		if (mousePos != instance->oldMousePos)
 		{
-			instance->rotation.x -= (mousePos.y - (instance->swapChain->GetHeight() / 2.0f)) * deltaTime * 0.1f;
-			instance->rotation.y -= (mousePos.x - (instance->swapChain->GetWidth() / 2.0f)) * deltaTime * 0.1f;
+			rotation.x -= (mousePos.y - (instance->swapChain->GetHeight() / 2.0f)) * deltaTime * 0.1f;
+			rotation.y -= (mousePos.x - (instance->swapChain->GetWidth() / 2.0f)) * deltaTime * 0.1f;
 			instance->oldMousePos = mousePos;
 		}
 	}
 
+	Vector3D position = instance->camera->GetLocalPosition();
 	if (InputSystem::IsKey('W'))
 	{
-		instance->position -= instance->speed * deltaTime * instance->camera->GetForward();
+		position -= instance->speed * deltaTime * instance->camera->GetForward();
 	}
 
 	if (InputSystem::IsKey('S'))
 	{
-		instance->position += instance->speed * deltaTime * instance->camera->GetForward();
+		position += instance->speed * deltaTime * instance->camera->GetForward();
 	}
 
 	if (InputSystem::IsKey('A'))
 	{
-		instance->position -= instance->speed * deltaTime * instance->camera->GetRight();
+		position -= instance->speed * deltaTime * instance->camera->GetRight();
 	}
 
 	if (InputSystem::IsKey('D'))
 	{
-		instance->position += instance->speed * deltaTime * instance->camera->GetRight();
+		position += instance->speed * deltaTime * instance->camera->GetRight();
 	}
 
 	if (InputSystem::IsKey('Q'))
 	{
-		instance->position.y -= instance->speed * deltaTime;
+		position.y -= instance->speed * deltaTime;
 	}
 
 	if (InputSystem::IsKey('E'))
 	{
-		instance->position.y += instance->speed * deltaTime;
+		position.y += instance->speed * deltaTime;
 	}
 
-	instance->camera->SetRotation(instance->rotation);
-	instance->camera->SetPosition(instance->position);
+	instance->camera->SetRotation(rotation);
+	instance->camera->SetPosition(position);
 	instance->camera->Recalculate();
 
 	instance->camera->Update(deltaTime);
@@ -104,7 +107,6 @@ void SceneCameraHandler::Destroy()
 
 void SceneCameraHandler::AddSceneCamera()
 {
-	instance->position = Vector3D(0.0f, 2.0f, -10.0f);
 	Camera* camera = new Camera("Scene Camera", instance->swapChain);
 	camera->SetPerspProjection(1.0f, (float)instance->swapChain->GetWidth() / instance->swapChain->GetHeight(), 0.01f, 1000.0f);
 	if (!instance->camera) instance->camera = camera;

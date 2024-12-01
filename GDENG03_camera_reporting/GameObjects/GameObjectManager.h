@@ -25,6 +25,11 @@ public:
 	static void SetSelectedObject(GameObject* gameObject);
 	static GameObject* GetSelectedObject();
 
+	static void AddSelectedObject(GameObject* gameObject);
+	static void RemoveSelectedObject(GameObject* gameObject);
+	static void ClearSelection();
+	static List& GetSelectedObjects();
+
 	static GameObject* FindGameObject(std::string name);
 	static const List& GetGameObjects();
 	static void SetObjectName(std::string name, std::string newName);
@@ -43,5 +48,6 @@ private:
 	List gameObjects;
 	HashTable gameObjectMap;
 	GameObject* selectedObject = NULL;
+	List selectedObjects;
 };
 

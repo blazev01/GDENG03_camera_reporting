@@ -24,37 +24,37 @@ void InspectorScreen::DrawUI()
 {
 	if (ImGui::Begin("Inspector", &this->enabled, ImGuiWindowFlags_NoCollapse))
     {
-        GameObject* selected = GameObjectManager::GetSelectedObject();
+        std::vector<GameObject*> selected = GameObjectManager::GetSelectedObjects();
         bool toDelete = false;
 
-        if (!selected)
+        if (selected.empty())
         {
             ImGui::Text("No game object selected.");
         }
-        else
+        else if (selected.size() == 1)
         {
             const int maxLen = 21;
             char name[maxLen];
-            strcpy_s(name, selected->GetName().c_str());
+            strcpy_s(name, selected[0]->GetName().c_str());
 
             if (ImGui::InputText("Name", name, maxLen) &&
                 ImGui::IsKeyPressed(ImGuiKey_Enter) &&
                 name[0] != '\0')
-                GameObjectManager::SetObjectName(selected->GetName(), name);
+                GameObjectManager::SetObjectName(selected[0]->GetName(), name);
 
             if (ImGui::BeginTable("EnableDelete", 3))
             {
                 ImGui::TableNextColumn();
-                bool enabled = selected->GetEnabled();
+                bool enabled = selected[0]->GetEnabled();
                 ImGui::Checkbox("Enabled", &enabled);
-                selected->SetEnabled(enabled);
+                selected[0]->SetEnabled(enabled);
 
                 ImGui::TableSetColumnIndex(2);
                 toDelete = ImGui::Button("Delete", ImVec2(ImGui::GetColumnWidth(2), 0));
                 ImGui::EndTable();
             }
 
-            this->ShowComponentList(selected);
+            this->ShowComponentList(selected[0]);
 
             ImGui::NewLine();
             if (ImGui::Button("Add Component", ImVec2(ImGui::GetColumnWidth(), 20)))
@@ -62,10 +62,37 @@ void InspectorScreen::DrawUI()
                 ImGui::OpenPopup("Components");
             }
 
-            this->ShowComponentsPopup(selected);
+            this->ShowComponentsPopup(selected[0]);
+        }
+        else
+        {
+            const int maxLen = 21;
+            char name[maxLen] = "Multiple Objects";
+
+            ImGui::BeginDisabled(true);
+            ImGui::InputText("Name", name, maxLen);
+            ImGui::EndDisabled();
+
+            if (ImGui::BeginTable("EnableDelete", 3))
+            {
+                ImGui::TableNextColumn();
+                bool enabled = selected[0]->GetEnabled();
+                ImGui::Checkbox("Enabled", &enabled);
+                for (auto o : selected) o->SetEnabled(enabled);
+
+                ImGui::TableSetColumnIndex(2);
+                toDelete = ImGui::Button("Delete", ImVec2(ImGui::GetColumnWidth(2), 0));
+                ImGui::EndTable();
+            }
+
+            ImGui::NewLine();
+            if (ImGui::Button("Add Component", ImVec2(ImGui::GetColumnWidth(), 20)))
+            {
+                ImGui::OpenPopup("Components");
+            }
         }
 
-        if (toDelete) GameObjectManager::DeleteGameObject(selected);
+        if (toDelete) for (auto o : selected) GameObjectManager::DeleteGameObject(o);
     }
     ImGui::End();
 }

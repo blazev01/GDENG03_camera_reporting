@@ -26,6 +26,11 @@ void OutlinerScreen::DrawUI()
 
 		if (!gameObjects.empty())
 		{
+			ImGuiMultiSelectFlags msFlags =
+				ImGuiMultiSelectFlags_SelectOnClick |
+				ImGuiMultiSelectFlags_ScopeRect |
+				ImGuiMultiSelectFlags_ClearOnClickVoid;		
+
 			for (int i = 0; i < gameObjects.size(); i++)
 			{
 				const std::string& objectName = gameObjects[i]->GetName();
@@ -42,22 +47,19 @@ void OutlinerScreen::DrawUI()
 				bool selected = this->selection[i];
 				if (ImGui::Selectable(gameObjects[i]->GetName().c_str(), &selected))
 				{
-					if (!ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
-						this->ResetSelection();
+					if (!ImGui::GetIO().KeyCtrl)
+					{
+						std::fill(this->selection.begin(), this->selection.end(), false);
+						GameObjectManager::ClearSelection();
+					}
 
-					if (selected) GameObjectManager::SetSelectedObject(gameObjects[i]);
-					else GameObjectManager::SetSelectedObject(NULL);
+					this->selection[i] = selected;
+					if (selected) GameObjectManager::AddSelectedObject(gameObjects[i]);
+					else GameObjectManager::RemoveSelectedObject(gameObjects[i]);
 				}
 
-				this->selection[i] = selected;
 			}
 		}
 	}
 	ImGui::End();
-}
-
-void OutlinerScreen::ResetSelection()
-{
-	for (int i = 0; i < this->selection.size(); i++)
-		this->selection[i] = false;
 }
