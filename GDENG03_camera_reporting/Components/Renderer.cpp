@@ -2,6 +2,7 @@
 #include "BaseComponentSystem.h"
 #include "../GraphicsEngine/Structs.h"
 #include "../GraphicsEngine/GraphicsEngine.h"
+#include "../GraphicsEngine/ShaderLibrary.h"
 #include "../GraphicsEngine/DeviceContext.h"
 #include "../SceneCamera/SceneCameraHandler.h"
 
@@ -59,6 +60,15 @@ void Renderer::Destroy()
 {
     BaseComponentSystem::GetRendererSystem()->UnregisterComponent(this);
     if (this->constantBuffer) this->constantBuffer->Release();
+}
+
+void Renderer::DetachOwner()
+{
+    PixelShader* pixelShader = ShaderLibrary::GetPixelShader(L"PixelShader.hlsl");
+    this->owner->SetPixelShader(pixelShader);
+
+    this->owner = NULL;
+    this->Destroy();
 }
 
 VertexShader* Renderer::GetVertexShader()

@@ -19,7 +19,7 @@ public:
 	~Component();
 
 	void AttachOwner(GameObject* owner);
-	void DetachOwner();
+	virtual void DetachOwner();
 
 	GameObject* GetOwner();
 	ComponentType GetType();

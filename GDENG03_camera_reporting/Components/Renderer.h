@@ -20,6 +20,8 @@ public:
 	virtual void Perform(float deltaTime) override;
 	virtual void Destroy() override;
 
+	void DetachOwner() override;
+
 	VertexShader* GetVertexShader();
 	void SetVertexShader(VertexShader* vertexShader);
 	PixelShader* GetPixelShader();
