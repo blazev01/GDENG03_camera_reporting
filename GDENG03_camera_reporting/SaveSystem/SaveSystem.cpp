@@ -24,20 +24,6 @@ void SaveSystem::SaveScene()
 	Json::Value translate;
 	Json::Value rotation;
 	Json::Value scale;
-	
-	/*gameObject["Type"] = "Cube";
-	translate["X"] = 0.0f;
-	translate["Y"] = 0.0f;
-	translate["Z"] = 0.0f;
-	gameObject["Translate"] = translate;
-	rotation["X"] = 0.0f;
-	rotation["Y"] = 0.0f;
-	rotation["Z"] = 0.0f;
-	gameObject["Rotation"] = rotation;
-	scale["X"] = 1.0f;
-	scale["Y"] = 1.0f;
-	scale["Z"] = 1.0f;
-	gameObject["Scale"] = scale;*/
 
 	for (int i = 0; i < GameObjectManager::GetGameObjects().size(); i++)
 	{
@@ -55,7 +41,6 @@ void SaveSystem::SaveScene()
 		scale["Y"] = GameObjectManager::GetGameObjects()[i]->GetLocalScale().y;
 		scale["Z"] = GameObjectManager::GetGameObjects()[i]->GetLocalScale().z;
 		gameObject["Scale"] = scale;
-		/*std::cout << gameObject["Type"].asString() + "Physics" << std::endl;*/
 		if (GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody") != nullptr)
 		{
 			gameObject["Physics"] = true;
@@ -63,7 +48,15 @@ void SaveSystem::SaveScene()
 			))->GetRigidBody()->isGravityEnabled();
 			gameObject["Mass"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetMass();
 			gameObject["BodyType"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetBodyType();
-			//gameObject["Transform"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform();
+			gameObject["Position"]["X"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getPosition().x;
+			gameObject["Position"]["Y"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getPosition().y;
+			gameObject["Position"]["Z"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getPosition().z;
+			gameObject["Orientation"]["X"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().x;
+			gameObject["Orientation"]["Y"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().y;
+			gameObject["Orientation"]["Z"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().z;
+			gameObject["Orientation"]["W"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().w;
+			std::cout << "Position: " << gameObject["Position"]["X"] << ", " << gameObject["Position"]["Y"] << ", " << gameObject["Position"]["Z"] << std::endl;
+			std::cout << "Orientation: " << gameObject["Orientation"]["X"] <<", " << gameObject["Orientation"]["Y"] << ", " << gameObject["Orientation"]["Z"] << ", " << gameObject["Orientation"]["W"] << std::endl;
 		}
 		else
 		{
@@ -71,9 +64,6 @@ void SaveSystem::SaveScene()
 		}
 		root.append(gameObject);
 	}
-
-	
-	//objectsCollection.append(gameObject);
 
 	std::ofstream output("SaveData\\Output.json");
 	if (!output.is_open()) {
@@ -120,15 +110,17 @@ void SaveSystem::LoadScene()
 				object["Rotation"]["Z"].asFloat()));
 			GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat(), object["Translate"]["Y"].asFloat(),
 				object["Translate"]["Z"].asFloat()));
-			GameObjectManager::GetGameObjects()[i]->Recalculate();
+			//GameObjectManager::GetGameObjects()[i]->Recalculate();
 			if (object["Physics"].asBool())
 			{
 				PhysicsComponent* component = new PhysicsComponent("RigidBody", GameObjectManager::GetGameObjects()[i]);
 				GameObjectManager::GetGameObjects()[i]->AttachComponent(component);
-				Transform transform;
-				transform.setFromOpenGL(GameObjectManager::GetGameObjects()[i]->GetTransform().GetAs1DArray());
+				Transform transform = Transform(Vector3(object["Position"]["X"].asFloat(), object["Position"]["Y"].asFloat(), object["Position"]["Z"].asFloat()), 
+					Quaternion(object["Orientation"]["X"].asFloat(), object["Orientation"]["Y"].asFloat(), object["Orientation"]["Z"].asFloat(), object["Orientation"]["W"].asFloat()));
+				
 				component->GetRigidBody()->setTransform(transform);
 				component->GetRigidBody()->setType(this->BodyTypetoEnum(object["BodyType"].asString()));
+				
 			}
 		}
 	}
