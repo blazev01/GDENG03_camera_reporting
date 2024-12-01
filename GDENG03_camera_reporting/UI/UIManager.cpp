@@ -33,12 +33,15 @@ void UIManager::Destroy()
 	delete instance;
 }
 
-void UIManager::DrawAllUI()
+void UIManager::NewFrame()
 {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+}
 
+void UIManager::DrawAllUI()
+{
 	for (int i = 0; i < instance->uiList.size(); i++)
 	{
 		if (instance->uiList[i]->enabled)

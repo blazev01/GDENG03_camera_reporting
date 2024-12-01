@@ -88,45 +88,6 @@
     <ClCompile Include="Resource\TextureManager.cpp">
       <Filter>GameEngine\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ActionsScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\ColorPickerScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\CreditsScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\CustomStyles.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\GameObjectSpawner.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\HierarchyScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\InspectorScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\MenuScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\OutlinerScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\ProfilerScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\ScenePlayOptionsScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\UIManager.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\UIScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
-    </ClCompile>
     <ClCompile Include="InputSystem\InputSystem.cpp">
       <Filter>GameEngine\InputSystem</Filter>
     </ClCompile>
@@ -165,9 +126,6 @@
     </ClCompile>
     <ClCompile Include="GraphicsEngine\ViewTexture.cpp">
       <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\CameraViewportScreen.cpp">
-      <Filter>GameEngine\UI</Filter>
     </ClCompile>
     <ClCompile Include="GameObjects\Camera.cpp">
       <Filter>GameEngine\GameObjects</Filter>
@@ -214,6 +172,69 @@
     <ClCompile Include="Components\RendererSystem.cpp" />
     <ClCompile Include="GameObjects\Sphere.cpp" />
     <ClCompile Include="GameObjects\Cylinder.cpp" />
+    <ClCompile Include="IMGUI\GraphEditor.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\ImCurveEdit.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\ImGradient.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\ImGuizmo.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imGuIZMOquat.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\ImSequencer.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ActionsScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CameraViewportScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ColorPickerScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CreditsScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CustomStyles.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\GameObjectSpawner.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\GizmoLayer.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\HierarchyScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\InspectorScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\MenuScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\OutlinerScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ProfilerScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ScenePlayOptionsScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIManager.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIScreen.cpp">
+      <Filter>GameEngine\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Colors.h">
@@ -309,48 +330,6 @@
     <ClInclude Include="Resource\VertexMesh.h">
       <Filter>GameEngine\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ActionsScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\ColorPickerScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\CreditsScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\CustomStyles.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\GameObjectSpawner.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\HierarchyScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\InspectorScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\MenuScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\OutlinerScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\ProfilerScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\ScenePlayOptionsScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\UIManager.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\UINames.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\UIScreen.h">
-      <Filter>GameEngine\UI</Filter>
-    </ClInclude>
     <ClInclude Include="InputSystem\InputListener.h">
       <Filter>GameEngine\InputSystem</Filter>
     </ClInclude>
@@ -395,9 +374,6 @@
     </ClInclude>
     <ClInclude Include="GraphicsEngine\ViewTexture.h">
       <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\CameraViewportScreen.h">
-      <Filter>GameEngine\UI</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\Camera.h">
       <Filter>GameEngine\GameObjects</Filter>
@@ -444,6 +420,87 @@
     <ClInclude Include="Components\RendererSystem.h" />
     <ClInclude Include="GameObjects\Sphere.h" />
     <ClInclude Include="GameObjects\Cylinder.h" />
+    <ClInclude Include="IMGUI\GraphEditor.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\ImCurveEdit.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\ImGradient.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\ImGuizmo.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imGuIZMOquat.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\ImSequencer.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\ImZoomSlider.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\vgConfig.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\vGizmo.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\vGizmoMath.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\vgMath.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ActionsScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CameraViewportScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ColorPickerScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CreditsScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CustomStyles.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\GameObjectSpawner.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\GizmoLayer.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\HierarchyScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\InspectorScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MenuScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\OutlinerScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ProfilerScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ScenePlayOptionsScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIManager.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UINames.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIScreen.h">
+      <Filter>GameEngine\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -505,5 +562,10 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>App</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="IMGUI\LICENSE.txt">
+      <Filter>GameEngine\IMGUI</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -179,13 +179,19 @@
     <ClCompile Include="GraphicsEngine\VertexBuffer.cpp" />
     <ClCompile Include="GraphicsEngine\VertexShader.cpp" />
     <ClCompile Include="GraphicsEngine\ViewTexture.cpp" />
+    <ClCompile Include="IMGUI\GraphEditor.cpp" />
+    <ClCompile Include="IMGUI\ImCurveEdit.cpp" />
+    <ClCompile Include="IMGUI\ImGradient.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
+    <ClCompile Include="IMGUI\ImGuizmo.cpp" />
+    <ClCompile Include="IMGUI\imGuIZMOquat.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_dx11.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="IMGUI\ImSequencer.cpp" />
     <ClCompile Include="InputSystem\InputSystem.cpp" />
     <ClCompile Include="Libs\JsonCpp\dist\jsoncpp.cpp" />
     <ClCompile Include="main.cpp" />
@@ -210,6 +216,7 @@
     <ClCompile Include="UI\CreditsScreen.cpp" />
     <ClCompile Include="UI\CustomStyles.cpp" />
     <ClCompile Include="UI\GameObjectSpawner.cpp" />
+    <ClCompile Include="UI\GizmoLayer.cpp" />
     <ClCompile Include="UI\HierarchyScreen.cpp" />
     <ClCompile Include="UI\InspectorScreen.cpp" />
     <ClCompile Include="UI\MenuScreen.cpp" />
@@ -258,14 +265,25 @@
     <ClInclude Include="GraphicsEngine\VertexBuffer.h" />
     <ClInclude Include="GraphicsEngine\VertexShader.h" />
     <ClInclude Include="GraphicsEngine\ViewTexture.h" />
+    <ClInclude Include="IMGUI\GraphEditor.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
+    <ClInclude Include="IMGUI\ImCurveEdit.h" />
+    <ClInclude Include="IMGUI\ImGradient.h" />
     <ClInclude Include="IMGUI\imgui.h" />
+    <ClInclude Include="IMGUI\ImGuizmo.h" />
+    <ClInclude Include="IMGUI\imGuIZMOquat.h" />
     <ClInclude Include="IMGUI\imgui_impl_dx11.h" />
     <ClInclude Include="IMGUI\imgui_impl_win32.h" />
     <ClInclude Include="IMGUI\imgui_internal.h" />
+    <ClInclude Include="IMGUI\ImSequencer.h" />
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
+    <ClInclude Include="IMGUI\ImZoomSlider.h" />
+    <ClInclude Include="IMGUI\vgConfig.h" />
+    <ClInclude Include="IMGUI\vGizmo.h" />
+    <ClInclude Include="IMGUI\vGizmoMath.h" />
+    <ClInclude Include="IMGUI\vgMath.h" />
     <ClInclude Include="InputSystem\InputListener.h" />
     <ClInclude Include="InputSystem\InputSystem.h" />
     <ClInclude Include="Math\Colors.h" />
@@ -291,6 +309,7 @@
     <ClInclude Include="UI\CreditsScreen.h" />
     <ClInclude Include="UI\CustomStyles.h" />
     <ClInclude Include="UI\GameObjectSpawner.h" />
+    <ClInclude Include="UI\GizmoLayer.h" />
     <ClInclude Include="UI\HierarchyScreen.h" />
     <ClInclude Include="UI\InspectorScreen.h" />
     <ClInclude Include="UI\MenuScreen.h" />
@@ -315,6 +334,9 @@
     <FxCompile Include="VertexShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="IMGUI\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,7 @@ public:
 
 	static void Initialize(HWND hwnd);
 	static void Destroy();
+	static void NewFrame();
 	static void DrawAllUI();
 
 	static UIScreen* GetUIScreen(std::string name);

@@ -18,6 +18,7 @@
 #include "../UI/GameObjectSpawner.h"
 #include "../Backend/Debug.h"
 #include "../SaveSystem/SaveSystem.h"
+#include "../UI/GizmoLayer.h"
 
 AppWindow::AppWindow()
 {
@@ -41,6 +42,7 @@ void AppWindow::OnCreate()
 	TextureManager::Initialize();
 	GameObjectManager::Initialize();
 	BaseComponentSystem::Initialize();
+	GizmoLayer::Initialize();
 
 	RECT rect = this->GetWindowRect();
 	float width = rect.right - rect.left;
@@ -102,6 +104,8 @@ void AppWindow::OnUpdate()
 
 	BaseComponentSystem::GetRendererSystem()->UpdateAllComponents();
 	SceneCameraHandler::Render();
+	UIManager::NewFrame();
+	GizmoLayer::Draw();
 	UIManager::DrawAllUI();
 	SceneCameraHandler::Present();
 }
@@ -121,6 +125,7 @@ void AppWindow::OnKillFocus()
 void AppWindow::OnDestroy()
 {
 	Window::OnDestroy();
+	GizmoLayer::Destroy();
 	UIManager::Destroy();
 	GameObjectManager::Destroy();
 	BaseComponentSystem::Destroy();
