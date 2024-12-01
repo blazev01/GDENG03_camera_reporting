@@ -14,13 +14,13 @@ Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 	const int latitudeBands = 30;
 	const int longitudeBands = 30;
 	const float radius = 0.5f;
-	for (int latNumber = 0; latNumber <= latitudeBands; ++latNumber)
+	for (int latNumber = 0; latNumber <= latitudeBands; latNumber++)
 	{
 		float theta = latNumber * DirectX::XM_PI / latitudeBands; 
 		float sinTheta = sinf(theta); 
 		float cosTheta = cosf(theta);
 
-		for (int longNumber = 0; longNumber <= longitudeBands; ++longNumber)
+		for (int longNumber = 0; longNumber <= longitudeBands; longNumber++)
 		{
 			float phi = longNumber * 2 * DirectX::XM_PI / longitudeBands;
 			float sinPhi = sinf(phi);
@@ -33,9 +33,9 @@ Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 		}
 	}
 
-	for (int latNumber = 0; latNumber < latitudeBands; ++latNumber)
+	for (int latNumber = 0; latNumber < latitudeBands; latNumber++)
 	{
-		for (int longNumber = 0; longNumber < longitudeBands; ++longNumber)
+		for (int longNumber = 0; longNumber < longitudeBands; longNumber++)
 		{
 			int first = latNumber * (longitudeBands + 1) + longNumber;
 			int second = first + longitudeBands + 1;

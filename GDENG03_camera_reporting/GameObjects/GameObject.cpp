@@ -143,6 +143,8 @@ std::string GameObject::GetPrimitiveTypeString()
             return "Quad";
         case SPHERE:
             return "Sphere";
+        case CYLINDER:
+            return "Cylinder";
         case MESH:
             return "Mesh";
         case PHYSICS_CUBE:

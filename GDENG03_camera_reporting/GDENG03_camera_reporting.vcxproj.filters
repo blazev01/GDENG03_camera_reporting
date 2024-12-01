@@ -213,6 +213,7 @@
     <ClCompile Include="UI\ConsoleScreen.cpp" />
     <ClCompile Include="Components\RendererSystem.cpp" />
     <ClCompile Include="GameObjects\Sphere.cpp" />
+    <ClCompile Include="GameObjects\Cylinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Colors.h">
@@ -442,6 +443,7 @@
     <ClInclude Include="Enum\Enums.h" />
     <ClInclude Include="Components\RendererSystem.h" />
     <ClInclude Include="GameObjects\Sphere.h" />
+    <ClInclude Include="GameObjects\Cylinder.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">

@@ -6,6 +6,7 @@
 #include "RenderQueue.h"
 #include "Cube.h"
 #include "Sphere.h"
+#include "Cylinder.h"
 #include "Quad.h"
 #include "GameCamera.h"
 #include "MeshObject.h"
@@ -66,6 +67,11 @@ GameObject* GameObjectManager::CreateGameObject(PrimitiveType primitiveType, boo
 	case SPHERE:
 	{
 		gameObject = new Sphere("Sphere", shaderBytes, shaderSize);
+		break;
+	}
+	case CYLINDER:
+	{
+		gameObject = new Cylinder("Cylinder", shaderBytes, shaderSize);
 		break;
 	}
 	case CAMERA:

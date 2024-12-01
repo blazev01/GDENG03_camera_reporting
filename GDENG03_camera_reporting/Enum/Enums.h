@@ -4,6 +4,7 @@ enum PrimitiveType
 	QUAD,
 	CUBE,
 	SPHERE,
+	CYLINDER,
 	CAMERA,
 	MESH,
 	PHYSICS_CUBE,

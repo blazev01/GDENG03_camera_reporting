@@ -154,6 +154,7 @@
     <ClCompile Include="Components\PhysicsComponent.cpp" />
     <ClCompile Include="Components\PhysicsSystem.cpp" />
     <ClCompile Include="Components\Renderer.cpp" />
+    <ClCompile Include="GameObjects\Cylinder.cpp" />
     <ClCompile Include="EngineTime\EngineTime.cpp" />
     <ClCompile Include="GameObjects\Camera.cpp" />
     <ClCompile Include="GameObjects\Circle.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Components\PhysicsComponent.h" />
     <ClInclude Include="Components\PhysicsSystem.h" />
     <ClInclude Include="Components\Renderer.h" />
+    <ClInclude Include="GameObjects\Cylinder.h" />
     <ClInclude Include="EngineTime\EngineTime.h" />
     <ClInclude Include="Enum\Enums.h" />
     <ClInclude Include="GameObjects\Camera.h" />

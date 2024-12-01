@@ -90,6 +90,11 @@ void MenuScreen::ShowMenuGameObject()
 		GameObjectManager::CreateGameObject(SPHERE);
 	}
 
+	if (ImGui::MenuItem("Create Cylinder"))
+	{
+		GameObjectManager::CreateGameObject(CYLINDER);
+	}
+
 	if (ImGui::MenuItem("Create Camera"))
 	{
 		GameObjectManager::CreateGameObject(CAMERA);
