@@ -66,9 +66,12 @@ void GizmoLayer::Draw()
 
 		float* camView = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
 		float* camProj = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
-		float* camLoc = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
+		//float* camLoc = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
+		Matrix4x4 identity;
+		identity.SetIdentity();
+		float* camLoc = identity.GetAs1DArray();
 
-		if (instance->showGrid) ImGuizmo::DrawGrid(camView, camProj, camLoc, 1000);
+		if (instance->showGrid) ImGuizmo::DrawGrid(camView, camProj, camLoc, 10);
 
 		if (ImGui::RadioButton("Translate", instance->translate))
 		{
@@ -96,22 +99,22 @@ void GizmoLayer::Draw()
 	ImGui::End();
 
 	instance->selectedObject = GameObjectManager::GetSelectedObject();
-	/*if (instance->selectedObject != NULL)
-		instance->EnableGizmo(instance->selectedObject);*/
+	if (instance->selectedObject != NULL)
+		instance->EnableGizmo(instance->selectedObject);
 }
 
 void GizmoLayer::EnableGizmo(GameObject* selectedObject)
 {
 	float* camView = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
 	float* camProj = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
-	float* camLoc = SceneCameraHandler::GetSceneCamera()->GetView().GetAs1DArray();
 	float* selectedMat = selectedObject->GetTransform().GetAs1DArray();
 
-	if (instance->translate) ImGuizmo::Manipulate(camLoc, camProj, ImGuizmo::TRANSLATE, ImGuizmo::LOCAL, selectedMat);
-	if (instance->rotate) ImGuizmo::Manipulate(camLoc, camProj, ImGuizmo::ROTATE, ImGuizmo::LOCAL, selectedMat);
-	if (instance->scale) ImGuizmo::Manipulate(camLoc, camProj, ImGuizmo::SCALE, ImGuizmo::LOCAL, selectedMat);
+	bool manipulated = false;
+	if (instance->translate) manipulated = ImGuizmo::Manipulate(camView, camProj, ImGuizmo::TRANSLATE, ImGuizmo::LOCAL, selectedMat);
+	if (instance->rotate) manipulated = ImGuizmo::Manipulate(camView, camProj, ImGuizmo::ROTATE, ImGuizmo::LOCAL, selectedMat);
+	if (instance->scale) manipulated = ImGuizmo::Manipulate(camView, camProj, ImGuizmo::SCALE, ImGuizmo::LOCAL, selectedMat);
 
-	if (instance->translate || instance->rotate || instance->scale)
+	if (manipulated)
 	{
 		float translate[] = { 0.0f, 0.0f, 0.0f };
 		float rotate[] = { 0.0f, 0.0f, 0.0f };

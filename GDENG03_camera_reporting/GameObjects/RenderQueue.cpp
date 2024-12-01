@@ -29,6 +29,11 @@ void RenderQueue::RemoveRenderer(GameObject * renderer)
 	if (*it == renderer) instance->renderers.erase(it);
 }
 
+void RenderQueue::RemoveAllRenderers()
+{
+	instance->renderers.clear();
+}
+
 void RenderQueue::SortByPriority()
 {
 	std::vector<GameObject*>::iterator first = instance->renderers.begin();

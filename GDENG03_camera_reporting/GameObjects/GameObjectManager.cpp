@@ -12,6 +12,7 @@
 #include "MeshObject.h"
 #include "PhysicsCube.h"
 #include "PhysicsQuad.h"
+#include "../Backend/EditorAction.h"
 
 GameObjectManager* GameObjectManager::instance = NULL;
 
@@ -150,9 +151,6 @@ void GameObjectManager::DeleteGameObject(GameObject* gameObject)
 
 	if (*it == gameObject)
 	{
-		if (instance->selectedObject == gameObject)
-			instance->selectedObject = NULL;
-
 		RenderQueue::RemoveRenderer(gameObject);
 		instance->gameObjectMap.erase(gameObject->GetName());
 		instance->gameObjects.erase(it);
@@ -171,9 +169,6 @@ void GameObjectManager::DeleteGameObject(std::string name)
 	GameObject* gameObject = *it;
 	if (gameObject && gameObject->GetName() == name)
 	{
-		if (instance->selectedObject == gameObject)
-			instance->selectedObject = NULL;
-
 		RenderQueue::RemoveRenderer(gameObject);
 		instance->gameObjectMap.erase(name);
 		instance->gameObjects.erase(it);
@@ -183,11 +178,15 @@ void GameObjectManager::DeleteGameObject(std::string name)
 
 void GameObjectManager::DeleteAllGameObjects()
 {
-	while (instance->gameObjects.size() > 0)
-	{
-		instance->DeleteGameObject(instance->gameObjects[0]);
-	}
+	if (instance->gameObjects.empty()) return;
+	
+	for (int i = instance->gameObjects.size() - 1; i >= 0; i--)
+		instance->gameObjects[i]->Destroy();
 
+	instance->selectedObjects.clear();
+	instance->gameObjects.clear();
+	instance->gameObjectMap.clear();
+	RenderQueue::RemoveAllRenderers();
 }
 
 void GameObjectManager::SetSelectedObject(std::string name)
@@ -251,12 +250,27 @@ void GameObjectManager::SetObjectName(std::string name, std::string newName)
 
 void GameObjectManager::SaveEditStates()
 {
-
+	for (GameObject* gameObject : instance->gameObjects)
+	{
+		instance->editStates.push_back(new EditorAction(gameObject));
+	}
 }
 
 void GameObjectManager::RestoreEditStates()
 {
+	for (int i = instance->editStates.size() - 1; i >= 0; i--)
+	{
+		EditorAction* action = instance->editStates[i];
+		GameObject* gameObject = instance->FindGameObject(action->GetOwnerName());
+		gameObject->SetPosition(action->GetStoredPosition());
+		gameObject->SetRotation(action->GetStoredRotation());
+		gameObject->SetScale(action->GetStoredScale());
+		gameObject->SetTransform(action->GetStoredMatrix());
 
+		delete action;
+	}
+
+	instance->editStates.clear();
 }
 
 GameObjectManager::GameObjectManager()

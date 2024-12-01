@@ -1,5 +1,6 @@
 #include "ScenePlayOptionsScreen.h"
 #include "../Backend/EngineBackend.h"
+#include "../GameObjects/GameObjectManager.h"
 
 ScenePlayOptionsScreen::ScenePlayOptionsScreen() : UIScreen("SCENE_PLAY_OPTIONS_SCREEN")
 {
@@ -24,6 +25,7 @@ void ScenePlayOptionsScreen::DrawUI()
 		{
 			if (ImGui::Button("Play"))
 			{
+				GameObjectManager::SaveEditStates();
 				EngineBackend::SetEditorMode(EngineBackend::PLAY);
 			}
 		}
@@ -31,6 +33,7 @@ void ScenePlayOptionsScreen::DrawUI()
 		{
 			if (ImGui::Button("Stop"))
 			{
+				GameObjectManager::RestoreEditStates();
 				EngineBackend::SetEditorMode(EngineBackend::EDITOR);
 			}
 		}

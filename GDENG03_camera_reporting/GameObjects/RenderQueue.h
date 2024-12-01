@@ -11,6 +11,7 @@ public:
 
 	static void AddRenderer(GameObject* renderer);
 	static void RemoveRenderer(GameObject* renderer);
+	static void RemoveAllRenderers();
 
 	static void SortByPriority();
 	static void Render(std::bitset<4> cullingMask, Matrix4x4 view, Matrix4x4 proj);

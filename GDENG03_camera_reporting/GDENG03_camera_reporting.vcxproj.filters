@@ -37,15 +37,6 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
       <Filter>GameEngine\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Backend\ActionHistory.cpp">
-      <Filter>GameEngine\Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="Backend\EditorAction.cpp">
-      <Filter>GameEngine\Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="Backend\EngineBackend.cpp">
-      <Filter>GameEngine\Backend</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Vector2D.cpp">
       <Filter>GameEngine\Math</Filter>
     </ClCompile>
@@ -233,9 +224,6 @@
     <ClCompile Include="UI\ConsoleScreen.cpp">
       <Filter>GameEngine\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Backend\Debug.cpp">
-      <Filter>GameEngine\Backend</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjects\Sphere.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
@@ -244,6 +232,18 @@
     </ClCompile>
     <ClCompile Include="Components\RendererSystem.cpp">
       <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Backend\ActionHistory.cpp">
+      <Filter>GameEngine\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="Backend\Debug.cpp">
+      <Filter>GameEngine\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="Backend\EditorAction.cpp">
+      <Filter>GameEngine\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="Backend\EngineBackend.cpp">
+      <Filter>GameEngine\Backend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,15 +285,6 @@
     </ClInclude>
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Backend\ActionHistory.h">
-      <Filter>GameEngine\Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="Backend\EditorAction.h">
-      <Filter>GameEngine\Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="Backend\EngineBackend.h">
-      <Filter>GameEngine\Backend</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2D.h">
       <Filter>GameEngine\Math</Filter>
@@ -509,9 +500,6 @@
     <ClInclude Include="UI\ConsoleScreen.h">
       <Filter>GameEngine\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Backend\Debug.h">
-      <Filter>GameEngine\Backend</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects\Sphere.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
@@ -520,6 +508,18 @@
     </ClInclude>
     <ClInclude Include="Components\RendererSystem.h">
       <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend\ActionHistory.h">
+      <Filter>GameEngine\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend\Debug.h">
+      <Filter>GameEngine\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend\EditorAction.h">
+      <Filter>GameEngine\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend\EngineBackend.h">
+      <Filter>GameEngine\Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

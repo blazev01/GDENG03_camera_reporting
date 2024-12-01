@@ -3,13 +3,14 @@
 #include "unordered_map"
 #include "GameObject.h"
 #include "../Enum/Enums.h"
+
+class EditorAction;
+
 class GameObjectManager
 {
 public:
 	typedef std::vector<GameObject*> List;
 	typedef std::unordered_map<std::string, GameObject*> HashTable;
-
-	
 
 	static void Initialize();
 	static void Update();
@@ -49,5 +50,7 @@ private:
 	HashTable gameObjectMap;
 	GameObject* selectedObject = NULL;
 	List selectedObjects;
+
+	std::vector<EditorAction*> editStates;
 };
 
