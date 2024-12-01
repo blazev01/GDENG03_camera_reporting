@@ -13,8 +13,11 @@ OutlinerScreen::~OutlinerScreen()
 
 void OutlinerScreen::DrawUI()
 {
+	static char searchText[256] = "";
 	if (ImGui::Begin("Outliner", &this->enabled, ImGuiWindowFlags_NoCollapse))
 	{
+		ImGui::InputText("Search", searchText, IM_ARRAYSIZE(searchText));
+
 		const std::vector<GameObject*>& gameObjects = GameObjectManager::GetGameObjects();
 		if (gameObjects.size() != this->selection.size())
 			this->selection.resize(gameObjects.size());
@@ -23,6 +26,11 @@ void OutlinerScreen::DrawUI()
 		{
 			for (int i = 0; i < gameObjects.size(); i++)
 			{
+				const std::string& objectName = gameObjects[i]->GetName();
+
+				if (strlen(searchText) > 0 && objectName.find(searchText) == std::string::npos)
+					continue;
+
 				bool selected = this->selection[i];
 				if (ImGui::Selectable(gameObjects[i]->GetName().c_str(), &selected))
 				{
