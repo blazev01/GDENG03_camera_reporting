@@ -131,30 +131,30 @@ const std::vector<GameObject*>& GameObject::GetChildren()
     return this->children;
 }
 
-std::string GameObject::GetPrimitiveTypeString()
+int GameObject::GetPrimitiveTypeInt()
 {
     switch (this->primitiveType)
     {
-        case CUBE:
-            return "Cube";
-        case CAMERA:
-            return "Camera";
         case QUAD:
-            return "Quad";
+            return 0;
+        case CUBE:
+            return 1;
         case SPHERE:
-            return "Sphere";
+            return 2;
         case CYLINDER:
-            return "Cylinder";
+            return 3;
+        case CAMERA:
+            return 4;
         case MESH:
-            return "Mesh";
+            return 5;
         case PHYSICS_CUBE:
-            return "Physics_Cube";
+            return 6;
         case PHYSICS_QUAD:
-            return "Physics_Quad";
+            return 7;
         case LINE:
-            return "Line";
+            return 8;
         case CIRCLE:
-            return "Circle";
+            return 9;
             
     }
 }

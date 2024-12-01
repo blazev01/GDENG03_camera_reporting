@@ -94,7 +94,7 @@ Vector3D Matrix4x4::GetPosition()
 
 Vector3D Matrix4x4::GetScale()
 {
-	return Vector3D();
+	return Vector3D(this->mat[0][0], this->mat[1][1], this->mat[2][2]);
 }
 
 Vector3D Matrix4x4::GetRotation()

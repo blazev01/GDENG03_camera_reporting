@@ -58,16 +58,21 @@ void MenuScreen::DrawUI()
 void MenuScreen::ShowMenuFile()
 {
 	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "//Dummy Menu");
-	if (ImGui::MenuItem("New Scene")) {
+	if (ImGui::MenuItem("New Scene")) 
+	{
 	
 		GameObjectManager::DeleteAllGameObjects();
 
 	}
-	if (ImGui::MenuItem("Save Scene")) {
+	if (ImGui::MenuItem("Save Scene")) 
+	{
 		SaveSystem::GetInstance()->SaveScene();
 	}
 	if (ImGui::MenuItem("Save Scene As...")) {}
-	if (ImGui::MenuItem("Load Scene")) {}
+	if (ImGui::MenuItem("Load Scene"))
+	{
+		SaveSystem::GetInstance()->LoadScene();
+	}
 	ImGui::Separator();
 
 	if (ImGui::MenuItem("Project Settings")) {}

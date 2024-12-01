@@ -48,7 +48,7 @@ public:
 	GameObject* GetChild(int index);
 	const std::vector<GameObject*>& GetChildren();
 
-	std::string GetPrimitiveTypeString();
+	int GetPrimitiveTypeInt();
 	PrimitiveType GetPrimitiveType();
 
 	bool GetEnabled() const;

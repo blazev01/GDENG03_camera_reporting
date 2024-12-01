@@ -1,4 +1,6 @@
 #pragma once
+#include "../Enum/Enums.h"
+#include "../Components/PhysicsSystem.h"
 class SaveSystem
 {
 public:
@@ -6,6 +8,8 @@ public:
 	static SaveSystem* GetInstance();
 	void SaveScene();
 	void LoadScene();
+	PrimitiveType PrimitiveTypeToEnum(int type);
+	BodyType BodyTypetoEnum(std::string BodyType);
 private:
 	SaveSystem();
 	~SaveSystem();
