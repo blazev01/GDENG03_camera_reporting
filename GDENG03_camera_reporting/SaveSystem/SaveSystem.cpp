@@ -108,11 +108,12 @@ void SaveSystem::LoadScene()
 				object["Scale"]["Z"].asFloat()));		
 			GameObjectManager::GetGameObjects()[i]->SetRotation(Vector3D(object["Rotation"]["X"].asFloat(), object["Rotation"]["Y"].asFloat(),
 				object["Rotation"]["Z"].asFloat()));
-			GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat(), object["Translate"]["Y"].asFloat(),
-				object["Translate"]["Z"].asFloat()));
-			//GameObjectManager::GetGameObjects()[i]->Recalculate();
+		
 			if (object["Physics"].asBool())
 			{
+				GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat() / 2, object["Translate"]["Y"].asFloat() / 2,
+					object["Translate"]["Z"].asFloat() / 2));
+				GameObjectManager::GetGameObjects()[i]->Recalculate();
 				PhysicsComponent* component = new PhysicsComponent("RigidBody", GameObjectManager::GetGameObjects()[i]);
 				GameObjectManager::GetGameObjects()[i]->AttachComponent(component);
 				Transform transform = Transform(Vector3(object["Position"]["X"].asFloat(), object["Position"]["Y"].asFloat(), object["Position"]["Z"].asFloat()), 
@@ -122,6 +123,9 @@ void SaveSystem::LoadScene()
 				component->GetRigidBody()->setType(this->BodyTypetoEnum(object["BodyType"].asString()));
 				
 			}
+			GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat(), object["Translate"]["Y"].asFloat(),
+				object["Translate"]["Z"].asFloat() ));
+			GameObjectManager::GetGameObjects()[i]->Recalculate();
 		}
 	}
 
