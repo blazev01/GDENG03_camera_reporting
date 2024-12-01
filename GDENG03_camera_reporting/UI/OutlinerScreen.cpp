@@ -1,6 +1,8 @@
 #include "OutlinerScreen.h"
 #include "../GameObjects/GameObjectManager.h"
 
+#include <algorithm>
+
 OutlinerScreen::OutlinerScreen() : UIScreen("OUTLINER_SCREEN")
 {
 
@@ -28,7 +30,13 @@ void OutlinerScreen::DrawUI()
 			{
 				const std::string& objectName = gameObjects[i]->GetName();
 
-				if (strlen(searchText) > 0 && objectName.find(searchText) == std::string::npos)
+				std::string lowObjName = objectName;
+				std::string lowSrcText = searchText;
+
+				std::transform(lowObjName.begin(), lowObjName.end(), lowObjName.begin(), ::tolower);
+				std::transform(lowSrcText.begin(), lowSrcText.end(), lowSrcText.begin(), ::tolower);
+
+				if (!lowSrcText.empty() && lowObjName.find(lowSrcText) == std::string::npos)
 					continue;
 
 				bool selected = this->selection[i];
