@@ -87,7 +87,7 @@ void MenuScreen::ShowMenuGameObject()
 
 	if (ImGui::MenuItem("Create Sphere"))
 	{
-		//GameObjectManager::CreateGameObject(GameObjectManager::CUBE);
+		GameObjectManager::CreateGameObject(SPHERE);
 	}
 
 	if (ImGui::MenuItem("Create Camera"))

@@ -5,6 +5,7 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "RenderQueue.h"
 #include "Cube.h"
+#include "Sphere.h"
 #include "Quad.h"
 #include "GameCamera.h"
 #include "MeshObject.h"
@@ -64,7 +65,7 @@ GameObject* GameObjectManager::CreateGameObject(PrimitiveType primitiveType, boo
 	}
 	case SPHERE:
 	{
-		//gameObject = new Cube("Sphere", shaderBytes, shaderSize);
+		gameObject = new Sphere("Sphere", shaderBytes, shaderSize);
 		break;
 	}
 	case CAMERA:

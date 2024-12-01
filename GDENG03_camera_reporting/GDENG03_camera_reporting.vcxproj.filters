@@ -211,6 +211,8 @@
     </ClCompile>
     <ClCompile Include="Backend\Debug.cpp" />
     <ClCompile Include="UI\ConsoleScreen.cpp" />
+    <ClCompile Include="Components\RendererSystem.cpp" />
+    <ClCompile Include="GameObjects\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Colors.h">
@@ -438,6 +440,8 @@
     <ClInclude Include="Backend\Debug.h" />
     <ClInclude Include="UI\ConsoleScreen.h" />
     <ClInclude Include="Enum\Enums.h" />
+    <ClInclude Include="Components\RendererSystem.h" />
+    <ClInclude Include="GameObjects\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
