@@ -28,7 +28,6 @@ void OutlinerScreen::DrawUI()
 		{
 			ImGuiMultiSelectFlags msFlags =
 				ImGuiMultiSelectFlags_SelectOnClick |
-				ImGuiMultiSelectFlags_ScopeRect |
 				ImGuiMultiSelectFlags_ClearOnClickVoid;		
 
 			for (int i = 0; i < gameObjects.size(); i++)

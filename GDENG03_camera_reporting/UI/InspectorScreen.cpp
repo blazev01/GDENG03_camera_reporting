@@ -170,7 +170,7 @@ void InspectorScreen::ShowTransform(GameObject* selected)
     float width = 0.7f;
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat3("Position", scenePos) &&
-        ImGui::IsKeyPressed(ImGuiKey_Enter))
+        ImGui::IsItemDeactivatedAfterEdit())
     {
         ActionHistory::RecordAction(selected);
         selected->SetPosition(Vector3D(scenePos[0], scenePos[1], scenePos[2]));
@@ -179,7 +179,7 @@ void InspectorScreen::ShowTransform(GameObject* selected)
 
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat3("Rotation", sceneRot) &&
-        ImGui::IsKeyPressed(ImGuiKey_Enter))
+        ImGui::IsItemDeactivatedAfterEdit())
     {
         sceneRot[0] *= DEG2RAD;
         sceneRot[1] *= DEG2RAD;
@@ -192,7 +192,7 @@ void InspectorScreen::ShowTransform(GameObject* selected)
 
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat3("Scale", sceneScale) &&
-        ImGui::IsKeyPressed(ImGuiKey_Enter))
+        ImGui::IsItemDeactivatedAfterEdit())
     {
         ActionHistory::RecordAction(selected);
         selected->SetScale(Vector3D(sceneScale[0], sceneScale[1], sceneScale[2]));
@@ -206,7 +206,7 @@ void InspectorScreen::ShowRigidBody(PhysicsComponent* component)
     float width = 0.7f;
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat("Mass", &mass) &&
-        ImGui::IsKeyPressed(ImGuiKey_Enter))
+        ImGui::IsItemDeactivatedAfterEdit())
         component->SetMass(mass);
 
     static const char* items[]{ "Static","Kinematic","Dynamic" };
