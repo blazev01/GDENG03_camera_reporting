@@ -22,8 +22,17 @@ public:
 	void RemoveKeyframe(float t);
 
 	void UpdateTimeStamp(float oldT, float newT);
+	void UpdateKeyframe(float t, Matrix4x4 mat);
 	std::vector<float> GetTimeStamps();
-	std::map<float, Matrix4x4> GetKeyframes();
+	
+	void UpdateKeyedPos(float t, Vector3D pos);
+	void UpdateKeyedRot(float t, Vector3D rot);
+	void UpdateKeyedScale(float t, Vector3D scale);
+
+	
+	Vector3D GetKeyedPos(float t);
+	Vector3D GetKeyedRot(float t);
+	Vector3D GetKeyedScale(float t);
 
 private:
 	void RecalcKeys();
@@ -31,6 +40,10 @@ private:
 	bool isLoop = false;
 	float time = 0;
 
-	std::map<float, Matrix4x4> keyframeTable;
+
+	std::map<float, Vector3D> keyframePos;
+	std::map<float, Vector3D> keyframeRot;
+	std::map<float, Vector3D> keyframeScale;
+
 	std::vector<float> timeStamps;
 };

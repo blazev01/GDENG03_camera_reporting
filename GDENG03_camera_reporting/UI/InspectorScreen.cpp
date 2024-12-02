@@ -401,25 +401,51 @@ void InspectorScreen::ShowAnimation(std::vector<AnimationComponent*>& components
                 s << t;
                 ImGui::PushID(s.str().c_str());
 
-                // ADJUST KEYFRAME
-                float modT = t;
-                if (ImGui::InputFloat("Time", &modT)) {
-                    if (modT < 0.f)
-                        modT = 0.f;
-                    
-                    if (t != modT)
-                        comp->UpdateTimeStamp(t, modT);
+                if(ImGui::TreeNode("")) {
+                    // ADJUST KEYFRAME
+                    float modT = t;
+                    if (ImGui::InputFloat("Time", &modT)) {
+                        if (modT < 0.f)
+                            modT = 0.f;
+
+                        if (t != modT)
+                            comp->UpdateTimeStamp(t, modT);
+                    }
+
+                    // REMOVE KEYFRAME
+                    if (ImGui::Button("Delete", ImVec2(ImGui::GetColumnWidth(2), 0))) {
+                        comp->RemoveKeyframe(t);
+                    }
+
+                    // KEYFRAME OF TRANSFORMS
+                    Vector3D keyPos = comp->GetKeyedPos(t);
+                    Vector3D keyRot = comp->GetKeyedRot(t);
+                    Vector3D keyScale = comp->GetKeyedScale(t);
+
+                    float pos[3] = { keyPos.x, keyPos.y, keyPos.z };
+                    float rot[3] = { keyRot.x, keyRot.y, keyRot.z };
+                    float scale[3] = { keyScale.x, keyScale.y, keyScale.z };
+
+                    ImGui::Text("P:"); ImGui::SameLine();
+                    if (ImGui::InputFloat3("PosInput", pos))
+                    {
+                        comp->UpdateKeyedPos(t, Vector3D(pos[0], pos[1], pos[2]));
+                    }
+
+                    ImGui::Text("R:"); ImGui::SameLine();
+                    if (ImGui::InputFloat3("RotInput", rot))
+                    {
+                        comp->UpdateKeyedRot(t, Vector3D(rot[0], rot[1], rot[2]));
+                    }
+
+                    ImGui::Text("S:"); ImGui::SameLine();
+                    if (ImGui::InputFloat3("ScaleInput", scale))
+                    {
+                        comp->UpdateKeyedScale(t, Vector3D(scale[0], scale[1], scale[2]));
+                    }
+
+                    ImGui::TreePop();
                 }
-                
-                // REMOVE KEYFRAME
-                if (ImGui::Button("Delete")) {
-                    comp->RemoveKeyframe(t);
-                }
-
-                // KEYFRAME OF TRANSFORMS
-                //ImGui::DragFloat3("P", )
-
-
                 ImGui::PopID();
             }
 
