@@ -14,14 +14,11 @@ protected:
 	friend class UIManager;
 
 private:
-	void ShowComponentList(GameObject* selected);
-	void ShowTransform(GameObject* selected);
-	void ShowRigidBody(PhysicsComponent* component);
-	void ShowTexture(Renderer* component);
-	void ShowDummyComponent();
-	void ShowComponent();
-
-	void ShowComponentsPopup(GameObject* selected);
+	void ShowComponentList(const std::vector<GameObject*>& selected);
+	void ShowTransform(const std::vector<GameObject*>& selected);
+	void ShowRigidBody(const std::vector<PhysicsComponent*>& components);
+	void ShowTexture(const std::vector<Renderer*>& components);
+	void ShowComponentsPopup(const std::vector<GameObject*>& selected);
 
 	bool showTransform = true;
 };

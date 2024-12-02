@@ -32,47 +32,28 @@ void InspectorScreen::DrawUI()
         {
             ImGui::Text("No game object selected.");
         }
-        else if (selected.size() == 1)
-        {
-            const int maxLen = 21;
-            char name[maxLen];
-            strcpy_s(name, selected[0]->GetName().c_str());
-
-            if (ImGui::InputText("Name", name, maxLen) &&
-                ImGui::IsKeyPressed(ImGuiKey_Enter) &&
-                name[0] != '\0')
-                GameObjectManager::SetObjectName(selected[0]->GetName(), name);
-
-            if (ImGui::BeginTable("EnableDelete", 3))
-            {
-                ImGui::TableNextColumn();
-                bool enabled = selected[0]->GetEnabled();
-                ImGui::Checkbox("Enabled", &enabled);
-                selected[0]->SetEnabled(enabled);
-
-                ImGui::TableSetColumnIndex(2);
-                toDelete = ImGui::Button("Delete", ImVec2(ImGui::GetColumnWidth(2), 0));
-                ImGui::EndTable();
-            }
-
-            this->ShowComponentList(selected[0]);
-
-            ImGui::NewLine();
-            if (ImGui::Button("Add Component", ImVec2(ImGui::GetColumnWidth(), 20)))
-            {
-                ImGui::OpenPopup("Components");
-            }
-
-            this->ShowComponentsPopup(selected[0]);
-        }
         else
         {
             const int maxLen = 21;
-            char name[maxLen] = "Multiple Objects";
+            char name[maxLen];
 
-            ImGui::BeginDisabled(true);
-            ImGui::InputText("Name", name, maxLen);
-            ImGui::EndDisabled();
+            if (selected.size() > 1)
+            {
+                strcpy_s(name, "Multiple Objects");
+
+                ImGui::BeginDisabled(true);
+                ImGui::InputText("Name", name, maxLen);
+                ImGui::EndDisabled();
+            }
+            else
+            {
+                strcpy_s(name, selected[0]->GetName().c_str());
+
+                if (ImGui::InputText("Name", name, maxLen) &&
+                    ImGui::IsKeyPressed(ImGuiKey_Enter) &&
+                    name[0] != '\0')
+                    GameObjectManager::SetObjectName(selected[0]->GetName(), name);
+            }
 
             if (ImGui::BeginTable("EnableDelete", 3))
             {
@@ -86,11 +67,15 @@ void InspectorScreen::DrawUI()
                 ImGui::EndTable();
             }
 
+            this->ShowComponentList(selected);
+
             ImGui::NewLine();
             if (ImGui::Button("Add Component", ImVec2(ImGui::GetColumnWidth(), 20)))
             {
                 ImGui::OpenPopup("Components");
             }
+
+            this->ShowComponentsPopup(selected);
         }
 
         if (toDelete)
@@ -102,7 +87,7 @@ void InspectorScreen::DrawUI()
     ImGui::End();
 }
 
-void InspectorScreen::ShowComponentList(GameObject* selected)
+void InspectorScreen::ShowComponentList(const std::vector<GameObject*>& selected)
 {
     ImGuiChildFlags childFlags =
         ImGuiChildFlags_Borders |
@@ -116,77 +101,91 @@ void InspectorScreen::ShowComponentList(GameObject* selected)
         ImGui::EndChild();
     }
 
-    for (Component* component : selected->GetComponents())
+    bool hasPhysics = true;
+    bool hasRenderer = true;
+    std::vector<PhysicsComponent*> physics;
+    std::vector<Renderer*> renderers;
+
+    for (auto gameObject : selected)
     {
-        const int maxLen = 21;
-        char compName[maxLen];
-        strcpy_s(compName, component->GetName().c_str());
-        if (ImGui::BeginChild(compName, ImVec2(0, 0), childFlags))
+        for (Component* component : gameObject->GetComponents())
         {
-            if (ImGui::CollapsingHeader(compName, ImGuiTreeNodeFlags_DefaultOpen))
+            switch (component->GetType())
             {
-                switch (component->GetType())
-                {
-                case Component::Physics:
-                {
-                    this->ShowRigidBody((PhysicsComponent*)component);
-                    break;
-                }
-                
-                case Component::Renderer:
-                {
-                    this->ShowTexture((Renderer*) component);
-                    break;
-                }
-
-                default:
-                    this->ShowComponent();
-                    break;
-                }
-
-                if (ImGui::Button("Remove", ImVec2(ImGui::GetColumnWidth(), 0)))
-                {
-                    selected->DetachComponent(component);
-                }
+            case Component::Physics:
+            {
+                physics.push_back((PhysicsComponent*)component);
+                break;
             }
 
-            ImGui::EndChild();
+            case Component::Renderer:
+            {
+                renderers.push_back((Renderer*)component);
+                break;
+            }
+
+            default:
+                break;
+            }
         }
     }
 
-    //if (ImGui::BeginChild("Dummy Component", ImVec2(0, 0), childFlags))
-    //{
-    //    if (ImGui::CollapsingHeader("Rick Roll Component", ImGuiTreeNodeFlags_DefaultOpen))
-    //        this->ShowDummyComponent();
-    //    ImGui::EndChild();
-    //}
+    hasPhysics = physics.size() == selected.size();
+    hasRenderer = renderers.size() == selected.size();
+
+    if (hasPhysics)
+    {
+        if (ImGui::BeginChild("RigidBody", ImVec2(0, 0), childFlags))
+        {
+            if (ImGui::CollapsingHeader("RigidBody", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                this->ShowRigidBody(physics);
+                if (ImGui::Button("Remove", ImVec2(ImGui::GetColumnWidth(), 0)))
+                    for (auto p : physics) p->GetOwner()->DetachComponent(p);
+            }
+        }
+
+        ImGui::EndChild();
+    }
+    if (hasRenderer)
+    {
+        if (ImGui::BeginChild("Renderer", ImVec2(0, 0), childFlags))
+        {
+            if (ImGui::CollapsingHeader("Renderer", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                this->ShowTexture(renderers);
+                if (ImGui::Button("Remove", ImVec2(ImGui::GetColumnWidth(), 0)))
+                    for (auto r : renderers) r->GetOwner()->DetachComponent(r);
+            }
+        }
+
+        ImGui::EndChild();
+    }
 }
 
-void InspectorScreen::ShowTransform(GameObject* selected)
+void InspectorScreen::ShowTransform(const std::vector<GameObject*>&selected)
 {
-    Vector3D pos = selected->GetLocalPosition();
-    Vector3D rot = selected->GetLocalRotation();
-    Vector3D scale = selected->GetLocalScale();
-    bool isLocal = selected->GetIsLocalTransform();
+    Vector3D pos = selected[0]->GetLocalPosition();
+    Vector3D rot = selected[0]->GetLocalRotation();
+    Vector3D scale = selected[0]->GetLocalScale();
+    bool isLocal = selected[0]->GetIsLocalTransform();
+    bool recalculate = false;
+    float width = 0.7f;
 
     float scenePos[3] = { pos.x, pos.y, pos.z };
     float sceneRot[3] = { rot.x * RAD2DEG, rot.y * RAD2DEG, rot.z * RAD2DEG };
     float sceneScale[3] = { scale.x, scale.y, scale.z };
 
-    float width = 0.7f;
-
-    if(ImGui::Checkbox("Local Transform", &isLocal)) {
-        selected->SetIsLocalTransform(isLocal);
-        selected->Recalculate();
+    if (ImGui::Checkbox("Local Transform", &isLocal))
+    {
+        recalculate = true;
     }
 
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat3("Position", scenePos) &&
         ImGui::IsItemDeactivatedAfterEdit())
     {
-        ActionHistory::RecordAction(selected);
-        selected->SetPosition(Vector3D(scenePos[0], scenePos[1], scenePos[2]));
-        selected->Recalculate();
+        recalculate = true;
     }
 
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
@@ -197,57 +196,97 @@ void InspectorScreen::ShowTransform(GameObject* selected)
         sceneRot[1] *= DEG2RAD;
         sceneRot[2] *= DEG2RAD;
 
-        ActionHistory::RecordAction(selected);
-        selected->SetRotation(Vector3D(sceneRot[0], sceneRot[1], sceneRot[2]));
-        selected->Recalculate();
+        recalculate = true;
     }
 
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat3("Scale", sceneScale) &&
         ImGui::IsItemDeactivatedAfterEdit())
     {
-        ActionHistory::RecordAction(selected);
-        selected->SetScale(Vector3D(sceneScale[0], sceneScale[1], sceneScale[2]));
-        selected->Recalculate();
+        recalculate = true;
+    }
+    
+    if (recalculate)
+    {
+        for (auto gameObject : selected)
+        {
+            ActionHistory::RecordAction(gameObject);
+
+            gameObject->SetIsLocalTransform(isLocal);
+            gameObject->SetPosition(Vector3D(scenePos[0], scenePos[1], scenePos[2]));
+            gameObject->SetRotation(Vector3D(sceneRot[0], sceneRot[1], sceneRot[2]));
+            gameObject->SetScale(Vector3D(sceneScale[0], sceneScale[1], sceneScale[2]));
+
+            gameObject->Recalculate();
+        }
     }
 }
 
-void InspectorScreen::ShowRigidBody(PhysicsComponent* component)
+void InspectorScreen::ShowRigidBody(const std::vector<PhysicsComponent*>& components)
 {
-    float mass = component->GetMass();
+    bool updateMass = false;
+    bool updateType = false;
+    bool updateGravity = false;
+
+    float mass = components[0]->GetMass();
+    int selectedItem = (int)components[0]->GetRigidBody()->getType();
+    bool gravity = components[0]->GetRigidBody()->isGravityEnabled();
+
     float width = 0.7f;
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat("Mass", &mass) &&
         ImGui::IsItemDeactivatedAfterEdit())
-        component->SetMass(mass);
+    {
+        updateMass = true;
+    }
 
     static const char* items[]{ "Static","Kinematic","Dynamic" };
-    int selectedItem = (int)component->GetRigidBody()->getType();
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::Combo("Body Type", &selectedItem, items, IM_ARRAYSIZE(items)))
     {
-        component->GetRigidBody()->setType((BodyType)selectedItem);
+        updateType = true;
     }
 
-    bool gravity = component->GetRigidBody()->isGravityEnabled();
     if (ImGui::Checkbox("Gravity Enabled", &gravity))
     {
-        component->GetRigidBody()->enableGravity(gravity);
+        updateGravity = true;
+    }
+
+    if (updateMass || updateType || updateGravity)
+    {
+        for (auto component : components)
+        {
+            if (updateMass) component->SetMass(mass);
+            else if (updateType) component->GetRigidBody()->setType((BodyType)selectedItem);
+            else if (updateGravity) component->GetRigidBody()->enableGravity(gravity);
+        }
     }
 }
 
-void InspectorScreen::ShowTexture(Renderer* component)
+void InspectorScreen::ShowTexture(const std::vector<Renderer*>& components)
 {
-    std::wstring selectedFile = component->GetTextureFilePath();
+    bool updateTexture = false;
+
+    std::wstring selectedFile = components[0]->GetTextureFilePath();
     if (selectedFile.empty()) selectedFile = L"..\\Assets\\Textures\\DLSU-LOGO.png";
+    Texture* currentTexture = components[0]->GetTexture();
 
-    Texture* currentTexture = component->GetTexture();
-
-    if (currentTexture)
+    for (auto component : components)
     {
-        std::wstring relativeCurrentTextureFile = L"..\\Assets\\Textures\\" + std::filesystem::path(currentTexture->GetFilePath()).filename().wstring();
+        if (currentTexture)
+        {
+            std::wstring relativeCurrentTextureFile = L"..\\Assets\\Textures\\" + std::filesystem::path(currentTexture->GetFilePath()).filename().wstring();
 
-        if (relativeCurrentTextureFile != selectedFile)
+            if (relativeCurrentTextureFile != selectedFile)
+            {
+                Debug::Log("No Texture currently exists for " + component->GetOwner()->GetName() + ". Creating Texture...");
+
+                currentTexture = TextureManager::CreateTextureFromFile(selectedFile.c_str());
+                component->SetTexture(currentTexture);
+                component->SetTextureFilePath(selectedFile);
+            }
+        }
+        else
         {
             Debug::Log("No Texture currently exists for " + component->GetOwner()->GetName() + ". Creating Texture...");
 
@@ -255,14 +294,7 @@ void InspectorScreen::ShowTexture(Renderer* component)
             component->SetTexture(currentTexture);
             component->SetTextureFilePath(selectedFile);
         }
-    }
-    else
-    {
-        Debug::Log("No Texture currently exists for " + component->GetOwner()->GetName() + ". Creating Texture...");
 
-        currentTexture = TextureManager::CreateTextureFromFile(selectedFile.c_str());
-        component->SetTexture(currentTexture);
-        component->SetTextureFilePath(selectedFile);
     }
 
     ImGui::Image((ImTextureID)currentTexture->GetSRV(), ImVec2(50, 50));
@@ -270,7 +302,7 @@ void InspectorScreen::ShowTexture(Renderer* component)
     ImGui::SameLine();
     ImGui::BeginGroup();
 
-    std::string fileName = std::filesystem::path(selectedFile).filename().string(); 
+    std::string fileName = std::filesystem::path(selectedFile).filename().string();
     ImGui::Text(fileName.c_str());
 
     if (ImGui::Button("Change Texture"))
@@ -290,70 +322,90 @@ void InspectorScreen::ShowTexture(Renderer* component)
                 std::wstring filename = entry.path().wstring();
                 std::wstring displayName = std::filesystem::path(filename).filename().wstring();
 
-                Texture* previewTexture = TextureManager::CreateTextureFromFile(filename.c_str()); 
+                Texture* previewTexture = TextureManager::CreateTextureFromFile(filename.c_str());
                 if (previewTexture)
                 {
-                    ImGui::Image((ImTextureID)previewTexture->GetSRV(), ImVec2(15, 15)); 
+                    ImGui::Image((ImTextureID)previewTexture->GetSRV(), ImVec2(15, 15));
                     ImGui::SameLine();
                 }
 
                 if (ImGui::Selectable(std::string(displayName.begin(), displayName.end()).c_str(), filename == selectedFile))
                 {
                     selectedFile = filename;
-                    component->SetTextureFilePath(selectedFile);
-                    component->SetTexture(currentTexture);
+                    updateTexture = true;
                 }
             }
         }
+
+        if (updateTexture)
+        {
+            for (auto component : components)
+            {
+                component->SetTextureFilePath(selectedFile);
+                component->SetTexture(currentTexture);
+            }
+        }
+
         ImGui::EndChild();
         ImGui::EndPopup();
     }
 }
 
-
-void InspectorScreen::ShowDummyComponent()
-{
-    ImGui::Text("Never gonna give you up");
-    ImGui::Text("Never gonna let you down");
-    ImGui::Text("Never gonna run around and desert you");
-    ImGui::Text("Never gonna make you cry");
-    ImGui::Text("Never gonna say goodbye");
-    ImGui::Text("Never gonna tell a lie and hurt you");
-}
-
-void InspectorScreen::ShowComponent()
-{
-    ImGui::Text("Insert serialized fields\n\n\n\n\n");
-}
-
-void InspectorScreen::ShowComponentsPopup(GameObject* selected)
+void InspectorScreen::ShowComponentsPopup(const std::vector<GameObject*>& selected)
 {
     if (ImGui::BeginPopup("Components", ImGuiWindowFlags_NoDocking))
     {
+        Component::ComponentType type = Component::NotSet;
         if (ImGui::Button("Physics Component", ImVec2(ImGui::GetColumnWidth(), 0)))
         {
-            if (!selected->GetComponentOfType(Component::Physics, "RigidBody"))
-            {
-                PhysicsComponent* component = new PhysicsComponent("RigidBody", selected);
-                selected->AttachComponent(component);
-            }
-            
+            type = Component::Physics;
             ImGui::CloseCurrentPopup();
         }
 
-        if (ImGui::Button("Texture Component", ImVec2(ImGui::GetColumnWidth(), 0))) 
+        if (ImGui::Button("Texture Component", ImVec2(ImGui::GetColumnWidth(), 0)))
         {
-            if (!selected->GetComponentOfType(Component::Renderer, "Renderer")) 
-            {
-                PixelShader* pixelShader = ShaderLibrary::GetPixelShader(L"TexturePixelShader.hlsl");
-                VertexShader* vertexShader = ShaderLibrary::GetVertexShader(L"VertexShader.hlsl");
-                Renderer* component = new Renderer("Renderer", selected, vertexShader, pixelShader);
-                selected->SetPixelShader(pixelShader);
-                selected->AttachComponent(component);
-            }
-
+            type = Component::Renderer;
             ImGui::CloseCurrentPopup();
         }
+
+        for (auto gameObject : selected)
+        {
+            switch (type)
+            {
+            case Component::Script:
+            {
+                break;
+            }
+            case Component::Renderer:
+            {
+                if (!gameObject->GetComponentOfType(Component::Renderer, "Renderer"))
+                {
+                    PixelShader* pixelShader = ShaderLibrary::GetPixelShader(L"TexturePixelShader.hlsl");
+                    VertexShader* vertexShader = ShaderLibrary::GetVertexShader(L"VertexShader.hlsl");
+                    Renderer* component = new Renderer("Renderer", gameObject, vertexShader, pixelShader);
+                    gameObject->SetPixelShader(pixelShader);
+                    gameObject->AttachComponent(component);
+                }
+                break;
+            }
+            case Component::Input:
+            {
+                break;
+            }
+            case Component::Physics:
+            {
+                if (!gameObject->GetComponentOfType(Component::Physics, "RigidBody"))
+                {
+                    PhysicsComponent* component = new PhysicsComponent("RigidBody", gameObject);
+                    gameObject->AttachComponent(component);
+                }
+                break;
+            }
+            default:
+                break;
+            }
+        }
+
         ImGui::EndPopup();
     }
 }
