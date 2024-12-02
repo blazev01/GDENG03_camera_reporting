@@ -19,6 +19,9 @@ void ActionHistory::RecordAction(GameObject* gameObject)
 {
     if (EngineBackend::GetMode() == EngineBackend::EDITOR)
     {
+        if (instance->HasRemainingRedoActions())
+            instance->ClearRedoActions();
+
         instance->actionsPerformed.push(new EditorAction(gameObject));
     }
 }
@@ -67,7 +70,7 @@ EditorAction* ActionHistory::RedoAction()
     return action;
 }
 
-void ActionHistory::ClearCancelled()
+void ActionHistory::ClearRedoActions()
 {
     while (!instance->actionsCancelled.empty())
     {
@@ -78,7 +81,7 @@ void ActionHistory::ClearCancelled()
 
 void ActionHistory::Clear()
 {
-    instance->ClearCancelled();
+    instance->ClearRedoActions();
     while (!instance->actionsPerformed.empty())
     {
         delete instance->actionsPerformed.top();
