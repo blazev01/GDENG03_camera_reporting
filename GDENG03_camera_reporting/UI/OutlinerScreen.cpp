@@ -32,7 +32,7 @@ void OutlinerScreen::DrawUI()
 		}*/
 
 
-		bool isSceneDropdown = ImGui::TreeNode("Scene Name");
+		//bool isSceneDropdown = ImGui::TreeNode("Scene Name");
 
 
 		if (!gameObjects.empty())
@@ -55,7 +55,8 @@ void OutlinerScreen::DrawUI()
 					continue;
 
 
-				if (isSceneDropdown) {
+				//if (isSceneDropdown) {
+				if (true) {
 					// IGNORE CHILDREN OBJECTS. 
 					// THEY WILL BE HANDLED RECURSIVELY
 
@@ -67,9 +68,9 @@ void OutlinerScreen::DrawUI()
 
 			
 
-			if (isSceneDropdown)
+			/*if (isSceneDropdown)
 				ImGui::TreePop();
-			
+			*/
 
 
 			/*

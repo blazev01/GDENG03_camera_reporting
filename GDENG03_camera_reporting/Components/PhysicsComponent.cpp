@@ -42,6 +42,7 @@ void PhysicsComponent::Perform(float deltaTime)
     float matrix[16];
     transform.getOpenGLMatrix(matrix);
     this->owner->SetTransform(matrix);
+    this->owner->RecalculateChildren();
 }
 
 void PhysicsComponent::Reset()

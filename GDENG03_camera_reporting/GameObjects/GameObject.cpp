@@ -388,7 +388,7 @@ void GameObject::RecalculateChildren()
         return;
 
     for (int i = 0; i < children.size(); i++) {
-        children[i]->RecalculateChildren();
+        children[i]->Recalculate();
     }
 }
 
