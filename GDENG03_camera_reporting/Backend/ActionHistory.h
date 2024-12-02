@@ -15,8 +15,9 @@ public:
 	static bool HasRemainingRedoActions();
 	static EditorAction* UndoAction();
 	static EditorAction* RedoAction();
+	static void ClearCancelled();
 	static void Clear();
-
+	
 private:
 	ActionHistory();
 	~ActionHistory();
