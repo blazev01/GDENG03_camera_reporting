@@ -25,11 +25,15 @@ void OutlinerScreen::DrawUI()
 		ImGui::InputText("Search", searchText, IM_ARRAYSIZE(searchText));
 
 		const std::vector<GameObject*>& gameObjects = GameObjectManager::GetGameObjects();
-		if (gameObjects.size() != this->selection.size())
+		/*if (gameObjects.size() != this->selection.size())
 		{
 			this->selection.resize(gameObjects.size());
 			std::fill(this->selection.begin(), this->selection.end(), false);
-		}
+		}*/
+
+
+		bool isSceneDropdown = ImGui::TreeNode("Scene Name");
+
 
 		if (!gameObjects.empty())
 		{
@@ -50,30 +54,9 @@ void OutlinerScreen::DrawUI()
 				if (!lowSrcText.empty() && lowObjName.find(lowSrcText) == std::string::npos)
 					continue;
 
-				bool selected = this->selection[i];
-				if (ImGui::Selectable(gameObjects[i]->GetName().c_str(), &selected))
-				{
-					if (!ImGui::GetIO().KeyCtrl)
-					{
-						std::fill(this->selection.begin(), this->selection.end(), false);
-						GameObjectManager::ClearSelection();
-					}
 
-					this->selection[i] = selected;
-					if (selected) GameObjectManager::AddSelectedObject(gameObjects[i]);
-					else GameObjectManager::RemoveSelectedObject(gameObjects[i]);
-				}
-
-			}
-
-			
-
-
-			bool isSceneDropdown = ImGui::TreeNode("Scene Name");
-
-			if (isSceneDropdown) {
-				for (int i = 0; i < gameObjects.size(); i++) {
-					// IGNORE OBJECTS WITH PARENTS. 
+				if (isSceneDropdown) {
+					// IGNORE CHILDREN OBJECTS. 
 					// THEY WILL BE HANDLED RECURSIVELY
 
 					if (gameObjects[i]->GetParent() == nullptr) {
@@ -81,6 +64,8 @@ void OutlinerScreen::DrawUI()
 					}
 				}
 			}
+
+			
 
 			if (isSceneDropdown)
 				ImGui::TreePop();
@@ -141,7 +126,31 @@ void OutlinerScreen::drawObjectTree(GameObject* obj, int i)
 {
 	// TREE FOR SELF
 	ImGui::PushID(obj->GetName().c_str());
-	bool isOpen = ImGui::TreeNodeEx(obj->GetName().c_str(), ImGuiTreeNodeFlags_AllowItemOverlap);
+	bool isOpen = ImGui::TreeNodeEx("", ImGuiTreeNodeFlags_AllowItemOverlap);
+	
+	ImGui::SameLine();
+
+	
+	bool selected = this->selectedTable[obj->GetName()];//this->selection[i];
+	if (ImGui::Selectable(obj->GetName().c_str(), &selected))
+	{
+		if (!ImGui::GetIO().KeyCtrl)
+		{
+			for (auto& element : selectedTable)
+			{
+				element.second = false;
+			}
+
+			//std::fill(this->selection.begin(), this->selection.end(), false);
+			GameObjectManager::ClearSelection();
+		}
+
+		//this->selection[i] = selected;
+		this->selectedTable[obj->GetName()] = selected;
+		if (selected) GameObjectManager::AddSelectedObject(obj);
+		else GameObjectManager::RemoveSelectedObject(obj);
+	}
+
 
 
 	// CREATE TREES FOR CHILDREN
