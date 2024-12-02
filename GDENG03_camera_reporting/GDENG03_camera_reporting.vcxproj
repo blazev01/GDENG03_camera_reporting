@@ -220,6 +220,7 @@
     <ClCompile Include="UI\GameObjectSpawner.cpp" />
     <ClCompile Include="UI\GizmoLayer.cpp" />
     <ClCompile Include="UI\HierarchyScreen.cpp" />
+    <ClCompile Include="UI\HUDScreen.cpp" />
     <ClCompile Include="UI\InspectorScreen.cpp" />
     <ClCompile Include="UI\MenuScreen.cpp" />
     <ClCompile Include="UI\OutlinerScreen.cpp" />
@@ -315,6 +316,7 @@
     <ClInclude Include="UI\GameObjectSpawner.h" />
     <ClInclude Include="UI\GizmoLayer.h" />
     <ClInclude Include="UI\HierarchyScreen.h" />
+    <ClInclude Include="UI\HUDScreen.h" />
     <ClInclude Include="UI\InspectorScreen.h" />
     <ClInclude Include="UI\MenuScreen.h" />
     <ClInclude Include="UI\OutlinerScreen.h" />

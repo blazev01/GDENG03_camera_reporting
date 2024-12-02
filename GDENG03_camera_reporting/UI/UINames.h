@@ -18,5 +18,6 @@ public:
 	const std::string SCENE_PLAY_OPTIONS_SCREEN = "SCENE_PLAY_OPTIONS_SCREEN";
 	const std::string ACTIONS_SCREEN = "ACTIONS_SCREEN";
 	const std::string CONSOLE_SCREEN = "CONSOLE_SCREEN";
+	const std::string HUD_SCREEN = "HUD_SCREEN";
 };
 

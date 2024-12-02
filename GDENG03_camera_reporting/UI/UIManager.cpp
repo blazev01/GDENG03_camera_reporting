@@ -11,6 +11,7 @@
 #include "ScenePlayOptionsScreen.h"
 #include "ActionsScreen.h"
 #include "ConsoleScreen.h"
+#include "HUDScreen.h"
 
 UIManager* UIManager::instance = NULL;
 
@@ -97,6 +98,10 @@ UIManager::UIManager(HWND hwnd)
 	this->uiTable[uiNames.MENU_SCREEN] = menuScreen;
 	this->uiList.push_back(menuScreen);
 
+	HUDScreen* hudScreen = new HUDScreen();
+	this->uiTable[uiNames.HUD_SCREEN] = hudScreen;
+	this->uiList.push_back(hudScreen);
+
 	ProfilerScreen* profilerScreen = new ProfilerScreen();
 	this->uiTable[uiNames.PROFILER_SCREEN] = profilerScreen;
 	this->uiList.push_back(profilerScreen);
@@ -131,8 +136,7 @@ UIManager::UIManager(HWND hwnd)
 	
 	ConsoleScreen* consoleScreen = new ConsoleScreen();
 	this->uiTable[uiNames.CONSOLE_SCREEN] = consoleScreen;
-	this->uiList.push_back(consoleScreen);
-
+	this->uiList.push_back(consoleScreen);	
 }
 
 UIManager::~UIManager()
