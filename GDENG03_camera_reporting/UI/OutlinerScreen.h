@@ -2,6 +2,8 @@
 #include "UIScreen.h"
 #include "vector"
 
+class GameObject;
+
 class OutlinerScreen : public UIScreen
 {
 protected:
@@ -13,5 +15,7 @@ protected:
 
 private:
 	std::vector<bool> selection;
+
+	void drawObjectTree(GameObject* obj, int i);
 };
 

@@ -116,6 +116,23 @@ Vector3D GameObject::GetForward()
     return this->transform.GetForward();
 }
 
+void GameObject::AdoptChild(GameObject* pChild)
+{
+    pChild->parent = this;
+    children.push_back(pChild);
+
+    std::cout << GetName() << " Parented " << pChild->GetName();
+
+}
+
+void GameObject::DisownChild(GameObject* pChild)
+{
+    pChild->parent = nullptr;
+    children.erase(find(children.begin(), children.end(), pChild));
+
+    std::cout << GetName() << " Disowned " << pChild->GetName();
+}
+
 GameObject* GameObject::GetParent()
 {
     return this->parent;

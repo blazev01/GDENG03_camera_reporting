@@ -44,6 +44,9 @@ public:
 	Vector3D GetUp();
 	Vector3D GetForward();
 
+	void AdoptChild(GameObject* pChild);
+	void DisownChild(GameObject* pChild);
+
 	GameObject* GetParent();
 	GameObject* GetChild(int index);
 	const std::vector<GameObject*>& GetChildren();
@@ -89,7 +92,7 @@ protected:
 	Matrix4x4 orientation;
 	Matrix4x4 transform;
 
-	GameObject* parent;
+	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
 	std::vector<Component*> components;
 
