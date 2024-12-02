@@ -149,6 +149,8 @@
     <ClCompile Include="Backend\Debug.cpp" />
     <ClCompile Include="Backend\EditorAction.cpp" />
     <ClCompile Include="Backend\EngineBackend.cpp" />
+    <ClCompile Include="Components\AnimationComponent.cpp" />
+    <ClCompile Include="Components\AnimationSystem.cpp" />
     <ClCompile Include="Components\BaseComponentSystem.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\PhysicsComponent.cpp" />
@@ -233,6 +235,8 @@
     <ClInclude Include="Backend\Debug.h" />
     <ClInclude Include="Backend\EditorAction.h" />
     <ClInclude Include="Backend\EngineBackend.h" />
+    <ClInclude Include="Components\AnimationComponent.h" />
+    <ClInclude Include="Components\AnimationSystem.h" />
     <ClInclude Include="Components\BaseComponentSystem.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\PhysicsComponent.h" />

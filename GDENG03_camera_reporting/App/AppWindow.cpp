@@ -91,6 +91,7 @@ void AppWindow::OnUpdate()
 	else if (EngineBackend::GetMode() == EngineBackend::PLAY)
 	{
 		BaseComponentSystem::GetPhysicsSystem()->UpdateAllComponents();
+		BaseComponentSystem::GetAnimationSystem()->UpdateAllComponents();
 		GameObjectManager::Update();
 	}
 	
@@ -98,6 +99,7 @@ void AppWindow::OnUpdate()
 		EngineBackend::InsideFrameStep())
 	{
 		BaseComponentSystem::GetPhysicsSystem()->UpdateAllComponents();
+		BaseComponentSystem::GetAnimationSystem()->UpdateAllComponents();
 		GameObjectManager::Update();
 		EngineBackend::EndFrameStep();
 	}

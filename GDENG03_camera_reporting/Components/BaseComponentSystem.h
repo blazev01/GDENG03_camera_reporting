@@ -1,6 +1,7 @@
 #pragma once
 #include "PhysicsSystem.h"
 #include "RendererSystem.h"
+#include "AnimationSystem.h"
 
 class BaseComponentSystem
 {
@@ -10,6 +11,7 @@ public:
 
 	static PhysicsSystem* GetPhysicsSystem();
 	static RendererSystem* GetRendererSystem();
+	static AnimationSystem* GetAnimationSystem();
 
 private:
 	BaseComponentSystem();
@@ -21,5 +23,6 @@ private:
 
 	PhysicsSystem* physicsSystem = nullptr;
 	RendererSystem* rendererSystem = nullptr;
+	AnimationSystem* animationSystem = nullptr;
 };
 

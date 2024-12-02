@@ -103,8 +103,10 @@ void InspectorScreen::ShowComponentList(const std::vector<GameObject*>& selected
 
     bool hasPhysics = true;
     bool hasRenderer = true;
+    bool hasAnimation = true;
     std::vector<PhysicsComponent*> physics;
     std::vector<Renderer*> renderers;
+    std::vector<AnimationComponent*> animations;
 
     for (auto gameObject : selected)
     {
@@ -124,6 +126,12 @@ void InspectorScreen::ShowComponentList(const std::vector<GameObject*>& selected
                 break;
             }
 
+            case Component::Animation:
+            {
+                animations.push_back((AnimationComponent*)component);
+                break;
+            }
+
             default:
                 break;
             }
@@ -132,6 +140,9 @@ void InspectorScreen::ShowComponentList(const std::vector<GameObject*>& selected
 
     hasPhysics = physics.size() == selected.size();
     hasRenderer = renderers.size() == selected.size();
+    hasAnimation = animations.size() == selected.size();
+
+
 
     if (hasPhysics)
     {
@@ -156,6 +167,21 @@ void InspectorScreen::ShowComponentList(const std::vector<GameObject*>& selected
                 this->ShowTexture(renderers);
                 if (ImGui::Button("Remove", ImVec2(ImGui::GetColumnWidth(), 0)))
                     for (auto r : renderers) r->GetOwner()->DetachComponent(r);
+            }
+        }
+
+        ImGui::EndChild();
+    }
+
+    if (hasAnimation)
+    {
+        if (ImGui::BeginChild("Animation", ImVec2(0, 0), childFlags))
+        {
+            if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                this->ShowAnimation(animations);
+                if (ImGui::Button("Remove", ImVec2(ImGui::GetColumnWidth(), 0)))
+                    for (auto a : animations) a->GetOwner()->DetachComponent(a);
             }
         }
 
@@ -351,6 +377,57 @@ void InspectorScreen::ShowTexture(const std::vector<Renderer*>& components)
     }
 }
 
+void InspectorScreen::ShowAnimation(std::vector<AnimationComponent*>& components)
+{
+    if (ImGui::Button("Log Keyframe")) {
+        for (auto it : components) {
+            it->AddKeyframe();
+        }
+    }
+
+    for (auto comp : components) {
+        if (ImGui::TreeNode(comp->GetOwner()->GetName().c_str())) {
+            
+            // LOOP ANIMATION?
+            bool isLoop = comp->GetIsLoop();
+            if (ImGui::Checkbox("Loop", &isLoop)) {
+                comp->SetLoop(isLoop);
+            }
+
+
+            // KEYFRAMES LIST
+            for (float t : comp->GetTimeStamps()) {
+                std::stringstream s;
+                s << t;
+                ImGui::PushID(s.str().c_str());
+
+                // ADJUST KEYFRAME
+                float modT = t;
+                if (ImGui::InputFloat("Time", &modT)) {
+                    if (modT < 0.f)
+                        modT = 0.f;
+                    
+                    if (t != modT)
+                        comp->UpdateTimeStamp(t, modT);
+                }
+                
+                // REMOVE KEYFRAME
+                if (ImGui::Button("Delete")) {
+                    comp->RemoveKeyframe(t);
+                }
+
+                // KEYFRAME OF TRANSFORMS
+                //ImGui::DragFloat3("P", )
+
+
+                ImGui::PopID();
+            }
+
+            ImGui::TreePop();
+        }
+    }
+}
+
 void InspectorScreen::ShowComponentsPopup(const std::vector<GameObject*>& selected)
 {
     if (ImGui::BeginPopup("Components", ImGuiWindowFlags_NoDocking))
@@ -367,6 +444,13 @@ void InspectorScreen::ShowComponentsPopup(const std::vector<GameObject*>& select
             type = Component::Renderer;
             ImGui::CloseCurrentPopup();
         }
+
+        if (ImGui::Button("Animation Component", ImVec2(ImGui::GetColumnWidth(), 0)))
+        {
+            type = Component::Animation;
+            ImGui::CloseCurrentPopup();
+        }
+
 
         for (auto gameObject : selected)
         {
@@ -401,6 +485,20 @@ void InspectorScreen::ShowComponentsPopup(const std::vector<GameObject*>& select
                 }
                 break;
             }
+
+            case Component::Animation: {
+                if (!gameObject->GetComponentOfType(Component::Animation, "Animation"))
+                {
+                    AnimationComponent* component = new AnimationComponent("Animation", gameObject);
+                    gameObject->AttachComponent(component);
+                }
+                ImGui::CloseCurrentPopup();
+                break;
+            }
+
+
+
+
             default:
                 break;
             }

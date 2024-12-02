@@ -245,6 +245,12 @@
     <ClCompile Include="Backend\EngineBackend.cpp">
       <Filter>GameEngine\Backend</Filter>
     </ClCompile>
+    <ClCompile Include="Components\AnimationComponent.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\AnimationSystem.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Colors.h">
@@ -520,6 +526,12 @@
     </ClInclude>
     <ClInclude Include="Backend\EngineBackend.h">
       <Filter>GameEngine\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\AnimationComponent.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\AnimationSystem.h">
+      <Filter>GameEngine\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
