@@ -18,6 +18,7 @@ public:
 	~Renderer();
 
 	virtual void Perform(float deltaTime) override;
+	void Reset() override;
 	virtual void Destroy() override;
 
 	void DetachOwner() override;

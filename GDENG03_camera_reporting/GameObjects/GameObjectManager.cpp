@@ -287,7 +287,10 @@ void GameObjectManager::RestoreEditStates()
 		gameObject->SetPosition(action->GetStoredPosition());
 		gameObject->SetRotation(action->GetStoredRotation());
 		gameObject->SetScale(action->GetStoredScale());
-		gameObject->SetTransform(action->GetStoredMatrix());
+		//gameObject->SetTransform(action->GetStoredMatrix());
+
+		for (auto component : gameObject->GetComponents())
+			component->Reset();
 
 		delete action;
 	}

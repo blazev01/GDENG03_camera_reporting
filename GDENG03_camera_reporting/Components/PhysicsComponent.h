@@ -11,6 +11,7 @@ public:
 	~PhysicsComponent();
 
 	void Perform(float deltaTime) override;
+	void Reset() override;
 	void Destroy() override;
 
 	RigidBody* GetRigidBody();

@@ -58,6 +58,11 @@ void Renderer::Perform(float deltaTime)
     }
 }
 
+void Renderer::Reset()
+{
+
+}
+
 void Renderer::Destroy()
 {
     BaseComponentSystem::GetRendererSystem()->UnregisterComponent(this);

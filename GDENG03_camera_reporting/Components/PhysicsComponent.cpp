@@ -44,6 +44,36 @@ void PhysicsComponent::Perform(float deltaTime)
     this->owner->SetTransform(matrix);
 }
 
+void PhysicsComponent::Reset()
+{
+    BodyType type = this->rigidBody->getType();
+    PhysicsWorld* physicsWorld = BaseComponentSystem::GetPhysicsSystem()->GetPhysicsWorld();
+    PhysicsCommon* physicsCommon = BaseComponentSystem::GetPhysicsSystem()->GetPhysicsCommon();
+    physicsWorld->destroyRigidBody(this->rigidBody);
+    physicsCommon->destroyBoxShape(this->boxShape);
+
+    Vector3D rot = this->owner->GetLocalRotation();
+    Quaternion quat = Quaternion::fromEulerAngles(Vector3(rot.x, rot.y, rot.z));
+
+    Vector3D pos = this->owner->GetLocalPosition();
+    Transform transform = Transform(Vector3(pos.x, pos.y, pos.z), quat);
+
+    Vector3D scale = this->owner->GetLocalScale();
+    this->boxShape = physicsCommon->createBoxShape(Vector3(scale.x / 2, scale.y / 2, scale.z / 2));
+
+    this->rigidBody = physicsWorld->createRigidBody(transform);
+    this->rigidBody->addCollider(this->boxShape, transform);
+
+    this->rigidBody->updateMassPropertiesFromColliders();
+    this->rigidBody->setMass(this->mass);
+    this->rigidBody->setType(type);
+
+    transform = this->rigidBody->getTransform();
+    float matrix[16];
+    transform.getOpenGLMatrix(matrix);
+    this->owner->SetTransform(matrix);
+}
+
 void PhysicsComponent::Destroy()
 {
     BaseComponentSystem::GetPhysicsSystem()->UnregisterComponent(this);

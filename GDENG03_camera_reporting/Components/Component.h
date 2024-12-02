@@ -26,6 +26,7 @@ public:
 	std::string GetName();
 
 	virtual void Perform(float deltaTime) = 0;
+	virtual void Reset() = 0;
 	virtual void Destroy() = 0;
 
 protected:
