@@ -17,6 +17,7 @@ private:
 	void ShowMenuGameObject();
 	void ShowMenuWindow();
 	void ShowMenuAbout();
+	void ShowMenuScreenCameras();
 
 	void ShowMenuThemes();
 	void ShowMenuCreateMesh();

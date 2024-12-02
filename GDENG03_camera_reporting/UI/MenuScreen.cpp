@@ -6,6 +6,7 @@
 #include "../Resource/TextureManager.h"
 #include "GameObjectSpawner.h"
 #include "../SaveSystem/SaveSystem.h"
+#include "../SceneCamera/SceneCameraHandler.h"
 
 
 MenuScreen::MenuScreen() : UIScreen("MENU_SCREEN")
@@ -46,6 +47,11 @@ void MenuScreen::DrawUI()
 		if (ImGui::BeginMenu("About"))
 		{
 			this->ShowMenuAbout();
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Scene Cameras"))
+		{
+			this->ShowMenuScreenCameras();
 			ImGui::EndMenu();
 		}
 		
@@ -169,6 +175,27 @@ void MenuScreen::ShowMenuAbout()
 	{
 		UIManager::SetEnabled(this->uiNames.CREDITS_SCREEN, true);
 	}
+}
+
+void MenuScreen::ShowMenuScreenCameras()
+{
+	if (ImGui::MenuItem("Create Scene Camera"))
+	{
+		SceneCameraHandler::AddSceneCamera();
+	}
+	if (ImGui::MenuItem("Scene Cameras Cycle Forward"))
+	{
+		SceneCameraHandler::CycleGameCamerasForward();
+	}
+	if (ImGui::MenuItem("Scene Cameras Cycle Backward"))
+	{
+		SceneCameraHandler::CycleGameCamerasBackward();
+	}
+	if (ImGui::MenuItem("Delete Last Scene Camera"))
+	{
+		SceneCameraHandler::DeleteSceneCamera(SceneCameraHandler::GetSceneCameras().size()-1);
+	}
+
 }
 
 void MenuScreen::ShowMenuThemes()

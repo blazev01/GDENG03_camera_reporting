@@ -2,6 +2,7 @@
 #include "../GraphicsEngine/GraphicsEngine.h"
 #include "../EngineTime/EngineTime.h"
 #include "../InputSystem/InputSystem.h"
+#include "../Backend/Debug.h"
 
 SceneCameraHandler* SceneCameraHandler::instance = NULL;
 
@@ -115,7 +116,16 @@ void SceneCameraHandler::AddSceneCamera()
 
 void SceneCameraHandler::DeleteSceneCamera(int index)
 {
-	if (index < 1 || index >= instance->sceneCameras.size()) return;
+	if (index < 1 || index >= instance->sceneCameras.size())
+	{
+		Debug::Log("this is the first Scene Camera");
+		return;
+	}
+	if (instance->sceneCameras[index] == instance->camera)
+	{
+		Debug::Log("You are Currently using this camera");
+		return;
+	}
 	instance->sceneCameras[index]->Destroy();
 	instance->sceneCameras.erase(instance->sceneCameras.begin() + index);
 }
@@ -135,6 +145,28 @@ void SceneCameraHandler::DeleteGameCamera(GameCamera* gameCamera)
 	std::vector<GameCamera*>::iterator it = instance->gameCameras.begin();
 	while (it != instance->gameCameras.end() && *it != gameCamera) it++;
 	if (*it == gameCamera) instance->gameCameras.erase(it);
+}
+
+void SceneCameraHandler::CycleGameCamerasForward()
+{
+	instance->iterator++;
+	if (instance->iterator >= instance->sceneCameras.size())
+	{
+		Debug::Log("Last scene camera");
+		instance->iterator = instance->sceneCameras.size() - 1;
+	}
+	instance->camera = instance->sceneCameras[instance->iterator];
+}
+
+void SceneCameraHandler::CycleGameCamerasBackward()
+{
+	instance->iterator--;
+	if (instance->iterator < 0)
+	{
+		Debug::Log("First scene camera");
+		instance->iterator = 0;
+	}
+	instance->camera = instance->sceneCameras[instance->iterator];
 }
 
 Camera* SceneCameraHandler::GetSceneCamera()

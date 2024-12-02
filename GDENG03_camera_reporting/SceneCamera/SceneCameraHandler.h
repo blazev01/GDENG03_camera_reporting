@@ -16,6 +16,8 @@ public:
 	static GameCamera* AddGameCamera(void* shaderBytes, size_t shaderSize);
 	static void DeleteGameCamera(GameCamera* gameCamera);
 
+	static void CycleGameCamerasForward();
+	static void CycleGameCamerasBackward();
 	static Camera* GetSceneCamera();
 	static const std::vector<Camera*>& GetSceneCameras();
 	static const std::vector<GameCamera*>& GetGameCameras();
@@ -39,5 +41,6 @@ private:
 	float speed = 5;
 	Vector3D camPos;
 	Vector2D oldMousePos;
+	int iterator = 0;
 };
 
