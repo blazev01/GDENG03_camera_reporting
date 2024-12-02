@@ -22,7 +22,7 @@ void HUDScreen::DrawUI()
         strcpy_s(button.name, "Button");
         button.enabled = true;
         button.type = HUDType::Button;
-        button.position = ImVec2(0.0f, 0.0f);
+        button.position = ImVec2(400.0f, 250.0f);
         button.scale = ImVec2(120.0f, 50.0f);
         button.color = ImVec4(0.8f, 0.2f, 0.2f, 1.0f);
         strcpy_s(button.text, "Button");
@@ -34,10 +34,10 @@ void HUDScreen::DrawUI()
     ImGui::SameLine();
     if (ImGui::Button("Add Text")) {
         HUD text;
-        strcpy_s(text.name, "Button");
+        strcpy_s(text.name, "Text");
         text.enabled = true;
         text.type = HUDType::Text;
-        text.position = ImVec2(0.0f, 0.0f);
+        text.position = ImVec2(400.0f, 250.0f);
         text.scale = ImVec2(120.0f, 50.0f);
         text.color = ImVec4(0.8f, 0.2f, 0.2f, 1.0f);
         strcpy_s(text.text, "text");
@@ -51,7 +51,7 @@ void HUDScreen::DrawUI()
         strcpy_s(img.name, "Image");
         img.enabled = true;
         img.type = HUDType::Image;
-        img.position = ImVec2(0.0f, 0.0f);
+        img.position = ImVec2(400.0f, 250.0f);
         img.scale = ImVec2(120.0f, 50.0f);
 
         img.tex = TextureManager::CreateTextureFromFile(L"..\\Assets\\Textures\\DLSU-LOGO.png");
@@ -108,10 +108,10 @@ void HUDScreen::DrawTextHUD(HUD& hud)
 
     std::stringstream ss;
     ss << &hud;
-    std::string uniqueName = name + ss.str();
+    std::string uniqueName = "##" + std::to_string(reinterpret_cast<uintptr_t>(&hud));
 
     ImGui::BeginChild(uniqueName.c_str(), ImVec2(0, 0), childFlags);
-    ImGui::Checkbox(("Enabled##" + uniqueName).c_str(), &enabled);
+    ImGui::Checkbox(("Enabled" + uniqueName).c_str(), &enabled);
     ImGui::InputText(("##Name" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
     ImGui::Separator();
 
@@ -136,7 +136,7 @@ void HUDScreen::DrawTextHUD(HUD& hud)
         ImGui::SetNextWindowPos(position, ImGuiCond_Always);
         ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
             ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::TextColored(ImVec4(color.x, color.y, color.z, color.w), "%s", text);
         ImGui::End();
     }
@@ -166,10 +166,10 @@ void HUDScreen::DrawButtonHUD(HUD& hud)
 
     std::stringstream ss;
     ss << &hud;
-    std::string uniqueName = name + ss.str();
+    std::string uniqueName = "##" + std::to_string(reinterpret_cast<uintptr_t>(&hud));
 
     ImGui::BeginChild(uniqueName.c_str(), ImVec2(0, 0), childFlags);
-    ImGui::Checkbox(("Enabled##" + uniqueName).c_str(), &enabled);
+    ImGui::Checkbox(("Enabled" + uniqueName).c_str(), &enabled);
     ImGui::InputText(("##Name" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
     ImGui::Separator();
 
@@ -194,7 +194,7 @@ void HUDScreen::DrawButtonHUD(HUD& hud)
         ImGui::SetNextWindowPos(position, ImGuiCond_Always);
         ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
             ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(color));
 
         const char* displayedText = text[0] == '\0' ? " " : text;
@@ -231,10 +231,10 @@ void HUDScreen::DrawImageHUD(HUD& hud)
 
     std::stringstream ss;
     ss << &hud;
-    std::string uniqueName = name + ss.str();
+    std::string uniqueName = "##" + std::to_string(reinterpret_cast<uintptr_t>(&hud));
 
     ImGui::BeginChild(uniqueName.c_str(), ImVec2(0, 0), childFlags);
-    ImGui::Checkbox(("Enabled##" + uniqueName).c_str(), &enabled);
+    ImGui::Checkbox(("Enabled" + uniqueName).c_str(), &enabled);
     ImGui::InputText(("##Name" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
     ImGui::Separator();
 
@@ -299,7 +299,7 @@ void HUDScreen::DrawImageHUD(HUD& hud)
         ImGui::SetNextWindowPos(position, ImGuiCond_Always);
         ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
             ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus);
         ImGui::Image((ImTextureID)tex->GetSRV(), scale);
         ImGui::End();
     }
@@ -310,4 +310,3 @@ void HUDScreen::DrawImageHUD(HUD& hud)
     hud.scale = scale;
     hud.tex = tex;
 }
-
