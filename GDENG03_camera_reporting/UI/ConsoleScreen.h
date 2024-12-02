@@ -26,6 +26,7 @@ private:
 private:
 	std::vector<LogType> types;
 	std::vector<std::string> logs;
+	int lineNumber = 0;
 	bool newLine = false;
 
 	bool showLogs = true;

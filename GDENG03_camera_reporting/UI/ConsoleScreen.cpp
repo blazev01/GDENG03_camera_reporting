@@ -2,8 +2,13 @@
 
 void ConsoleScreen::AddLog(LogType type, std::string log)
 {
+	std::string number = std::to_string(this->lineNumber);
+	for (int i = number.size(); i < 5; i++)
+		number.insert(0, "0");
+
+	this->logs.push_back(number + "\t" + log);
 	this->types.push_back(type);
-	this->logs.push_back(log);
+	this->lineNumber++;
 	this->newLine = true;
 }
 
@@ -50,6 +55,13 @@ void ConsoleScreen::ShowMenuBar()
 		if (ImGui::MenuItem("Errors", (const char*)0, this->showErrors))
 		{
 			this->showErrors = !this->showErrors;
+		}
+		
+		if (ImGui::MenuItem("Clear", (const char*)0))
+		{
+			this->types.clear();
+			this->logs.clear();
+			this->lineNumber = 0;
 		}
 
 		ImGui::EndMenuBar();
