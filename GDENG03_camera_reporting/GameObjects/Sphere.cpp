@@ -7,6 +7,9 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "../Resource/TextureManager.h"
 
+const Vector4D WHITE(1.0f, 1.0f, 1.0f, 1.0f);
+const Vector4D GREY(0.5f, 0.5f, 0.5f, 1.0f);
+
 Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name, SPHERE)
 {
 	std::vector<Vertex> vertices;
@@ -29,7 +32,14 @@ Sphere::Sphere(std::string name, void* shaderBytes, size_t shaderSize) : GameObj
 			Vector3D position = { radius * cosPhi * sinTheta, radius * cosTheta, radius * sinPhi * sinTheta };
 			Vector2D texCoord = { (float)longNumber / longitudeBands, (float)latNumber / latitudeBands };
 
-			vertices.push_back({ position, texCoord, RGBA_WHITE });
+			float blendFactor = (position.y + radius) / (2.0f * radius);
+
+			Vector4D color = Vector4D(WHITE.x * blendFactor + GREY.x * (1 - blendFactor),
+									  WHITE.y * blendFactor + GREY.y * (1 - blendFactor),
+									  WHITE.z * blendFactor + GREY.z * (1 - blendFactor),
+									  1.0f);
+						
+			vertices.push_back({ position, texCoord, color });
 		}
 	}
 

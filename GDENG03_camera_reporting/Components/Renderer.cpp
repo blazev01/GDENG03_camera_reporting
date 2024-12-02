@@ -119,7 +119,7 @@ void Renderer::SetTexture(Texture* texture)
     if (this->texture != texture) {
         this->texture = texture;
         this->owner->SetTexture(this->texture);
-        std::cout << "Texture assigned: " << texture << " for Renderer: " << this->owner->GetName() << std::endl;
+        Debug::Log("Texture was assigned for " + this->owner->GetName());
     }
 }
 

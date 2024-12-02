@@ -7,6 +7,9 @@
 #include "../SceneCamera/SceneCameraHandler.h"
 #include "../Resource/TextureManager.h"
 
+const Vector4D WHITE(1.0f, 1.0f, 1.0f, 1.0f);
+const Vector4D GREY(0.5f, 0.5f, 0.5f, 1.0f);
+
 Cylinder::Cylinder(std::string name, void* shaderBytes, size_t shaderSize) : GameObject(name, CYLINDER)
 {
     std::vector<Vertex> vertices;
@@ -21,12 +24,12 @@ Cylinder::Cylinder(std::string name, void* shaderBytes, size_t shaderSize) : Gam
         float x = radius * cosf(theta);
         float z = radius * sinf(theta);
 
-        vertices.push_back({ { x, height / 2, z }, { (float)i / slices, 0.0f }, RGBA_WHITE });
-        vertices.push_back({ { x, -height / 2, z }, { (float)i / slices, 1.0f }, RGBA_WHITE });
+        vertices.push_back({ { x, height / 2, z }, { (float)i / slices, 0.0f }, WHITE });
+        vertices.push_back({ { x, -height / 2, z }, { (float)i / slices, 1.0f }, GREY });
     }
 
-    vertices.push_back({ { 0.0f, height / 2, 0.0f }, { 0.5f, 0.0f }, RGBA_WHITE });
-    vertices.push_back({ { 0.0f, -height / 2, 0.0f }, { 0.5f, 1.0f }, RGBA_WHITE });
+    vertices.push_back({ { 0.0f, height / 2, 0.0f }, { 0.5f, 0.0f }, WHITE });
+    vertices.push_back({ { 0.0f, -height / 2, 0.0f }, { 0.5f, 1.0f }, WHITE });
 
     for (int i = 0; i < slices; i++)
     {
@@ -50,8 +53,8 @@ Cylinder::Cylinder(std::string name, void* shaderBytes, size_t shaderSize) : Gam
         float x = radius * cosf(theta);
         float z = radius * sinf(theta);
 
-        vertices.push_back({ { x, height / 2, z }, { (float)i / slices, 0.0f }, RGBA_WHITE });
-        vertices.push_back({ { x, -height / 2, z }, { (float)i / slices, 1.0f }, RGBA_WHITE });
+        vertices.push_back({ { x, height / 2, z }, { (float)i / slices, 0.0f }, WHITE });
+        vertices.push_back({ { x, -height / 2, z }, { (float)i / slices, 1.0f }, GREY });
     }
 
     for (int i = 0; i < slices; i++)
