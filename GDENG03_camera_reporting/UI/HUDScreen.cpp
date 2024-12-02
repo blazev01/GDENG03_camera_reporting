@@ -93,7 +93,60 @@ void HUDScreen::DrawUI()
 
 void HUDScreen::DrawTextHUD(HUD& hud)
 {
-    
+    char name[64];
+    bool enabled = hud.enabled;
+
+    HUDType type = hud.type;
+    ImVec2 position = hud.position;
+    ImVec2 scale = hud.scale;
+
+    ImVec4 color = hud.color;
+    char text[128];
+
+    strcpy_s(name, hud.name);
+    strcpy_s(text, hud.text);
+
+    std::stringstream ss;
+    ss << &hud;
+    std::string uniqueName = name + ss.str();
+
+    ImGui::BeginChild(uniqueName.c_str(), ImVec2(0, 0), childFlags);
+    ImGui::Checkbox(("Enabled##" + uniqueName).c_str(), &enabled);
+    ImGui::InputText(("##Name" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
+    ImGui::Separator();
+
+    ImGui::Text("Position");
+    ImGui::InputFloat2(("##Position" + uniqueName).c_str(), (float*)&position);
+
+    ImGui::Text("Scale");
+    ImGui::InputFloat2(("##Scale" + uniqueName).c_str(), (float*)&scale);
+
+    ImGui::Text("Color");
+    ImGui::ColorEdit4(("##Color" + uniqueName).c_str(), (float*)&color);
+
+    ImGui::Text("Text");
+    ImGui::InputText(("##Text" + uniqueName).c_str(), text, IM_ARRAYSIZE(text));
+    ImGui::EndChild();
+
+    ImGui::Separator();
+
+    if (enabled)
+    {
+        ImGui::SetNextWindowSize(scale);
+        ImGui::SetNextWindowPos(position, ImGuiCond_Always);
+        ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+        ImGui::TextColored(ImVec4(color.x, color.y, color.z, color.w), "%s", text);
+        ImGui::End();
+    }
+
+    strcpy_s(hud.name, name);
+    hud.enabled = enabled;
+    hud.position = position;
+    hud.scale = scale;
+    hud.color = color;
+    strcpy_s(hud.text, text);
 }
 
 void HUDScreen::DrawButtonHUD(HUD& hud)
@@ -116,48 +169,52 @@ void HUDScreen::DrawButtonHUD(HUD& hud)
     std::string uniqueName = name + ss.str();
 
     ImGui::BeginChild(uniqueName.c_str(), ImVec2(0, 0), childFlags);
-        ImGui::InputText(("Name##" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
-        ImGui::Separator();
-
-        ImGui::Text("Position");
-        ImGui::InputFloat2(("Position##" + uniqueName).c_str(), (float*)&position);
-
-        ImGui::Text("Scale");
-        ImGui::InputFloat2(("Scale##" + uniqueName).c_str(), (float*)&scale);
-
-        ImGui::Text("Color");
-        ImGui::ColorEdit4(("Color##" + uniqueName).c_str(), (float*)&color);
-
-        ImGui::Text("Button Text");
-        ImGui::InputText(("Text##" + uniqueName).c_str(), text, IM_ARRAYSIZE(text));
-        ImGui::EndChild();
-    
+    ImGui::Checkbox(("Enabled##" + uniqueName).c_str(), &enabled);
+    ImGui::InputText(("##Name" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
     ImGui::Separator();
 
-    ImGui::SetNextWindowSize(scale);
-    ImGui::SetNextWindowPos(position, ImGuiCond_Always);
-    ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
-    ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(color));
+    ImGui::Text("Position");
+    ImGui::InputFloat2(("##Position" + uniqueName).c_str(), (float*)&position);
 
-    const char* displayedText = text[0] == '\0' ? " " : text;
+    ImGui::Text("Scale");
+    ImGui::InputFloat2(("##Scale" + uniqueName).c_str(), (float*)&scale);
 
-    if (ImGui::Button(displayedText, scale))
+    ImGui::Text("Color");
+    ImGui::ColorEdit4(("##Color" + uniqueName).c_str(), (float*)&color);
+
+    ImGui::Text("Button Text");
+    ImGui::InputText(("##Text" + uniqueName).c_str(), text, IM_ARRAYSIZE(text));
+    ImGui::EndChild();
+
+    ImGui::Separator();
+
+    if (enabled)
     {
-        // Button action here
-    }
-    ImGui::PopStyleColor();
+        ImGui::SetNextWindowSize(scale);
+        ImGui::SetNextWindowPos(position, ImGuiCond_Always);
+        ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+        ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(color));
 
-    ImGui::End();
+        const char* displayedText = text[0] == '\0' ? " " : text;
+
+        if (ImGui::Button(displayedText, scale))
+        {
+            // Button action here
+        }
+        ImGui::PopStyleColor();
+
+        ImGui::End();
+    }
 
     strcpy_s(hud.name, name);
+    hud.enabled = enabled;
     hud.position = position;
     hud.scale = scale;
     hud.color = color;
     strcpy_s(hud.text, text);
 }
-
 
 void HUDScreen::DrawImageHUD(HUD& hud)
 {
@@ -177,14 +234,15 @@ void HUDScreen::DrawImageHUD(HUD& hud)
     std::string uniqueName = name + ss.str();
 
     ImGui::BeginChild(uniqueName.c_str(), ImVec2(0, 0), childFlags);
-    ImGui::InputText(("Name##" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
+    ImGui::Checkbox(("Enabled##" + uniqueName).c_str(), &enabled);
+    ImGui::InputText(("##Name" + uniqueName).c_str(), name, IM_ARRAYSIZE(name));
     ImGui::Separator();
 
     ImGui::Text("Position");
-    ImGui::InputFloat2(("Position##" + uniqueName).c_str(), (float*)&position);
+    ImGui::InputFloat2(("##Position" + uniqueName).c_str(), (float*)&position);
 
     ImGui::Text("Scale");
-    ImGui::InputFloat2(("Scale##" + uniqueName).c_str(), (float*)&scale);
+    ImGui::InputFloat2(("##Scale" + uniqueName).c_str(), (float*)&scale);
 
     ImGui::Text("Texture");
     ImGui::Image((ImTextureID)tex->GetSRV(), ImVec2(50, 50));
@@ -219,7 +277,7 @@ void HUDScreen::DrawImageHUD(HUD& hud)
                     ImGui::SameLine();
                 }
 
-                if (ImGui::Selectable(std::string(displayName.begin(), displayName.end()).c_str(), filename == path)) 
+                if (ImGui::Selectable(std::string(displayName.begin(), displayName.end()).c_str(), filename == path))
                 {
                     path = filename;
                     tex = TextureManager::CreateTextureFromFile(path.c_str());
@@ -235,16 +293,19 @@ void HUDScreen::DrawImageHUD(HUD& hud)
 
     ImGui::Separator();
 
-    ImGui::SetNextWindowSize(scale);
-    ImGui::SetNextWindowPos(position, ImGuiCond_Always);
-    ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
-    ImGui::Image((ImTextureID)tex->GetSRV(), scale);
-    ImGui::End();
+    if (enabled)
+    {
+        ImGui::SetNextWindowSize(scale);
+        ImGui::SetNextWindowPos(position, ImGuiCond_Always);
+        ImGui::Begin(uniqueName.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+        ImGui::Image((ImTextureID)tex->GetSRV(), scale);
+        ImGui::End();
+    }
 
-    // Save changes back to the original hud object
     strcpy_s(hud.name, name);
+    hud.enabled = enabled;
     hud.position = position;
     hud.scale = scale;
     hud.tex = tex;
