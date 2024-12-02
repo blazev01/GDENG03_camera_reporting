@@ -395,13 +395,25 @@ void InspectorScreen::ShowAnimation(std::vector<AnimationComponent*>& components
             }
 
 
+            std::vector<float> xValues, yValues, zValues;
+            for (float t : comp->GetTimeStamps()) {
+                Vector3D keyPos = comp->GetKeyedPos(t);
+                xValues.push_back(keyPos.x);
+                yValues.push_back(keyPos.y);
+                zValues.push_back(keyPos.z);
+            }
+            ImGui::PlotLines("X", xValues.data(), xValues.size());
+            ImGui::PlotLines("Y", yValues.data(), yValues.size());
+            ImGui::PlotLines("Z", zValues.data(), zValues.size());
+
+
             // KEYFRAMES LIST
             for (float t : comp->GetTimeStamps()) {
                 std::stringstream s;
                 s << t;
                 ImGui::PushID(s.str().c_str());
 
-                if(ImGui::TreeNode("")) {
+                if(ImGui::TreeNode("Keyframe")) {
                     // ADJUST KEYFRAME
                     float modT = t;
                     if (ImGui::InputFloat("Time", &modT)) {
