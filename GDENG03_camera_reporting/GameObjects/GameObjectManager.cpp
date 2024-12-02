@@ -143,6 +143,7 @@ void GameObjectManager::AddGameObject(GameObject* gameObject)
 
 void GameObjectManager::DeleteGameObject(GameObject* gameObject)
 {
+	std::cout << "Deleting " << gameObject->GetName() << std::endl;
 	if (instance->gameObjects.empty()) return;
 
 	List::iterator it = instance->gameObjects.begin();
@@ -151,6 +152,16 @@ void GameObjectManager::DeleteGameObject(GameObject* gameObject)
 
 	if (*it == gameObject)
 	{
+		// BREAK PARENT LINK
+		if (gameObject->GetParent() != nullptr) {
+			gameObject->GetParent()->DisownChild(gameObject);
+		}
+		// BREAK CHILDREN LINK
+		for (auto child : gameObject->GetChildren()) {
+			gameObject->DisownChild(child);
+		}
+
+
 		RenderQueue::RemoveRenderer(gameObject);
 		instance->gameObjectMap.erase(gameObject->GetName());
 		instance->gameObjects.erase(it);
@@ -166,9 +177,20 @@ void GameObjectManager::DeleteGameObject(std::string name)
 
 	while (it != instance->gameObjects.end() && (*it)->GetName() != name) it++;
 	
+
 	GameObject* gameObject = *it;
 	if (gameObject && gameObject->GetName() == name)
 	{
+		// BREAK PARENT LINK
+		if (gameObject->GetParent() != nullptr) {
+			gameObject->GetParent()->DisownChild(gameObject);
+		}
+		// BREAK CHILDREN LINK
+		for (auto child : gameObject->GetChildren()) {
+			gameObject->DisownChild(child);
+		}
+
+
 		RenderQueue::RemoveRenderer(gameObject);
 		instance->gameObjectMap.erase(name);
 		instance->gameObjects.erase(it);

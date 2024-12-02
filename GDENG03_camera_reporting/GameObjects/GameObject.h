@@ -36,6 +36,9 @@ public:
 	void SetRotation(Vector3D rotation);
 	Vector3D GetLocalRotation() const;
 
+	bool GetIsLocalTransform();
+	void SetIsLocalTransform(bool isLocal);
+
 	void SetTransform(const Matrix4x4& transform);
 	void SetTransform(float array[16]);
 	Matrix4x4 GetTransform() const;
@@ -85,6 +88,8 @@ public:
 	void SetVertexShader(VertexShader* vertexShader);
 
 	virtual void Recalculate();
+	void RecalculateChildren();
+	void ApplyParentTransforms();
 
 protected:
 	std::string name;
@@ -95,6 +100,8 @@ protected:
 
 	Matrix4x4 orientation;
 	Matrix4x4 transform;
+
+	bool isLocalTransform = true;
 
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;

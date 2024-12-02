@@ -2,6 +2,8 @@
 #include "RenderQueue.h"
 #include "../Backend/Debug.h"
 
+#include <stack>
+
 GameObject::GameObject(std::string name, PrimitiveType primitiveType)
 {
     this->name = name;
@@ -85,6 +87,16 @@ Vector3D GameObject::GetLocalRotation() const
     return this->localRotation;
 }
 
+bool GameObject::GetIsLocalTransform()
+{
+    return this->isLocalTransform;
+}
+
+void GameObject::SetIsLocalTransform(bool isLocal)
+{
+    this->isLocalTransform = isLocal;
+}
+
 void GameObject::SetTransform(const Matrix4x4& transform)
 {
     this->transform.SetMatrix(transform);
@@ -121,8 +133,10 @@ void GameObject::AdoptChild(GameObject* pChild)
     pChild->parent = this;
     children.push_back(pChild);
 
-    std::cout << GetName() << " Parented " << pChild->GetName();
-
+    std::cout << std::endl << GetName() << " Parented " << pChild->GetName() << "\n\tChildren left : ";
+    for (auto child : children) {
+        std::cout << child->GetName() << ", ";
+    }
 }
 
 void GameObject::DisownChild(GameObject* pChild)
@@ -130,7 +144,10 @@ void GameObject::DisownChild(GameObject* pChild)
     pChild->parent = nullptr;
     children.erase(find(children.begin(), children.end(), pChild));
 
-    std::cout << GetName() << " Disowned " << pChild->GetName();
+    std::cout << std::endl << GetName() << " Disowned " << pChild->GetName() << "\n\tChildren left : ";
+    for (auto child : children) {
+        std::cout << child->GetName() << ", ";
+    }
 }
 
 GameObject* GameObject::GetParent()
@@ -188,7 +205,18 @@ bool GameObject::GetEnabled() const
 
 void GameObject::SetEnabled(bool enabled)
 {
+    GameObject* it = this;
+    while (it->GetParent() != nullptr) {
+        it = it->GetParent();
+        enabled = enabled && it->GetEnabled();
+    }
+    
     this->enabled = enabled;
+
+
+    for (int i = 0; i < children.size(); i++) {
+        children[i]->SetEnabled(enabled);
+    }
 }
 
 void GameObject::AttachComponent(Component* component)
@@ -347,6 +375,41 @@ void GameObject::Recalculate()
     temp.SetIdentity();
     temp.SetPosition(this->localPosition);
     this->transform *= temp;
+
+
+    // ADDITIONALS FOR PARENTING
+    this->ApplyParentTransforms();  // MODIFIES THE TRANSFORM
+    this->RecalculateChildren();
+}
+
+void GameObject::RecalculateChildren()
+{
+    if (this->children.empty())
+        return;
+
+    for (int i = 0; i < children.size(); i++) {
+        children[i]->RecalculateChildren();
+    }
+}
+
+void GameObject::ApplyParentTransforms()
+{
+    if (isLocalTransform) {
+        return;
+    }
+
+    std::stack<Matrix4x4> parentTransforms;
+
+    GameObject* it = this;
+    while (it->GetParent() != nullptr) {
+        parentTransforms.push(it->GetParent()->GetTransform());
+        it = it->GetParent();
+    }
+
+    while (!parentTransforms.empty()) {
+        this->transform *= parentTransforms.top();
+        parentTransforms.pop();
+    }
 }
 
 void GameObject::SetTransform(float array[16])

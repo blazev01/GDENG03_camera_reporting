@@ -189,6 +189,7 @@ void OutlinerScreen::drawObjectTree(GameObject* obj, int i)
 			}
 
 			obj->AdoptChild(child);
+			child->Recalculate();
 		}
 
 		ImGui::EndDragDropTarget();

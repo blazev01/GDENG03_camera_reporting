@@ -167,12 +167,19 @@ void InspectorScreen::ShowTransform(GameObject* selected)
     Vector3D pos = selected->GetLocalPosition();
     Vector3D rot = selected->GetLocalRotation();
     Vector3D scale = selected->GetLocalScale();
+    bool isLocal = selected->GetIsLocalTransform();
 
     float scenePos[3] = { pos.x, pos.y, pos.z };
     float sceneRot[3] = { rot.x * RAD2DEG, rot.y * RAD2DEG, rot.z * RAD2DEG };
     float sceneScale[3] = { scale.x, scale.y, scale.z };
 
     float width = 0.7f;
+
+    if(ImGui::Checkbox("Local Transform", &isLocal)) {
+        selected->SetIsLocalTransform(isLocal);
+        selected->Recalculate();
+    }
+
     ImGui::SetNextItemWidth(ImGui::GetColumnWidth() * width);
     if (ImGui::InputFloat3("Position", scenePos) &&
         ImGui::IsItemDeactivatedAfterEdit())
