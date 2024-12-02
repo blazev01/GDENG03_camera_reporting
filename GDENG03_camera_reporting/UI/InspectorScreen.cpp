@@ -279,12 +279,23 @@ void InspectorScreen::ShowTexture(Renderer* component)
 
     if (ImGui::BeginPopup("Select Texture"))
     {
+        ImGui::Text("Textures");
+        ImGui::Separator();
+
+        ImGui::BeginChild("TextureList", ImVec2(200, 300), true, ImGuiWindowFlags_AlwaysVerticalScrollbar);
         for (const auto& entry : std::filesystem::directory_iterator("..\\Assets\\Textures"))
         {
             if (entry.is_regular_file())
             {
                 std::wstring filename = entry.path().wstring();
                 std::wstring displayName = std::filesystem::path(filename).filename().wstring();
+
+                Texture* previewTexture = TextureManager::CreateTextureFromFile(filename.c_str()); 
+                if (previewTexture)
+                {
+                    ImGui::Image((ImTextureID)previewTexture->GetSRV(), ImVec2(15, 15)); 
+                    ImGui::SameLine();
+                }
 
                 if (ImGui::Selectable(std::string(displayName.begin(), displayName.end()).c_str(), filename == selectedFile))
                 {
@@ -294,6 +305,7 @@ void InspectorScreen::ShowTexture(Renderer* component)
                 }
             }
         }
+        ImGui::EndChild();
         ImGui::EndPopup();
     }
 }
