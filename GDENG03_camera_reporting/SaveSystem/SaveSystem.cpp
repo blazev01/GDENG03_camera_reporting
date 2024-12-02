@@ -1,8 +1,7 @@
 #include "SaveSystem.h"
 
 #include "stdio.h"
-#include "json/json.h"
-#include "json/forwards.h"
+
 #include "../GameObjects/GameObjectManager.h"
 #include "../Components/PhysicsComponent.h"
 
@@ -19,7 +18,7 @@ SaveSystem* SaveSystem::GetInstance()
 void SaveSystem::SaveScene()
 {
 	Json::Value root;
-	Json::Value objectsCollection(Json::arrayValue);
+
 	Json::Value gameObject;
 	Json::Value translate;
 	Json::Value rotation;
@@ -41,6 +40,22 @@ void SaveSystem::SaveScene()
 		scale["Y"] = GameObjectManager::GetGameObjects()[i]->GetLocalScale().y;
 		scale["Z"] = GameObjectManager::GetGameObjects()[i]->GetLocalScale().z;
 		gameObject["Scale"] = scale;
+		if (!GameObjectManager::GetGameObjects()[i]->GetChildren().empty())
+		{
+			gameObject["HasChildren"] = true;
+			for (int j = 0; j < GameObjectManager::GetGameObjects()[i]->GetChildren().size(); j++)
+			{
+				
+				gameObject["Children"][std::to_string(j)] = GameObjectManager::GetGameObjects()[i]->GetChildren()[j]->GetName();
+
+			}
+		}
+		else
+		{
+			gameObject["HasChildren"] = false;
+			gameObject.removeMember("Children");
+
+		}
 		if (GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody") != nullptr)
 		{
 			gameObject["Physics"] = true;
@@ -55,12 +70,16 @@ void SaveSystem::SaveScene()
 			gameObject["Orientation"]["Y"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().y;
 			gameObject["Orientation"]["Z"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().z;
 			gameObject["Orientation"]["W"] = ((PhysicsComponent*)GameObjectManager::GetGameObjects()[i]->GetComponentOfType(Component::ComponentType::Physics, "RigidBody"))->GetRigidBody()->getTransform().getOrientation().w;
-			std::cout << "Position: " << gameObject["Position"]["X"] << ", " << gameObject["Position"]["Y"] << ", " << gameObject["Position"]["Z"] << std::endl;
-			std::cout << "Orientation: " << gameObject["Orientation"]["X"] <<", " << gameObject["Orientation"]["Y"] << ", " << gameObject["Orientation"]["Z"] << ", " << gameObject["Orientation"]["W"] << std::endl;
+			
 		}
 		else
 		{
 			gameObject["Physics"] = false;
+			gameObject.removeMember("Gravity");
+			gameObject.removeMember("Mass");
+			gameObject.removeMember("BodyType");
+			gameObject.removeMember("Position");
+			gameObject.removeMember("Orientation");
 		}
 		root.append(gameObject);
 	}
@@ -109,6 +128,7 @@ void SaveSystem::LoadScene()
 			GameObjectManager::GetGameObjects()[i]->SetRotation(Vector3D(object["Rotation"]["X"].asFloat(), object["Rotation"]["Y"].asFloat(),
 				object["Rotation"]["Z"].asFloat()));
 		
+		
 			if (object["Physics"].asBool())
 			{
 				GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat() / 2, object["Translate"]["Y"].asFloat() / 2,
@@ -123,12 +143,31 @@ void SaveSystem::LoadScene()
 				component->GetRigidBody()->setType(this->BodyTypetoEnum(object["BodyType"].asString()));
 				
 			}
-			GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat(), object["Translate"]["Y"].asFloat(),
-				object["Translate"]["Z"].asFloat() ));
-			GameObjectManager::GetGameObjects()[i]->Recalculate();
+			else
+			{
+				GameObjectManager::GetGameObjects()[i]->SetPosition(Vector3D(object["Translate"]["X"].asFloat(), object["Translate"]["Y"].asFloat(),
+					object["Translate"]["Z"].asFloat()));
+				GameObjectManager::GetGameObjects()[i]->Recalculate();
+			}
 		}
 	}
+	this->AdoptionPeriod(data);
+	std::cout << "Load Complete" << std::endl;
 
+}
+void SaveSystem::AdoptionPeriod(Json::Value data)
+{
+	for (unsigned int i = 0; i < data.size(); i++)
+	{
+		const Json::Value& object = data[i];
+		if (object["HasChildren"])
+		{
+			for (int j = 0; j < object["Children"].size(); j++)
+			{
+				GameObjectManager::FindGameObject(object["Name"].asString())->AdoptChild(GameObjectManager::FindGameObject(object["Children"][std::to_string(j)].asString()));
+			}
+		}
+	}
 }
 PrimitiveType SaveSystem::PrimitiveTypeToEnum(int type)
 {
