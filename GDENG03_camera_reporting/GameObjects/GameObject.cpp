@@ -290,6 +290,16 @@ void GameObject::SetPriority(int priority)
     RenderQueue::SortByPriority();
 }
 
+Texture* GameObject::GetTexture()
+{
+    return this->texture;
+}
+
+void GameObject::SetTexture(Texture* tex)
+{
+    this->texture = tex;
+}
+
 PixelShader* GameObject::GetPixelShader()
 {
     return this->pixelShader;

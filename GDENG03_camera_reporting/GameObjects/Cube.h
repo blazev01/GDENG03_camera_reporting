@@ -22,7 +22,6 @@ private:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
-	Texture* texture;
 
 	float ticks = 0.0f;
 	float deltaPos = 0.0f;

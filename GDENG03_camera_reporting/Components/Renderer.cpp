@@ -5,6 +5,8 @@
 #include "../GraphicsEngine/ShaderLibrary.h"
 #include "../GraphicsEngine/DeviceContext.h"
 #include "../SceneCamera/SceneCameraHandler.h"
+#include "../Backend/Debug.h"
+#include "filesystem"
 
 Renderer::Renderer(
     std::string name,
@@ -43,8 +45,8 @@ void Renderer::Perform(float deltaTime)
 
     if (this->texture)
     {
-        GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->vertexShader, this->texture);
-        GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->pixelShader, this->texture);
+        //GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->vertexShader, this->texture);
+        //GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->pixelShader, this->texture);
     }
 
     if (this->mesh)
@@ -60,6 +62,7 @@ void Renderer::Destroy()
 {
     BaseComponentSystem::GetRendererSystem()->UnregisterComponent(this);
     if (this->constantBuffer) this->constantBuffer->Release();
+    this->constantBuffer = nullptr;
 }
 
 void Renderer::DetachOwner()
@@ -108,7 +111,11 @@ Texture* Renderer::GetTexture()
 
 void Renderer::SetTexture(Texture* texture)
 {
-    this->texture = texture;
+    if (this->texture != texture) {
+        this->texture = texture;
+        this->owner->SetTexture(this->texture);
+        std::cout << "Texture assigned: " << texture << " for Renderer: " << this->owner->GetName() << std::endl;
+    }
 }
 
 std::wstring Renderer::GetTextureFilePath()
@@ -118,7 +125,15 @@ std::wstring Renderer::GetTextureFilePath()
 
 void Renderer::SetTextureFilePath(std::wstring path)
 {
-    this->texFilePath = path;
+    std::wstring relativePath = L"..\\Assets\\Textures\\" + std::filesystem::path(path).filename().wstring(); 
+    this->texFilePath = relativePath;
+
+    this->texture = TextureManager::LoadTexture(relativePath);
+    if (this->texture)
+        std::wcout << L"Texture loaded and assigned: " << this->texFilePath << std::endl;
+
+    else
+        std::wcout << L"Failed to load texture: " << this->texFilePath << std::endl;
 }
 
 void Renderer::SetWorld(const Matrix4x4& world)

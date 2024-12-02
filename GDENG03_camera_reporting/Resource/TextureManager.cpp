@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 
 TextureManager* TextureManager::instance = NULL;
+std::unordered_map<std::wstring, Texture*> TextureManager::textureCache;
 
 TextureManager::TextureManager() : ResourceManager()
 {
@@ -23,6 +24,25 @@ void TextureManager::Destroy()
 	instance->FreeResources();
 
 	delete instance;
+}
+
+Texture* TextureManager::LoadTexture(const std::wstring& filePath)
+{
+	auto it = textureCache.find(filePath);
+	if (it != textureCache.end())
+	{
+		return it->second; 
+	}
+
+	Texture* newTexture = instance->CreateTextureFromFile(filePath.c_str());
+	if (newTexture)
+	{
+		textureCache[filePath] = newTexture;
+		return newTexture;
+	}
+
+	delete newTexture;
+	return nullptr;
 }
 
 Texture* TextureManager::CreateTextureFromFile(const wchar_t* filePath)

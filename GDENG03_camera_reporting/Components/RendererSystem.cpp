@@ -1,6 +1,7 @@
 #include "RendererSystem.h"
 #include "Renderer.h"
 #include "../EngineTime/EngineTime.h"
+#include "../GameObjects/GameObject.h"
 
 RendererSystem::RendererSystem()
 {
@@ -58,6 +59,6 @@ std::vector<Renderer*> RendererSystem::GetAllComponents()
 
 void RendererSystem::UpdateAllComponents()
 {
-	for (auto component : this->componentList)
+	for (auto component : this->componentList) 
 		component->Perform(EngineTime::GetDeltaTime());
 }

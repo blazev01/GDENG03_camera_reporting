@@ -3,6 +3,7 @@
 #include "../GraphicsEngine/ShaderLibrary.h"
 #include "../GameObjects/GameObjectManager.h"
 #include "../Backend/ActionHistory.h"
+#include "../Backend/Debug.h"
 #include "../EngineTime/EngineTime.h"
 
 #include "filesystem"
@@ -231,26 +232,43 @@ void InspectorScreen::ShowRigidBody(PhysicsComponent* component)
 void InspectorScreen::ShowTexture(Renderer* component)
 {
     std::wstring selectedFile = component->GetTextureFilePath();
-    if (selectedFile.empty()) selectedFile = L"DLSU-LOGO.png";
+    if (selectedFile.empty()) selectedFile = L"..\\Assets\\Textures\\DLSU-LOGO.png";
 
     Texture* currentTexture = component->GetTexture();
 
-    if (!currentTexture || currentTexture->GetFilePath() != selectedFile)
+    if (currentTexture)
     {
-        std::wstring fullPath = L"..\\Assets\\Textures\\" + selectedFile;
-        currentTexture = TextureManager::CreateTextureFromFile(fullPath.c_str());
+        std::wstring relativeCurrentTextureFile = L"..\\Assets\\Textures\\" + std::filesystem::path(currentTexture->GetFilePath()).filename().wstring();
+
+        if (relativeCurrentTextureFile != selectedFile)
+        {
+            Debug::Log("No Texture currently exists for " + component->GetOwner()->GetName() + ". Creating Texture...");
+
+            currentTexture = TextureManager::CreateTextureFromFile(selectedFile.c_str());
+            component->SetTexture(currentTexture);
+            component->SetTextureFilePath(selectedFile);
+        }
+    }
+    else
+    {
+        Debug::Log("No Texture currently exists for " + component->GetOwner()->GetName() + ". Creating Texture...");
+
+        currentTexture = TextureManager::CreateTextureFromFile(selectedFile.c_str());
         component->SetTexture(currentTexture);
+        component->SetTextureFilePath(selectedFile);
     }
 
     ImGui::Image((ImTextureID)currentTexture->GetSRV(), ImVec2(50, 50));
 
-    ImGui::SameLine(); 
-    ImGui::BeginGroup(); 
-        ImGui::Text(std::string(selectedFile.begin(), selectedFile.end()).c_str());
+    ImGui::SameLine();
+    ImGui::BeginGroup();
 
-        if (ImGui::Button("Change Texture"))
-            ImGui::OpenPopup("Select Texture");
-    ImGui::EndGroup(); 
+    std::string fileName = std::filesystem::path(selectedFile).filename().string(); 
+    ImGui::Text(fileName.c_str());
+
+    if (ImGui::Button("Change Texture"))
+        ImGui::OpenPopup("Select Texture");
+    ImGui::EndGroup();
 
     if (ImGui::BeginPopup("Select Texture"))
     {
@@ -258,9 +276,10 @@ void InspectorScreen::ShowTexture(Renderer* component)
         {
             if (entry.is_regular_file())
             {
-                std::wstring filename = entry.path().filename().wstring();
+                std::wstring filename = entry.path().wstring();
+                std::wstring displayName = std::filesystem::path(filename).filename().wstring();
 
-                if (ImGui::Selectable(std::string(filename.begin(), filename.end()).c_str(), filename == selectedFile))
+                if (ImGui::Selectable(std::string(displayName.begin(), displayName.end()).c_str(), filename == selectedFile))
                 {
                     selectedFile = filename;
                     component->SetTextureFilePath(selectedFile);
@@ -308,14 +327,14 @@ void InspectorScreen::ShowComponentsPopup(GameObject* selected)
             if (!selected->GetComponentOfType(Component::Renderer, "Renderer")) 
             {
                 PixelShader* pixelShader = ShaderLibrary::GetPixelShader(L"TexturePixelShader.hlsl");
-                Renderer* component = new Renderer("Renderer", selected, selected->GetVertexShader(), pixelShader);
+                VertexShader* vertexShader = ShaderLibrary::GetVertexShader(L"VertexShader.hlsl");
+                Renderer* component = new Renderer("Renderer", selected, vertexShader, pixelShader);
                 selected->SetPixelShader(pixelShader);
                 selected->AttachComponent(component);
             }
 
             ImGui::CloseCurrentPopup();
         }
-
         ImGui::EndPopup();
     }
 }

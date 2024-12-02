@@ -140,8 +140,10 @@ void PhysicsCube::Draw(Matrix4x4 view, Matrix4x4 proj)
 	GraphicsEngine::GetImmediateDeviceContext()->SetVertexShader(this->vertexShader);
 	GraphicsEngine::GetImmediateDeviceContext()->SetPixelShader(this->pixelShader);
 
-	//GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->vertexShader, this->texture);
-	//GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->pixelShader, this->texture);
+	if (this->texture) {
+		GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->vertexShader, this->texture);
+		GraphicsEngine::GetImmediateDeviceContext()->SetTexture(this->pixelShader, this->texture);
+	}
 
 	GraphicsEngine::GetImmediateDeviceContext()->SetVertexBuffer(this->vertexBuffer);
 	GraphicsEngine::GetImmediateDeviceContext()->SetIndexBuffer(this->indexBuffer);

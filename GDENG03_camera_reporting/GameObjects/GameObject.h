@@ -3,6 +3,7 @@
 #include "vector"
 #include "../GraphicsEngine/VertexShader.h"
 #include "../GraphicsEngine/PixelShader.h"
+#include "../Resource/Texture.h"
 #include "../Math/Matrix4x4.h"
 #include "../Components/Component.h"
 #include "../GameObjects/GameObjectManager.h"
@@ -74,6 +75,9 @@ public:
 	int GetPriority() const;
 	void SetPriority(int priority);
 
+	Texture* GetTexture();
+	void SetTexture(Texture* tex);
+
 	PixelShader* GetPixelShader();
 	VertexShader* GetVertexShader();
 
@@ -100,6 +104,8 @@ protected:
 	int priority;
 	bool enabled;
 	
+	Texture* texture;
+
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
 	PrimitiveType primitiveType;
