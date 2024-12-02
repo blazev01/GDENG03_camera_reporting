@@ -50,6 +50,7 @@ public:
 
 	void AdoptChild(GameObject* pChild);
 	void DisownChild(GameObject* pChild);
+	void ResolveConflictingComponents(GameObject* pChild);
 
 	GameObject* GetParent();
 	GameObject* GetChild(int index);
@@ -101,7 +102,7 @@ protected:
 	Matrix4x4 orientation;
 	Matrix4x4 transform;
 
-	bool isLocalTransform = true;
+	bool isLocalTransform = false;
 
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;

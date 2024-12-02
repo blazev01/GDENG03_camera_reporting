@@ -2,6 +2,8 @@
 #include "RenderQueue.h"
 #include "../Backend/Debug.h"
 
+//#include "../Components/PhysicsComponent.h"
+
 #include <stack>
 
 GameObject::GameObject(std::string name, PrimitiveType primitiveType)
@@ -132,6 +134,7 @@ void GameObject::AdoptChild(GameObject* pChild)
 {
     pChild->parent = this;
     children.push_back(pChild);
+    this->ResolveConflictingComponents(pChild);
 
     std::cout << std::endl << GetName() << " Parented " << pChild->GetName() << "\n\tChildren left : ";
     for (auto child : children) {
@@ -147,6 +150,32 @@ void GameObject::DisownChild(GameObject* pChild)
     std::cout << std::endl << GetName() << " Disowned " << pChild->GetName() << "\n\tChildren left : ";
     for (auto child : children) {
         std::cout << child->GetName() << ", ";
+    }
+}
+
+void GameObject::ResolveConflictingComponents(GameObject* pChild)
+{
+    GameObject* parent = pChild;
+    bool parentHasRB = false;
+
+    // AVOID CONFLICT BY CHECKING IF PARENT HAS RB
+    while (parent->GetParent() != nullptr && !parentHasRB) {
+        parent = parent->GetParent();
+
+        for (Component* comp : parent->GetComponents()) {
+            if (comp->GetType() == Component::ComponentType::Physics) {
+                parentHasRB = true;
+                break;
+            }
+        }
+    }
+
+    // REMOVE THE CHILD'S RB 
+    for (Component* comp : pChild->GetComponents()) {
+        if (parentHasRB && comp->GetType() == Component::ComponentType::Physics) {
+            pChild->DetachComponent(comp);
+            //((PhysicsComponent*)comp)->Destroy();
+        }
     }
 }
 
